@@ -24,6 +24,9 @@ app.use(connectLivereload());
 const indexRouter = require('./routes/homeRoutes');
 app.use('/', indexRouter);
 
+const adminRouter = require('./routes/adminRoutes');
+app.use('/admin', adminRouter);
+
 // Server
 app.listen(PORT, () => {
     console.log(`Server running on port localhost:${PORT}`);

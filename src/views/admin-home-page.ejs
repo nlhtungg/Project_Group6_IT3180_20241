@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/admin-page.css">
+    <link rel="icon" href="/img/logo.png" type="image/x-icon">
+    <title>HUSTHUB</title>
+</head>
+<body>
+    <div class="header">
+        <a href="/" class="left-section">
+            <div class="logo">
+                <img src="/img/logo.png" alt="HUSTHUB Logo" />
+            </div>
+            <div class="title-container">
+                <h1 class="title">HUSTHUB</h1>
+                <h2 class="subtitle">School Management System</h2>
+            </div>
+        </a>
+        <div class="right-section">
+            <button class="login-btn" onclick="logout()">LOG OUT</button>
+        </div>
+    </div>
+
+    <nav class="navbar">
+        <ul class="nav-list">
+            <li><a href="#home">HOME</a></li>
+            <li><a href="#teacher">TEACHER</a></li>
+            <li><a href="#student">STUDENT</a></li>
+            <li><a href="#courses">COURSES</a></li>
+            <li><a href="#contact">CONTACT</a></li>
+        </ul>
+    </nav>
+
+    <div class="dashboard">
+        <div class="card">
+            <img src="https://via.placeholder.com/50" alt="Total Students" class="icon">
+            <h3>Total Students</h3>
+            <p class="count"><%= totalStudents %></p>
+        </div>
+        <div class="card">
+            <img src="https://via.placeholder.com/50" alt="Total Classes" class="icon">
+            <h3>Total Classes</h3>
+            <p class="count"><%= totalClasses %></p>
+        </div>
+        <div class="card">
+            <img src="https://via.placeholder.com/50" alt="Total Teachers" class="icon">
+            <h3>Total Teachers</h3>
+            <p class="count"><%= totalTeachers %></p>
+        </div>
+        
+    </div>
+
+    <div class="notice">
+        <% if (notices.length === 0) { %>
+            <p>No Notices to Show Right Now</p>
+        <% } else { %>
+            <ul>
+                <% notices.forEach(function(notice) { %>
+                    <li><%= notice %>;</li>
+                <% }); %>
+            </ul>
+        <% } %>
+    </div>
+
+    <div class = "dashboard">
+        <div class="card" style="width: 18rem;">
+            <img src="..." class="card-img-top" alt="...">
+            <div class="card-body">
+              <h5 class="card-title">TEACHER</h5>
+              <p class="card-text">Admins can manage information about teachers, including their name, date of birth, qualifications, fields, and subjects taught.</p>
+              <a href="#" class="btn btn-primary">Go somewhere</a>
+            </div>
+          </div>
+    
+          <div class="card" style="width: 18rem;">
+            <img src="..." class="card-img-top" alt="...">
+            <div class="card-body">
+              <h5 class="card-title">Student</h5>
+              <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+              <a href="#" class="btn btn-primary">Go somewhere</a>
+            </div>
+          </div>
+    
+          <div class="card" style="width: 18rem;">
+            <img src="..." class="card-img-top" alt="...">
+            <div class="card-body">
+              <h5 class="card-title">Card title</h5>
+              <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+              <a href="#" class="btn btn-primary">Go somewhere</a>
+            </div>
+          </div>
+    </div>
+
+
+    
+    <div class="footer">
+        <h3>The system is designed and developed by GROUP 6</h3>
+        <p>Get app HUSTHUB on mobile</p>
+        <a href="#"><img src="/img/google-play.png" alt="Get it on Google Play"></a>
+        <a href="#"><img src="/img/app-store.png" alt="Download on the App Store"></a>
+    </div>
+</body>
+<script>
+    function logout() {
+        // Add your logout functionality here
+    }
+</script>
+</html>
