@@ -7,7 +7,9 @@ body {
     background-color: #f4f4f4; /* Light background */
     margin: 0;
 }
-
+.h1{
+    justify-content: center;
+}
 .header {
     display: flex;
     align-items: center;
@@ -310,5 +312,4 @@ h2 {
 .footer a img {
     height: 50px; /* Adjust social media icon size */
     margin: 10px;
-    border-radius: 5px;
 }
