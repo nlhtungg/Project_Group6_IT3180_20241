@@ -117,11 +117,6 @@ body {
     height: 50px; /* Adjust social media icon size */
     margin: 10px;
 }
-body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
-    padding: 20px;
-}
 
 .notification {
     display: flex;
