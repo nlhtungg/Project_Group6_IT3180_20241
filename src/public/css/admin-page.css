@@ -1,7 +1,9 @@
 body {
     font-family: Arial, sans-serif;
     background-color: #f4f4f4; /* Light background */
-    margin: 0;
+    margin: 0; /* Đảm bảo body không có margin */
+    padding: 0; /* Xóa khoảng trắng của body */
+
 }
 
 .header {
@@ -94,9 +96,11 @@ body {
     background-color: #cfe2cf;
     padding: 10px;
     text-align: center;
-    border-radius: 8px;
+    border-radius: 0;
+    width: 100vw; /* Đảm bảo footer tràn hết chiều rộng viewport */
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-
+    margin: 0; /* Xóa margin để tràn hết viền */
+    bottom: 0;
 }
 
 .footer h3 {
@@ -258,6 +262,11 @@ body {
 }
 
 .notification-container h1 {
+    align-items: center;
+    text-align: center;
+} 
+
+.general h1 {
     align-items: center;
     text-align: center;
 }
