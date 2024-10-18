@@ -8,7 +8,7 @@ require('dotenv').config();
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-//connectDB();
+connectDB();
 
 // Middleware
 app.use(express.static(path.join(__dirname, 'public')));
@@ -23,6 +23,9 @@ app.use(connectLivereload());
 // Routes
 const indexRouter = require('./routes/homeRoutes');
 app.use('/', indexRouter);
+
+const adminRouter = require('./routes/adminRoutes');
+app.use('/admin', adminRouter);
 
 // Server
 app.listen(PORT, () => {

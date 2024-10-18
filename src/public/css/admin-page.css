@@ -1,0 +1,267 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4; /* Light background */
+    margin: 0; /* Đảm bảo body không có margin */
+    padding: 0; /* Xóa khoảng trắng của body */
+
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    justify-content:space-between;
+    background-color: #cfe2cf; /* Light green background */
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.left-section {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+}
+
+.right-section {
+    display: flex;
+    align-items: center;
+}
+
+.title-container {
+    display: inline-block;
+    text-align: left;
+}
+
+.logo img {
+    height: 50px; /* Adjust logo size */
+    margin-right: 15px;
+}
+
+.title {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #009688; /* Primary color */
+    margin: 0;
+}
+
+.subtitle {
+    font-size: 1rem;
+    color: #555; /* Subtitle color */
+    margin: 0;
+}
+
+.login-btn {
+    background-color: #cfe2cf;
+    color: black;
+    border: 2px solid black;
+    padding: 10px 20px;
+    font-size: 1rem;
+    border-radius: 10px;
+    align-items: right;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.login-btn:hover {
+    background-color: #009688; /* Primary color */
+    color: white;
+}
+
+.navbar {
+    position: sticky;
+    top: 0;
+    background-color: black;
+    z-index: 1000;
+    padding: 1px;
+}
+
+.nav-list {
+    display: flex;
+    justify-content: center;
+    list-style: none;
+}
+
+.nav-list li {
+    margin: 0 100px;
+}
+
+.nav-list a {
+    text-decoration: none;
+    color: white;
+    font-size: 1.1rem;
+}
+
+
+.footer {
+    background-color: #cfe2cf;
+    padding: 10px;
+    text-align: center;
+    border-radius: 0;
+    width: 100vw; /* Đảm bảo footer tràn hết chiều rộng viewport */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    margin: 0; /* Xóa margin để tràn hết viền */
+    bottom: 0;
+}
+
+.footer h3 {
+    margin: 0;
+    color: black; /* Primary color */
+}
+
+.footer p {
+    margin: 0;
+    color: #555; /* Subtitle color */
+}
+
+.footer a img {
+    height: 50px; /* Adjust social media icon size */
+    margin: 10px;
+}
+
+.notification {
+    display: flex;
+    align-items: center;
+    background-color: #fff;
+    padding: 15px;
+    margin: 10px 0;
+    border-radius: 5px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    position: relative;
+    width: 100%;
+    max-width: 600px;
+    margin: 20px auto;
+    border-left: 5px solid;
+    transition: all 0.3s ease;
+}
+
+.notification.success {
+    border-color: #4CAF50; /* Green */
+}
+
+.notification.error {
+    border-color: #F44336; /* Red */
+}
+
+.notification.warning {
+    border-color: #FF9800; /* Orange */
+}
+
+.notification.info {
+    border-color: #2196F3; /* Blue */
+}
+
+.notification .icon {
+    font-size: 1.5rem;
+    margin-right: 15px;
+}
+
+.notification p {
+    margin: 0;
+    font-size: 1.1rem;
+    color: #333;
+    flex-grow: 1;
+}
+
+.notification .close-btn {
+    position: absolute;
+    top: 50%;
+    right: 15px;
+    transform: translateY(-50%);
+    font-size: 1.2rem;
+    color: #aaa;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.notification .close-btn:hover {
+    color: #333;
+}
+
+.notification:hover {
+    box-shadow: 0 8px 10px rgba(0, 0, 0, 0.15);
+}
+.dashboard {
+    margin: 20px;
+    display: flex;
+    justify-content: center; /* Căn giữa theo chiều ngang */
+    gap: 20px;
+  
+}
+
+.card {
+    border-radius: 15px;
+    padding: 20px;
+    width: 200px;
+    text-align: center;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.card-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.card-icon {
+    font-size: 40px;
+    margin-bottom: 15px;
+}
+.h1{
+    align-items: center;
+    justify-content: center;
+}
+.card-text h1 {
+    font-size: 36px;
+    margin-bottom: 5px;
+    color: #fbfbfb;
+    justify-content: center;
+}
+
+.card-text p {
+    font-size: 18px;
+    color: #ffffff;
+}
+
+/* Specific styles for each card */
+.card-students {
+    background-color: #606c38;
+    color: #fff;
+}
+
+.card-teachers {
+    background-color: #dda15e;
+    color: #fff;
+}
+
+.card-private-teachers {
+    background-color: #bc6c25;
+    color: #fff;
+}
+
+.icon {
+    width: 50px;
+    height: 50px;
+}
+.count {
+    font-size: 24px;
+    color: green;
+    margin: 10px 0;
+}
+.notice {
+    margin-top: 20px;
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.notification-container h1 {
+    align-items: center;
+    text-align: center;
+} 
+
+.general h1 {
+    align-items: center;
+    text-align: center;
+}

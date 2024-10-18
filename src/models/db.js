@@ -1,14 +1,13 @@
-const sql = require('mssql');
+const sql = require('mssql/msnodesqlv8');
 require('dotenv').config();
 
 const config = {
-    user: process.env.DB_USER,
-    password: process.env.DB_PASSWORD,
-    server: process.env.DB_SERVER,
-    database: process.env.DB_DATABASE,
+    server: 'DESKTOP-256OKAM\\SQLEXPRESS',
+    database: 'HUSTHUB',
+    user: 'TUNGSQLUsername',
+    password: '892678',
     options: {
-        encrypt: true,
-        enableArithAbort: true
+        trustedConnection: true
     }
 };
 
