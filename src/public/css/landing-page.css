@@ -119,7 +119,7 @@ body {
 }
 
 .about-us-content h2 {
-    color: #009688; /* Primary color */
+    color: #d4a373; /* Primary color */
     text-align: center;
 }
 .team-member-container {
@@ -136,7 +136,7 @@ body {
     border: 1px solid whitesmoke;
     border-radius: 8px;
     padding: 50px 10px;
-    background-color: #cfe2cf;
+    background-color: #faedcd;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 
@@ -172,7 +172,7 @@ body {
 }
 
 .events-content {
-    background-color: whitesmoke;
+    background-color: #fefae0;
 }
 
 .contact-content {
