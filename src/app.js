@@ -8,7 +8,7 @@ require('dotenv').config();
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-//connectDB();
+connectDB();
 
 // Middleware
 app.use(express.static(path.join(__dirname, 'public')));
