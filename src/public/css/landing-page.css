@@ -3,7 +3,9 @@ body {
     background-color: #f4f4f4; /* Light background */
     margin: 0;
 }
-
+.h1{
+    justify-content: center;
+}
 .header {
     display: flex;
     align-items: center;
@@ -113,32 +115,3 @@ body {
     height: 50px; /* Adjust social media icon size */
     margin: 10px;
 }
- .dashboard {
-        display: flex;
-        justify-content: space-between;
-    }
-    .card {
-        background-color: white;
-        border-radius: 8px;
-        padding: 20px;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        width: 23%;
-        text-align: center;
-    }
-    .icon {
-        width: 50px;
-        height: 50px;
-    }
-    .count {
-        font-size: 24px;
-        color: green;
-        margin: 10px 0;
-    }
-    .notice {
-        margin-top: 20px;
-        background-color: white;
-        padding: 20px;
-        border-radius: 8px;
-        text-align: center;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    }

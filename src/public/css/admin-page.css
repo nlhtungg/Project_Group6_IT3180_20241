@@ -182,17 +182,63 @@ body {
     box-shadow: 0 8px 10px rgba(0, 0, 0, 0.15);
 }
 .dashboard {
+    margin: 20px;
     display: flex;
-    justify-content: space-between;
+    justify-content: center; /* Căn giữa theo chiều ngang */
+    gap: 20px;
+  
 }
+
 .card {
-    background-color: white;
-    border-radius: 8px;
+    border-radius: 15px;
     padding: 20px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    width: 23%;
+    width: 200px;
     text-align: center;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
 }
+
+.card-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.card-icon {
+    font-size: 40px;
+    margin-bottom: 15px;
+}
+.h1{
+    align-items: center;
+    justify-content: center;
+}
+.card-text h1 {
+    font-size: 36px;
+    margin-bottom: 5px;
+    color: #fbfbfb;
+    justify-content: center;
+}
+
+.card-text p {
+    font-size: 18px;
+    color: #ffffff;
+}
+
+/* Specific styles for each card */
+.card-students {
+    background-color: #606c38;
+    color: #fff;
+}
+
+.card-teachers {
+    background-color: #dda15e;
+    color: #fff;
+}
+
+.card-private-teachers {
+    background-color: #bc6c25;
+    color: #fff;
+}
+
 .icon {
     width: 50px;
     height: 50px;
@@ -211,3 +257,7 @@ body {
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
+.notification-container h1 {
+    align-items: center;
+    text-align: center;
+}
