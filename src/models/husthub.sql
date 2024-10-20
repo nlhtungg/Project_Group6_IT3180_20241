@@ -62,3 +62,20 @@ CREATE Table Grades (
 	FOREIGN KEY ([enrollment_id]) REFERENCES [Enrollments] ([enrollment_id]) 
     ON DELETE CASCADE ON UPDATE CASCADE
 )
+
+--Testing data admin
+-- CREATE TABLE admins (
+--     username VARCHAR(50) UNIQUE NOT NULL,
+--     password VARCHAR(255) NOT NULL,
+--     role VARCHAR(50) NOT NULL
+-- );
+-- INSERT INTO admins (username, password, role) VALUES ('admin', 'admin_password', 'admin');
+
+
+
+
+
+
+
+
+

@@ -1,4 +1,5 @@
 const express = require('express');
+const session = require('express-session');
 const { connectDB } = require('./models/db');
 const path = require('path');
 const livereload = require('livereload');
@@ -13,6 +14,15 @@ connectDB();
 // Middleware
 app.use(express.static(path.join(__dirname, 'public')));
 app.set('view engine', 'ejs');
+app.use(session({
+    secret: 'HMN04',
+    resave: false,
+    saveUninitialized: true,
+    cookie: {
+        maxAge: 1 * 60 * 1000 
+    }
+}));
+
 
 // **Correcting views directory**
 app.set('views', path.join(__dirname, 'views')); 
