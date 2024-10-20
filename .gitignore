@@ -10,8 +10,8 @@ node_modules/
 # System files
 .DS_Store
 
-#db file(not to be pushed to git)
-db.js
+# Exclude the db.js file
+*.db.js
 
 # Optional: OS-specific files (Windows, Mac)
 Thumbs.db
