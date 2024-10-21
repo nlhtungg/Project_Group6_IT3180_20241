@@ -18,7 +18,8 @@
     "livereload": "^0.9.3",
     "msnodesqlv8": "^4.2.1",
     "mssql": "^11.0.1",
-    "path": "^0.12.7"
+    "path": "^0.12.7",
+    "pg": "^8.13.0"
   },
   "devDependencies": {
     "connect-livereload": "^0.6.1",
