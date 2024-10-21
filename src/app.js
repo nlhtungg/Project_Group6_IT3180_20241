@@ -1,5 +1,5 @@
 const express = require('express');
-const { connectDB } = require('./models/db');
+const {connectDB} = require('./models/db');
 const path = require('path');
 const livereload = require('livereload');
 const connectLivereload = require('connect-livereload');
