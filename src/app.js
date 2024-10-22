@@ -1,5 +1,5 @@
 const express = require('express');
-const { connectDB } = require('./models/db');
+const {connectDB} = require('./models/db');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const livereload = require('livereload');
