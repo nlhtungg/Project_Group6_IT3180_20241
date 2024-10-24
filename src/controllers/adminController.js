@@ -1,17 +1,22 @@
 // src/controllers/adminController.js
-const getHomePage = (req, res) => {
+const { pool } = require('../models/db')
+const getHomePage = async (req, res) => { // Thêm async ở đây
     // Fetch the data you need, for example:
-    const totalStudents = 100; // This should be retrieved from your database
-    const totalClasses = 10;
-    const totalTeachers = 15;
-    const feesCollection = 5000;
+    const totalStudentsdb = await pool.query(`SELECT COUNT(*) FROM Students;`);
+    const totalTeachersdb = await pool.query(`SELECT COUNT(*) FROM Teachers;`);
+    const totalClassessdb = await pool.query(`SELECT COUNT(*) FROM Classes;`);
+
+
+    const totalStudents = totalStudentsdb.rows[0].count;
+    const totalTeachers = totalTeachersdb.rows[0].count;
+    const totalClasses = totalClassessdb.rows[0].count;
+
 
     // Pass the data to the EJS template
     res.render('admin-home-page', {
         totalStudents,
         totalClasses,
         totalTeachers,
-        feesCollection,
         notices: [] // You can also pass notices here if needed
     });
 };
@@ -29,5 +34,13 @@ const logout = (req, res) => {
     });
 };
 
-module.exports = { getHomePage, logout };
-  
+
+
+const getCouresPage = async (req, res) => {
+     // Pass the data to the EJS template
+     const result = await pool.query('SELECT * FROM Courses');
+     const courses = result.rows;  
+    res.render('admin-courses-page', { courses: courses });
+}
+
+module.exports = { getHomePage, logout, getCouresPage };

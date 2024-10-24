@@ -5,6 +5,17 @@ body {
     padding: 0; /* Xóa khoảng trắng của body */
 
 }
+.h1 {
+    font-size: 48px; /* Chữ to */
+    text-align: center; /* Căn giữa */
+    font-weight: bold; /* Tô đậm */
+    color: #2c3e50; /* Màu chữ */
+    margin-top: 20px; /* Khoảng cách trên */
+    margin-bottom: 20px; /* Khoảng cách dưới */
+    letter-spacing: 2px; /* Giãn cách chữ */
+    text-transform: uppercase; /* Chuyển chữ thành in hoa */
+    font-family: 'Arial', sans-serif; /* Phông chữ đẹp, dễ nhìn */
+}
 
 .header {
     display: flex;
@@ -264,4 +275,85 @@ body {
 .general h1 {
     align-items: center;
     text-align: center;
+}
+
+.search {
+    display: flex;
+    padding: 20px;
+    align-items: center;
+    gap: 10px;
+    padding: 15px; /* Thêm khoảng cách xung quanh */
+    background-color: #f9f9f9; /* Màu nền nhẹ */
+    border: 1px solid #ddd; /* Đường viền nhẹ */
+    border-radius: 10px; /* Bo tròn góc */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Đổ bóng để tạo chiều sâu */
+    max-width: 400px; /* Đặt chiều rộng tối đa */
+    margin: 20px 20px 20px 20px; /* Căn giữa và thêm khoảng cách trên dưới */
+}
+
+
+.search .label {
+    font-size: 16px;
+    margin-right: 5px;
+}
+
+.search .dropdown {
+    font-size: 14px;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    outline: none;
+    cursor: pointer;
+}
+
+.search .dropdown:focus {
+    border-color: #007bff; /* Đổi màu viền khi focus */
+}
+
+.search .search-box {
+    padding: 5px 10px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    outline: none;
+    width: 250px;
+}
+
+.search .search-box:focus {
+    border-color: #007bff; /* Đổi màu viền khi focus */
+}
+
+
+.DisplayAllCourses {
+    font-family: Arial, sans-serif;
+}
+
+.DisplayAllCourses .container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 15px;
+    margin: 20px;
+}
+
+.DisplayAllCourses .courses-card {
+    border: 1px solid #004080;
+    border-radius: 5px;
+    padding: 10px;
+    width: 18%; /* Mỗi ô chiếm 30% chiều rộng để vừa 3 ô trên 1 hàng */
+    box-sizing: border-box;
+}
+
+.DisplayAllCourses .courses-id {
+    font-size: 24px;
+    color: #004080;
+}
+
+.DisplayAllCourses .courses-info {
+    font-size: 16px;
+}
+
+.DisplayAllCourses .row-break {
+    flex-basis: 100%;
+    height: 0;
 }

@@ -7,5 +7,8 @@ const adminController = require('../controllers/adminController');
 router.get('/', adminController.getHomePage);
 module.exports = router;
 
+router.get('/courses', adminController.getCouresPage);
+module.exports = router;
+
 // Route để xử lý đăng xuất
 router.get('/logout', adminController.logout);

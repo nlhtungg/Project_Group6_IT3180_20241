@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/admin-page.css">
+    <link rel="icon" href="/img/logo.png" type="image/x-icon">
+    <title>HUSTHUB</title>
+</head>
+<body>
+    <div class="header">
+        <a href="/" class="left-section">
+            <div class="logo">
+                <img src="/img/logo.png" alt="HUSTHUB Logo" />
+            </div>
+            <div class="title-container">
+                <h1 class="title">HUSTHUB</h1>
+                <h2 class="subtitle">School Management System</h2>
+            </div>
+        </a>
+        <div class="right-section">
+            <form action="/logout" method="POST">
+                <button type="submit" class = "login-btn">Log out</button>
+            </form>
+        </div>
+        
+    </div>
+    
+    <nav class="navbar">
+        <ul class="nav-list">
+            <li><a href="/admin">HOME</a></li>
+            <li><a href="/admin/teacher">TEACHER</a></li>
+            <li><a href="/admin/student">STUDENT</a></li>
+            <li><a href="/admin/courses">COURSES</a></li>
+            <li><a href="/admin/contact">CONTACT</a></li>
+        </ul>
+    </nav>
+    
+    <div class="h1">COURSES</div>
+
+    <div class="search">
+        <label for="semester-select">Kỳ</label>
+        <select id="semester-select" class="dropdown">
+            <option value="20243">20221</option>
+            <option value="20243">20222</option>
+            <option value="20243">20223</option>
+            <option value="20243">20231</option>
+            <option value="20243">20232</option>
+            <option value="20243">20233</option>
+            <option value="20241">20241</option>
+            <option value="20242">20242</option>
+            <option value="20243">20243</option>
+        </select>
+     <input type="text" class="search-box" placeholder="Nhập mã lớp, mã môn hoặc tên môn">
+    </div>
+
+    <div class="DisplayAllCourses">
+        <div class="container">
+            <% courses.forEach(function(courses, index) { %>
+                <div class="courses-card">
+                    <div class="courses-id"><strong><%= courses.course_id %></strong></div>
+                    <div class="courses-info">
+                        <p><strong>Tên:</strong> <%= courses.course_name %></p>
+                        <p><strong>TC:</strong> <%= courses.course_credit %></p>
+                    </div>
+                </div>
+                <% if ((index + 1) % 5 === 0) { %>
+                    <div class="row-break"></div> <!-- Tạo khoảng cách sau mỗi 3 ô -->
+                <% } %>
+            <% }); %>
+        </div>
+    </div>
+    
+   
+    
+    <div class="footer">
+        <h3>The system is designed and developed by GROUP 6</h3>
+        <p>Get app HUSTHUB on mobile</p>
+        <a href="#"><img src="/img/google-play.png" alt="Get it on Google Play"></a>
+        <a href="#"><img src="/img/app-store.png" alt="Download on the App Store"></a>
+    </div>
+</body>
+<script>
+    function logout() {
+        // Add your logout functionality here
+    }
+</script>
+</html>
