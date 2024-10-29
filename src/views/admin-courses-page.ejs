@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/css/admin-page.css">
     <link rel="icon" href="/img/logo.png" type="image/x-icon">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <title>HUSTHUB</title>
 </head>
 <body>
@@ -38,41 +39,133 @@
     
     <div class="h1">COURSES</div>
 
-    <div class="search">
-        <label for="semester-select">Kỳ</label>
-        <select id="semester-select" class="dropdown">
-            <option value="20243">20221</option>
-            <option value="20243">20222</option>
-            <option value="20243">20223</option>
-            <option value="20243">20231</option>
-            <option value="20243">20232</option>
-            <option value="20243">20233</option>
-            <option value="20241">20241</option>
-            <option value="20242">20242</option>
-            <option value="20243">20243</option>
-        </select>
-     <input type="text" class="search-box" placeholder="Nhập mã lớp, mã môn hoặc tên môn">
+    <form id="searchForm">
+        <div class="search">
+            <label for="semester-select">Kỳ học</label>
+            <select id="semester-select" name="semester">
+                <option value="20221">20221</option>
+                <option value="20222">20222</option>
+                <option value="20223">20223</option>
+                <option value="20241">20241</option>
+                <!-- Thêm các kỳ học khác nếu cần -->
+            </select>
+            
+            <input type="text" id="searchText" name="searchText" placeholder="Nhập mã lớp, mã môn hoặc tên môn">
+            <button type="submit">Tìm kiếm</button>
+        </div>
+    </form>
+
+    <!-- Div để hiển thị kết quả khóa học -->
+    <div id="coursesResult"></div>
+
+    <script>
+        $(document).ready(function(){
+            $('#searchForm').submit(function(event){
+                event.preventDefault(); // Ngăn chặn tải lại trang
+
+                // Lấy dữ liệu từ form
+                const searchText = $('#searchText').val();
+
+                // Gửi yêu cầu AJAX
+                $.ajax({
+                    url: '/admin/search-courses',
+                    method: 'POST',
+                    data: {
+                        searchText: searchText
+                    },
+                    success: function(response){
+                        // Hiển thị kết quả tìm kiếm trong #coursesResult
+                        $('#coursesResult').html(response);
+                    },
+                    error: function(xhr, status, error){
+                        console.error('Có lỗi xảy ra:', error);
+                    }
+                });
+            });
+        });
+    </script>
+    <h2>Manage Courses</h2>
+
+    <!-- 3 Hộp (CREATE, UPDATE, DELETE) -->
+    <div class="box" id="createBox">CREATE</div>
+    <div class="box" id="updateBox">UPDATE</div>
+    <div class="box" id="deleteBox">DELETE</div>
+
+    <!-- Form CREATE -->
+    <div id="createForm" class="form-container">
+        <h3>Create Course</h3>
+        <form method="POST" action="/courses/create">
+            <div class="input-field">
+                <label for="course_id">Course ID:</label>
+                <input type="text" id="course_id" name="course_id">
+            </div>
+            <div class="input-field">
+                <label for="course_name">Course Name:</label>
+                <input type="text" id="course_name" name="course_name">
+            </div>
+            <div class="input-field">
+                <label for="course_credit">Course Credit:</label>
+                <input type="number" id="course_credit" name="course_credit">
+            </div>
+            <button type="submit">Create</button>
+        </form>
     </div>
 
-    <div class="DisplayAllCourses">
-        <div class="container">
-            <% courses.forEach(function(courses, index) { %>
-                <div class="courses-card">
-                    <div class="courses-id"><strong><%= courses.course_id %></strong></div>
-                    <div class="courses-info">
-                        <p><strong>Tên:</strong> <%= courses.course_name %></p>
-                        <p><strong>TC:</strong> <%= courses.course_credit %></p>
-                    </div>
-                </div>
-                <% if ((index + 1) % 5 === 0) { %>
-                    <div class="row-break"></div> <!-- Tạo khoảng cách sau mỗi 3 ô -->
-                <% } %>
-            <% }); %>
-        </div>
+    <!-- Form UPDATE -->
+    <div id="updateForm" class="form-container">
+        <h3>Update Course</h3>
+        <form method="POST" action="/courses/update">
+            <div class="input-field">
+                <label for="course_id">Course ID:</label>
+                <input type="text" id="course_id" name="course_id">
+            </div>
+            <div class="input-field">
+                <label for="course_name">Course Name:</label>
+                <input type="text" id="course_name" name="course_name">
+            </div>
+            <div class="input-field">
+                <label for="course_credit">Course Credit:</label>
+                <input type="number" id="course_credit" name="course_credit">
+            </div>
+            <button type="submit">Update</button>
+        </form>
     </div>
-    
-   
-    
+
+    <!-- Form DELETE -->
+    <div id="deleteForm" class="form-container">
+        <h3>Delete Course</h3>
+        <form method="POST" action="/courses/delete">
+            <div class="input-field">
+                <label for="course_id">Course ID:</label>
+                <input type="text" id="course_id" name="course_id">
+            </div>
+            <button type="submit">Delete</button>
+        </form>
+    </div>
+
+    <!-- JavaScript/jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            // Khi nhấn vào hộp CREATE
+            $('#createBox').click(function() {
+                $('.form-container').hide(); // Ẩn tất cả form
+                $('#createForm').show(); // Hiện form CREATE
+            });
+
+            // Khi nhấn vào hộp UPDATE
+            $('#updateBox').click(function() {
+                $('.form-container').hide(); // Ẩn tất cả form
+                $('#updateForm').show(); // Hiện form UPDATE
+            });
+
+            // Khi nhấn vào hộp DELETE
+            $('#deleteBox').click(function() {
+                $('.form-container').hide(); // Ẩn tất cả form
+                $('#deleteForm').show(); // Hiện form DELETE
+            });
+        });
+    </script>
     <div class="footer">
         <h3>The system is designed and developed by GROUP 6</h3>
         <p>Get app HUSTHUB on mobile</p>
