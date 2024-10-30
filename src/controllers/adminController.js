@@ -65,7 +65,7 @@ const createCourse = async (req, res) => {
 
         // Thêm khóa học vào cơ sở dữ liệu
         await pool.query(
-            'INSERT INTO Courses (course_id, course_name, course_description, course_credit) VALUES ($1, $2, $3, $4)',
+            'INSERT INTO Courses (course_id, course_name, course_description, course_credit) VALUES ($1, $2, $3)',
             [course_id, course_name, course_credit]
         );
         res.status(201).send('Khóa học đã được tạo');
@@ -84,5 +84,5 @@ const getCouresPage = async (req, res) => {
 
 
 // Route
-module.exports = { getHomePage, logout, searchCourses, getCouresPage };
+module.exports = { getHomePage, logout, searchCourses, getCouresPage, createCourse };
 
