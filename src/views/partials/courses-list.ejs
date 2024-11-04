@@ -3,7 +3,11 @@
         <% if (courses.length > 0) { %>
             <% courses.forEach(function(course, index) { %>
                 <div class="courses-card">
-                    <div class="courses-id"><strong><%= course.course_id %></strong></div>
+                    <div class="courses-id">
+                        <a href="/admin/courses/<%= course.course_id %>">
+                            <strong><%= course.course_id %></strong>
+                        </a>
+                    </div>
                     <div class="courses-info">
                         <p><strong>Tên:</strong> <%= course.course_name %></p>
                         <p><strong>TC:</strong> <%= course.course_credit %></p>

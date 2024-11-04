@@ -8,11 +8,15 @@ router.get('/', adminController.getHomePage);
 
 
 router.get('/courses', adminController.getCouresPage);
-module.exports = router;
+router.get('/courses/:course_id', adminController.getCourseById);
+
 
 // Route để xử lý đăng xuất
 router.get('/logout', adminController.logout);
 
 router.post('/search-courses', adminController.searchCourses);
+
+
+
 
 module.exports = router;

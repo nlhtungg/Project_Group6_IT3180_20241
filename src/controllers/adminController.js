@@ -40,9 +40,12 @@ const searchCourses = async (req, res) => {
     try {
         // Truy vấn cơ sở dữ liệu
         const result = await pool.query(
-            `SELECT * FROM Courses WHERE (course_id LIKE $1 OR course_name LIKE $1)`,
-            [`%${searchText}%`]  // Chỉ sử dụng searchText
+            searchText
+                ? `SELECT * FROM Courses WHERE (course_id LIKE $1 OR course_name LIKE $1)`
+                : `SELECT * FROM Courses`, 
+            searchText ? [`%${searchText}%`] : []  
         );
+        
         const courses = result.rows;
 
         // Trả về phần HTML chứa danh sách khóa học từ partial view
@@ -82,7 +85,45 @@ const getCouresPage = async (req, res) => {
    res.render('admin-courses-page', { courses: courses });
 }
 
+const getCoursesPage = async (req, res) => {
+    try {
+        const result = await pool.query('SELECT * FROM Courses');
+        const courses = result.rows;  
+        res.render('admin-courses-page', { courses: courses });
+    } catch (error) {
+        console.error('Error fetching courses:', error);
+        res.status(500).send('Server Error');
+    }
+};
+
+// Lấy chi tiết khóa học theo ID
+const getCourseById = async (req, res) => {
+    try {
+        // Lấy course_id từ params của URL
+        const courseId = req.params.course_id;
+
+        // Kiểm tra giá trị của courseId
+        console.log("Requested course_id:", courseId);
+
+        const result = await pool.query('SELECT * FROM Courses WHERE course_id = $1', [courseId]);
+
+        console.log("Query Result:", result.rows); // Kiểm tra dữ liệu truy vấn
+
+        const course = result.rows[0];
+        if (!course) {
+            return res.status(404).render('404', { message: 'Course not found' });
+        }
+
+        // Render trang chi tiết khóa học với dữ liệu khóa học
+        res.render('admin-courses-details', { course });
+    } catch (error) {
+        console.error('Error fetching course:', error);
+        res.status(500).send('Server Error');
+    }
+};
+
+
 
 // Route
-module.exports = { getHomePage, logout, searchCourses, getCouresPage, createCourse };
+module.exports = { getHomePage, logout, searchCourses, getCouresPage, createCourse, getCourseById };
 

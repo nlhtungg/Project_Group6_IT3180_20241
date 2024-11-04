@@ -357,3 +357,110 @@ body {
     flex-basis: 100%;
     height: 0;
 }
+
+    .CRUDCourses .container {
+        display: flex;            /* Hiển thị theo hàng ngang */
+        justify-content: space-around;  /* Giãn cách đều giữa các hộp */
+        align-items: center;
+        gap: 10px;
+        margin-top: 20px;
+    }
+
+    .CRUDCourses .box {
+        width: 300px;
+        height: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-weight: bold;
+        font-size: 16px;
+        margin: 10px;
+        cursor: pointer;
+        border-radius: 8px;        /* Bo góc cho các hộp */
+    }
+    .CRUDCourses .form-container {
+        display: none;
+        margin-top: 20px;
+    }
+    .CRUDCourses #createBox {
+        background-color: #606c38; 
+    }
+
+    .CRUDCourses #updateBox {
+        background-color: #dda15e; 
+    }
+    .CRUDCourses #deleteBox {
+        background-color: #bc6c25; 
+    }
+
+    .CRUDCourses .form-container {
+        width: 100%;
+        max-width: 400px;
+        margin: 30px auto; /* Căn giữa form */
+        padding: 20px;
+        border: 2px solid #ddd; /* Đường viền */
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Đổ bóng */
+        background-color: #f9f9f9; /* Nền màu sáng */
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    
+    .CRUDCourses .form-container:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    }
+    
+    /* Tiêu đề form */
+    .CRUDCourses .form-container h3 {
+        text-align: center;
+        color: #2c3e50;
+        font-size: 1.5rem;
+        margin-bottom: 20px;
+    }
+    
+    /* Khoảng cách và căn chỉnh các trường input */
+    .CRUDCourses .input-field {
+        margin-bottom: 30px;
+        display: flex;
+        flex-direction: column;
+    }
+    
+    .CRUDCourses .input-field label {
+        margin-bottom: 5px;
+        color: #333;
+        font-size: 0.9rem;
+    }
+    
+    .CRUDCourses .input-field input[type="text"],
+    .CRUDCourses .input-field input[type="number"] {
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        font-size: 1rem;
+        outline: none;
+        transition: border-color 0.3s ease;
+    }
+    
+    .CRUDCourses .input-field input[type="text"]:focus,
+    .CRUDCourses .input-field input[type="number"]:focus {
+        border-color: #009688;
+    }
+    
+    /* Button styling */
+    .CRUDCourses button[type="submit"] {
+        width: 100%;
+        padding: 12px;
+        background-color: #009688; /* Màu nền chính */
+        color: white;
+        font-size: 1rem;
+        font-weight: bold;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+    
+    .CRUDCourses button[type="submit"]:hover {
+        background-color: #00796b;
+    }

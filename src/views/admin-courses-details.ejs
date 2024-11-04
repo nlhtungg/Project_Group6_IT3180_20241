@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Course <%= course.course_id %></title>
+    <style>
+        /* Basic styling, you can adjust as needed */
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            width: 80%;
+            margin: auto;
+            padding: 20px;
+        }
+        .course-header, .course-info {
+            margin-bottom: 20px;
+        }
+        h1, h2 {
+            color: #333;
+        }
+        p {
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="course-header">
+            <h1>Course Details</h1>
+            <h2>Course ID: <%= course.course_id %></h2>
+        </div>
+
+        <div class="course-info">
+            <p><strong>Course Name:</strong> <%= course.course_name %></p>
+            <p><strong>Course Credit:</strong> <%= course.course_credit %></p>
+        </div>
+
+        <a href="/admin/courses">Back to Courses</a>
+    </div>
+</body>
+</html>

@@ -86,96 +86,104 @@
     </script>
     <h2>Manage Courses</h2>
 
-    <!-- 3 Hộp (CREATE, UPDATE, DELETE) -->
-    <div class="box" id="createBox">CREATE</div>
-    <div class="box" id="updateBox">UPDATE</div>
-    <div class="box" id="deleteBox">DELETE</div>
+    <div class="CRUDCourses">
+                <!-- 3 Hộp (CREATE, UPDATE, DELETE) -->
+                <div class="container">
+                    <div class="box" id="createBox">CREATE</div>
+                    <div class="box" id="updateBox">UPDATE</div>
+                    <div class="box" id="deleteBox">DELETE</div>
+                </div>
+        <!-- Form CREATE -->
+        <div id="createForm" class="form-container">
+            <h3>Create Course</h3>
+            <form method="POST" action="/courses/create">
+                <div class="input-field">
+                    <label for="course_id">Course ID:</label>
+                    <input type="text" id="course_id" name="course_id">
+                </div>
+                <div class="input-field">
+                    <label for="course_name">Course Name:</label>
+                    <input type="text" id="course_name" name="course_name">
+                </div>
+                <div class="input-field">
+                    <label for="course_credit">Course Credit:</label>
+                    <input type="number" id="course_credit" name="course_credit">
+                </div>
+                <button type="submit">Create</button>
+            </form>
+        </div>
 
-    <!-- Form CREATE -->
-    <div id="createForm" class="form-container">
-        <h3>Create Course</h3>
-        <form method="POST" action="/courses/create">
-            <div class="input-field">
-                <label for="course_id">Course ID:</label>
-                <input type="text" id="course_id" name="course_id">
-            </div>
-            <div class="input-field">
-                <label for="course_name">Course Name:</label>
-                <input type="text" id="course_name" name="course_name">
-            </div>
-            <div class="input-field">
-                <label for="course_credit">Course Credit:</label>
-                <input type="number" id="course_credit" name="course_credit">
-            </div>
-            <button type="submit">Create</button>
-        </form>
-    </div>
+        <!-- Form UPDATE -->
+        <div id="updateForm" class="form-container">
+            <h3>Update Course</h3>
+            <form method="POST" action="/courses/update">
+                <div class="input-field">
+                    <label for="course_id">Course ID:</label>
+                    <input type="text" id="course_id" name="course_id">
+                </div>
+                <div class="input-field">
+                    <label for="course_name">Course Name:</label>
+                    <input type="text" id="course_name" name="course_name">
+                </div>
+                <div class="input-field">
+                    <label for="course_credit">Course Credit:</label>
+                    <input type="number" id="course_credit" name="course_credit">
+                </div>
+                <button type="submit">Update</button>
+            </form>
+        </div>
 
-    <!-- Form UPDATE -->
-    <div id="updateForm" class="form-container">
-        <h3>Update Course</h3>
-        <form method="POST" action="/courses/update">
-            <div class="input-field">
-                <label for="course_id">Course ID:</label>
-                <input type="text" id="course_id" name="course_id">
-            </div>
-            <div class="input-field">
-                <label for="course_name">Course Name:</label>
-                <input type="text" id="course_name" name="course_name">
-            </div>
-            <div class="input-field">
-                <label for="course_credit">Course Credit:</label>
-                <input type="number" id="course_credit" name="course_credit">
-            </div>
-            <button type="submit">Update</button>
-        </form>
-    </div>
+        <!-- Form DELETE -->
+        <div id="deleteForm" class="form-container">
+            <h3>Delete Course</h3>
+            <form method="POST" action="/courses/delete">
+                <div class="input-field">
+                    <label for="course_id">Course ID:</label>
+                    <input type="text" id="course_id" name="course_id">
+                </div>
+                <button type="submit">Delete</button>
+            </form>
+        </div>
 
-    <!-- Form DELETE -->
-    <div id="deleteForm" class="form-container">
-        <h3>Delete Course</h3>
-        <form method="POST" action="/courses/delete">
-            <div class="input-field">
-                <label for="course_id">Course ID:</label>
-                <input type="text" id="course_id" name="course_id">
-            </div>
-            <button type="submit">Delete</button>
-        </form>
-    </div>
+        <!-- JavaScript/jQuery -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script>
+            $(document).ready(function() {
+                // Khi nhấn vào hộp CREATE
+                $('#createBox').click(function() {
+                    $('.form-container').hide(); // Ẩn tất cả form
+                    $('#createForm').show(); // Hiện form CREATE
+                });
 
-    <!-- JavaScript/jQuery -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script>
-        $(document).ready(function() {
-            // Khi nhấn vào hộp CREATE
-            $('#createBox').click(function() {
-                $('.form-container').hide(); // Ẩn tất cả form
-                $('#createForm').show(); // Hiện form CREATE
+                // Khi nhấn vào hộp UPDATE
+                $('#updateBox').click(function() {
+                    $('.form-container').hide(); // Ẩn tất cả form
+                    $('#updateForm').show(); // Hiện form UPDATE
+                });
+
+                // Khi nhấn vào hộp DELETE
+                $('#deleteBox').click(function() {
+                    $('.form-container').hide(); // Ẩn tất cả form
+                    $('#deleteForm').show(); // Hiện form DELETE
+                });
             });
+        </script>
 
-            // Khi nhấn vào hộp UPDATE
-            $('#updateBox').click(function() {
-                $('.form-container').hide(); // Ẩn tất cả form
-                $('#updateForm').show(); // Hiện form UPDATE
-            });
+        
 
-            // Khi nhấn vào hộp DELETE
-            $('#deleteBox').click(function() {
-                $('.form-container').hide(); // Ẩn tất cả form
-                $('#deleteForm').show(); // Hiện form DELETE
-            });
-        });
-    </script>
-    <div class="footer">
-        <h3>The system is designed and developed by GROUP 6</h3>
-        <p>Get app HUSTHUB on mobile</p>
-        <a href="#"><img src="/img/google-play.png" alt="Get it on Google Play"></a>
-        <a href="#"><img src="/img/app-store.png" alt="Download on the App Store"></a>
+
+
+        <div class="footer">
+            <h3>The system is designed and developed by GROUP 6</h3>
+            <p>Get app HUSTHUB on mobile</p>
+            <a href="#"><img src="/img/google-play.png" alt="Get it on Google Play"></a>
+            <a href="#"><img src="/img/app-store.png" alt="Download on the App Store"></a>
+        </div>
     </div>
-</body>
-<script>
     function logout() {
         // Add your logout functionality here
     }
 </script>
+
+
 </html>
