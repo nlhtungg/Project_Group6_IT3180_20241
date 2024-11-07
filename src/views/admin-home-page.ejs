@@ -19,7 +19,9 @@
             </div>
         </a>
         <div class="right-section">
-            <a href="/" class="login-btn">LOG OUT</a>
+            <form action="/logout" method="POST">
+                <button type="submit" class = "login-btn">Log out</button>
+            </form>
         </div>
         
     </div>
@@ -146,9 +148,5 @@
         <a href="#"><img src="/img/app-store.png" alt="Download on the App Store"></a>
     </div>
 </body>
-<script>
-    function logout() {
-        // Add your logout functionality here
-    }
-</script>
+
 </html>

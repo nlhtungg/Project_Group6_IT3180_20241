@@ -15,3 +15,5 @@ node_modules/
 
 # Optional: OS-specific files (Windows, Mac)
 Thumbs.db
+
+ds.js
