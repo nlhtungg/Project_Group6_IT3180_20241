@@ -16,7 +16,11 @@
     "dotenv": "^16.4.5",
     "ejs": "^3.1.10",
     "express": "^4.21.1",
+<<<<<<< HEAD
     "express-session": "^1.18.1",
+=======
+    "express-handlebars": "^8.0.1",
+>>>>>>> ce632905203803e1e992a781f9d5ac03db6c4f92
     "livereload": "^0.9.3",
     "msnodesqlv8": "^4.2.1",
     "mssql": "^11.0.1",

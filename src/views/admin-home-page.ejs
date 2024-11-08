@@ -8,23 +8,7 @@
     <title>HUSTHUB</title>
 </head>
 <body>
-    <div class="header">
-        <a href="/" class="left-section">
-            <div class="logo">
-                <img src="/img/logo.png" alt="HUSTHUB Logo" />
-            </div>
-            <div class="title-container">
-                <h1 class="title">HUSTHUB</h1>
-                <h2 class="subtitle">School Management System</h2>
-            </div>
-        </a>
-        <div class="right-section">
-            <form action="/logout" method="POST">
-                <button type="submit" class = "login-btn">Log out</button>
-            </form>
-        </div>
-        
-    </div>
+    <%- include('in-app-header') %>
     
     <nav class="navbar">
         <ul class="nav-list">
@@ -35,9 +19,6 @@
             <li><a href="/admin/contact">CONTACT</a></li>
         </ul>
     </nav>
-
-
-
 
     <div class="general">
         <h1> GENERAL</h1>
@@ -139,14 +120,7 @@
           </div>
     </div>
 
-
-    
-    <div class="footer">
-        <h3>The system is designed and developed by GROUP 6</h3>
-        <p>Get app HUSTHUB on mobile</p>
-        <a href="#"><img src="/img/google-play.png" alt="Get it on Google Play"></a>
-        <a href="#"><img src="/img/app-store.png" alt="Download on the App Store"></a>
-    </div>
+    <%- include('footer') %>
 </body>
 
 </html>
