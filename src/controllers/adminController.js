@@ -1,6 +1,5 @@
-const express = require('express');
 const { pool } = require('../models/db');
-const router = express.Router(); 
+
 
 // Hàm xử lý trang chủ admin
 const getHomePage = async (req, res) => { 
@@ -13,7 +12,7 @@ const getHomePage = async (req, res) => {
 
     res.render('admin-home-page', {
         totalStudents,
-        totalClasses,
+        totalClasses,   
         totalTeachers,
         notices: []
     });
@@ -108,7 +107,7 @@ const deleteCourse = async (req, res) => {
 
 
 
-const getCouresPage = async (req, res) => {
+const getCoursesPage = async (req, res) => {
     // Pass the data to the EJS template
     const result = await pool.query('SELECT * FROM Courses');
     const courses = result.rows;  
@@ -168,5 +167,5 @@ const getClassesPage = async (req, res) => {
 
 
 // Route
-module.exports = { getHomePage, logout, searchCourses, getCouresPage, createCourse, updateCourse, deleteCourse,getClassesPage };
+module.exports = { getHomePage, logout, searchCourses, getCoursesPage, createCourse, updateCourse, deleteCourse,getClassesPage };
 

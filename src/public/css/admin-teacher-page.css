@@ -1,0 +1,158 @@
+/* src/public/css/admin-teacher-page.css */
+/* General Styles */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f1f3f5;
+    margin: 0;
+    padding: 0;
+}
+/* Container Styles */
+.teacher-container {
+    padding: 20px;
+}
+/* Button Styles */
+.add-btn {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+.add-btn:hover {
+    background-color: #0056b3;
+}
+/* Modal Styles */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgb(0,0,0);
+    background-color: rgba(0,0,0,0.4);
+    padding-top: 60px;
+}
+.modal-content {
+    background-color: #fefefe;
+    margin: 5% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 500px;
+    border-radius: 10px;
+}
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+/* Form Styles */
+.teacher-form label {
+    display: block;
+    margin-top: 10px;
+    font-weight: bold;
+}
+.teacher-form input {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+}
+.teacher-form button {
+    margin-top: 15px;
+    padding: 10px 15px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+.teacher-form button:hover {
+    background-color: #0056b3;
+}
+/* Table Styles */
+.teacher-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+.teacher-table th,
+.teacher-table td {
+    border: 1px solid #dee2e6;
+    padding: 12px;
+    text-align: left;
+    font-size: 14px;
+}
+.teacher-table th {
+    background-color: #e9ecef;
+    font-weight: bold;
+}
+.teacher-table tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+.teacher-table tr:hover {
+    background-color: #d4edda;
+}
+.teacher-table td form input {
+    width: 100%;
+    margin-top: 5px;
+}
+.teacher-table td form button {
+    margin-top: 5px;
+    padding: 5px 10px;
+    border-radius: 4px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+.teacher-table td form button:hover {
+    background-color: #0056b3;
+}
+.teacher-update-form {
+    display: inline;
+}
+.teacher-delete-form {
+    display: inline;
+}
+.teacher-delete-form button {
+    background-color: #dc3545;
+    color: #fff;
+}
+/* Pagination Styles */
+.pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+.pagination a {
+    margin: 0 5px;
+    padding: 10px 15px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    text-decoration: none;
+    color: #007bff;
+}
+.pagination a.active {
+    background-color: #007bff;
+    color: #fff;
+}
+.pagination a:hover {
+    background-color: #0056b3;
+    color: #fff;
+}
