@@ -81,7 +81,7 @@ body {
 .navbar {
     position: sticky;
     top: 0;
-    background-color: black;
+    background-color: #186A3B;
     z-index: 1000;
     padding: 1px;
 }

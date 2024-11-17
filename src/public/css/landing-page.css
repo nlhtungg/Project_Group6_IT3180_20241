@@ -81,7 +81,7 @@ body {
 .navbar {
     position: sticky;
     top: 0;
-    background-color: black;
+    background-color: #186A3B;
     z-index: 1000;
     padding: 1px;
 }
@@ -108,7 +108,7 @@ body {
 }
 
 .home-content {
-    background-color: black;
+    background-color: #cfe2cf; ;
 }
 
 .home-content img {
@@ -118,11 +118,11 @@ body {
 
 .about-us-content {
     padding: 20px;
-    background-color: black; /* Light background */
+    background-color: #cfe2cf; /* Light background */
 }
 
 .about-us-content h2 {
-    color: #d4a373; /* Primary color */
+    color: #186A3B; /* Primary color */
     text-align: center;
 }
 .team-member-container {
@@ -179,7 +179,7 @@ body {
 }
 
 .contact-content {
-    background-color: black;
+    background-color: #bfc7a7;
 }
 
 .news-content, 
@@ -253,7 +253,7 @@ h2 {
     display: block;
     margin: 20px auto;
     padding: 10px 50px;
-    background-color: #009688;
+    background-color: #186A3B;
     color: white;
     text-decoration: none;
     border: none;
