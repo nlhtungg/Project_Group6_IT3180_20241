@@ -3,28 +3,16 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Admin - Manage Teachers</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="/img/logo.png" type="image/x-icon">
+    <title>HUSTHUB</title>
     <link rel="stylesheet" href="/css/admin-page.css">
     <link rel="stylesheet" href="/css/admin-teacher-page.css">
 </head>
 <body>
     <!-- Header -->
-    <div class="header">
-        <a href="/" class="left-section">
-            <div class="logo">
-                <img src="/img/logo.png" alt="HUSTHUB Logo" />
-            </div>
-            <div class="title-container">
-                <h1 class="title">HUSTHUB</h1>
-                <h2 class="subtitle">School Management System</h2>
-            </div>
-        </a>
-        <div class="right-section">
-            <form action="/logout" method="POST">
-                <button type="submit" class="login-btn">Log out</button>
-            </form>
-        </div>
-    </div>
+    <%- include('in-app-header') %>
+
     <!-- Navigation -->
     <nav class="navbar">
         <ul class="nav-list">
@@ -35,11 +23,29 @@
             <li><a href="/admin/contact">CONTACT</a></li>
         </ul>
     </nav>
+
     <!-- Main Content -->
     <div class="teacher-container">
         <h1>Manage Teachers</h1>
+
+        <!-- Search Bar -->
+        <div class="search-container">
+            <form id="searchTeacherForm" class="search-form">
+                <div class="textbox">
+                    <div class="textbox-box">
+                        <div class="textbox-field">
+                            <input type="text" id="searchText" name="query" placeholder="Search by ID or Name..." class="textbox-text" />
+                        </div>
+                        <button type="submit" class="search-button">
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
         <!-- Add New Teacher Button -->
         <button id="addTeacherBtn" class="add-btn">Add New Teacher</button>
+
         <!-- Add New Teacher Modal -->
         <div id="addTeacherModal" class="modal">
             <div class="modal-content">
@@ -48,50 +54,59 @@
                 <form action="/admin/teacher/create" method="POST" class="teacher-form">
                     <label for="teacher_id">Teacher ID:</label>
                     <input type="text" name="teacher_id" required>
+
                     <label for="teacher_name">Name:</label>
                     <input type="text" name="teacher_name" required>
+
                     <label for="teacher_faculty">Faculty:</label>
                     <input type="text" name="teacher_faculty" required>
+
                     <label for="teacher_email">Email:</label>
                     <input type="email" name="teacher_email" required>
+
                     <button type="submit">Add Teacher</button>
                 </form>
             </div>
         </div>
+
         <!-- Teachers Table -->
         <h2>Teachers List</h2>
-        <table class="teacher-table">
-            <tr>
-                <th>Teacher ID</th>
-                <th>Name</th>
-                <th>Faculty</th>
-                <th>Email</th>
-                <th>Actions</th>
-            </tr>
-            <% teachers.forEach(function(teacher) { %>
-            <tr>
-                <td><%= teacher.teacher_id %></td>
-                <td><%= teacher.teacher_name %></td>
-                <td><%= teacher.teacher_faculty %></td>
-                <td><%= teacher.teacher_email %></td>
-                <td>
-                    <!-- Update Teacher -->
-                    <form action="/admin/teacher/update" method="POST" class="teacher-update-form">
-                        <input type="hidden" name="teacher_id" value="<%= teacher.teacher_id %>">
-                        <input type="text" name="teacher_name" value="<%= teacher.teacher_name %>" required>
-                        <input type="text" name="teacher_faculty" value="<%= teacher.teacher_faculty %>" required>
-                        <input type="email" name="teacher_email" value="<%= teacher.teacher_email %>" required>
-                        <button type="submit">Update</button>
-                    </form>
-                    <!-- Delete Teacher -->
-                    <form action="/admin/teacher/delete" method="POST" class="teacher-delete-form">
-                        <input type="hidden" name="teacher_id" value="<%= teacher.teacher_id %>">
-                        <button type="submit" onclick="return confirm('Are you sure you want to delete this teacher?');">Delete</button>
-                    </form>
-                </td>
-            </tr>
-            <% }); %>
-        </table>
+        <div class="table-container">
+            <table class="teacher-table">
+                <thead>
+                    <tr>
+                        <th data-sort="teacher_id">Teacher ID</th>
+                        <th data-sort="teacher_name">Name</th>
+                        <th data-sort="teacher_faculty">Faculty</th>
+                        <th data-sort="teacher_email">Email</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="teacherTableBody">
+                    <% teachers.forEach(function(teacher) { %>
+                    <tr>
+                        <td><%= teacher.teacher_id %></td>
+                        <td><%= teacher.teacher_name %></td>
+                        <td><%= teacher.teacher_faculty %></td>
+                        <td><%= teacher.teacher_email %></td>
+                        <td>
+                            <button class="edit-btn" data-id="<%= teacher.teacher_id %>" 
+                                data-name="<%= teacher.teacher_name %>" 
+                                data-faculty="<%= teacher.teacher_faculty %>" 
+                                data-email="<%= teacher.teacher_email %>">
+                                Edit
+                            </button>
+                            <form action="/admin/teacher/delete" method="POST" class="teacher-delete-form">
+                                <input type="hidden" name="teacher_id" value="<%= teacher.teacher_id %>">
+                                <button type="submit" onclick="return confirm('Are you sure you want to delete this teacher?');">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                    <% }); %>
+                </tbody>
+            </table>
+        </div>
+
         <!-- Pagination Controls -->
         <div class="pagination">
             <% if (currentPage > 1) { %>
@@ -105,6 +120,29 @@
             <% } %>
         </div>
     </div>
+
+    <!-- Edit Teacher Modal -->
+    <div id="editTeacherModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Edit Teacher</h2>
+            <form id="editTeacherForm" action="/admin/teacher/update" method="POST" class="teacher-form">
+                <input type="hidden" name="teacher_id" id="editTeacherId">
+                
+                <label for="edit_teacher_name">Name:</label>
+                <input type="text" name="teacher_name" id="edit_teacher_name" required>
+                
+                <label for="edit_teacher_faculty">Faculty:</label>
+                <input type="text" name="teacher_faculty" id="edit_teacher_faculty" required>
+                
+                <label for="edit_teacher_email">Email:</label>
+                <input type="email" name="teacher_email" id="edit_teacher_email" required>
+                
+                <button type="submit">Update Teacher</button>
+            </form>
+        </div>
+    </div>
+
     <!-- Footer -->
     <div class="footer">
         <h3>The system is designed and developed by GROUP 6</h3>
@@ -112,27 +150,115 @@
         <a href="#"><img src="/img/google-play.png" alt="Get it on Google Play"></a>
         <a href="#"><img src="/img/app-store.png" alt="Download on the App Store"></a>
     </div>
+
+    <!-- Scripts -->
     <script>
-        // Modal functionality
         document.addEventListener('DOMContentLoaded', function() {
-            var modal = document.getElementById("addTeacherModal");
-            var btn = document.getElementById("addTeacherBtn");
-            var span = document.getElementsByClassName("close")[0];
-            btn.onclick = function() {
-                modal.style.display = "block";
+            // Modal functionality
+            const addModal = document.getElementById("addTeacherModal");
+            const addBtn = document.getElementById("addTeacherBtn");
+            const addSpan = addModal.querySelector(".close");
+
+            addBtn.onclick = function() {
+                addModal.style.display = "block";
             }
-            span.onclick = function() {
-                modal.style.display = "none";
+
+            addSpan.onclick = function() {
+                addModal.style.display = "none";
             }
-            // Prevent modal from closing when clicking outside
+
             window.onclick = function(event) {
-                if (event.target == modal) {
-                    event.stopPropagation();
+                if (event.target == addModal) {
+                    addModal.style.display = "none";
                 }
             }
-            // Prevent modal from closing when dragging text outside
-            modal.addEventListener('dragstart', function(event) {
-                event.preventDefault();
+
+            const editModals = document.querySelectorAll("#editTeacherModal");
+            const editSpans = document.querySelectorAll("#editTeacherModal .close");
+
+            document.querySelectorAll('.edit-btn').forEach(button => {
+                button.addEventListener('click', function() {
+                    const teacherId = this.getAttribute('data-id');
+                    const teacherName = this.getAttribute('data-name');
+                    const teacherFaculty = this.getAttribute('data-faculty');
+                    const teacherEmail = this.getAttribute('data-email');
+
+                    document.getElementById('editTeacherId').value = teacherId;
+                    document.getElementById('edit_teacher_name').value = teacherName;
+                    document.getElementById('edit_teacher_faculty').value = teacherFaculty;
+                    document.getElementById('edit_teacher_email').value = teacherEmail;
+
+                    const editModal = document.getElementById("editTeacherModal");
+                    editModal.style.display = "block";
+                });
+            });
+
+            editSpans.forEach(span => {
+                span.onclick = function() {
+                    this.parentElement.parentElement.style.display = "none";
+                }
+            });
+
+            window.onclick = function(event) {
+                document.querySelectorAll('.modal').forEach(modal => {
+                    if (event.target == modal) {
+                        modal.style.display = "none";
+                    }
+                });
+            }
+
+            // Fetch functionality for search
+            const searchTeacherForm = document.getElementById('searchTeacherForm');
+            searchTeacherForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const query = document.getElementById('searchText').value.trim();
+
+                fetch(`/admin/teacher/search?query=${encodeURIComponent(query)}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        const tbody = document.getElementById('teacherTableBody');
+                        tbody.innerHTML = '';
+
+                        data.teachers.forEach(teacher => {
+                            const tr = document.createElement('tr');
+
+                            tr.innerHTML = `
+                                <td>${teacher.teacher_id}</td>
+                                <td>${teacher.teacher_name}</td>
+                                <td>${teacher.teacher_faculty}</td>
+                                <td>${teacher.teacher_email}</td>
+                                <td>
+                                    <button class="edit-btn" data-id="${teacher.teacher_id}" data-name="${teacher.teacher_name}" data-faculty="${teacher.teacher_faculty}" data-email="${teacher.teacher_email}">Edit</button>
+                                    <form action="/admin/teacher/delete" method="POST" class="teacher-delete-form">
+                                        <input type="hidden" name="teacher_id" value="${teacher.teacher_id}">
+                                        <button type="submit" onclick="return confirm('Are you sure you want to delete this teacher?');">Delete</button>
+                                    </form>
+                                </td>
+                            `;
+                            tbody.appendChild(tr);
+                        });
+
+                        // Re-attach event listeners for new edit buttons
+                        document.querySelectorAll('.edit-btn').forEach(button => {
+                            button.addEventListener('click', function() {
+                                const teacherId = this.getAttribute('data-id');
+                                const teacherName = this.getAttribute('data-name');
+                                const teacherFaculty = this.getAttribute('data-faculty');
+                                const teacherEmail = this.getAttribute('data-email');
+
+                                document.getElementById('editTeacherId').value = teacherId;
+                                document.getElementById('edit_teacher_name').value = teacherName;
+                                document.getElementById('edit_teacher_faculty').value = teacherFaculty;
+                                document.getElementById('edit_teacher_email').value = teacherEmail;
+
+                                const editModal = document.getElementById("editTeacherModal");
+                                editModal.style.display = "block";
+                            });
+                        });
+                    })
+                    .catch(error => {
+                        console.error('Error fetching teachers:', error);
+                    });
             });
         });
     </script>

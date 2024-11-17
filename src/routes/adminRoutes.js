@@ -21,11 +21,15 @@ router.get('/teacher', teacherController.getTeachersPage);
 router.post('/teacher/create', teacherController.createTeacher);
 router.post('/teacher/update', teacherController.updateTeacher);
 router.post('/teacher/delete', teacherController.deleteTeacher);
+// Search Teachers
+router.get('/teacher/search', teacherController.searchTeachers);
 
 // Student routes
 router.get('/student', studentController.getStudentsPage);
 router.post('/student/create', studentController.createStudent);
 router.post('/student/update', studentController.updateStudent);
 router.post('/student/delete', studentController.deleteStudent);
+// Search Students
+router.get('/student/search', studentController.searchStudents);
 
 module.exports = router;

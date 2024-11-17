@@ -2,20 +2,20 @@
 
 const { pool } = require('../models/db');
 
+// Get Teachers Page with Pagination
 const getTeachersPage = async (req, res) => {
-    const page = parseInt(req.query.page) || 1; 
-    const limit = 50; 
+    const page = parseInt(req.query.page) || 1;
+    const limit = 100;
     const offset = (page - 1) * limit;
 
     try {
         const countResult = await pool.query('SELECT COUNT(*) FROM teachers');
         const totalTeachers = parseInt(countResult.rows[0].count);
         const totalPages = Math.ceil(totalTeachers / limit);
-        //Fetch results
+
         const result = await pool.query('SELECT * FROM teachers LIMIT $1 OFFSET $2', [limit, offset]);
         const teachers = result.rows;
-
-         res.render('admin-teacher-page', {
+        res.render('admin-teacher-page', {
             teachers,
             currentPage: page,
             totalPages
@@ -26,6 +26,7 @@ const getTeachersPage = async (req, res) => {
     }
 };
 
+// Create New Teacher
 const createTeacher = async (req, res) => {
     const { teacher_id, teacher_name, teacher_faculty, teacher_email } = req.body;
     try {
@@ -51,6 +52,7 @@ const createTeacher = async (req, res) => {
     }
 };
 
+// Update Existing Teacher
 const updateTeacher = async (req, res) => {
     const { teacher_id, teacher_name, teacher_faculty, teacher_email } = req.body;
     try {
@@ -64,7 +66,11 @@ const updateTeacher = async (req, res) => {
         const teacher = currentTeacher.rows[0];
 
         // Update only if there are changes
-        if (teacher.teacher_name !== teacher_name || teacher.teacher_faculty !== teacher_faculty || teacher.teacher_email !== teacher_email) {
+        if (
+            teacher.teacher_name !== teacher_name ||
+            teacher.teacher_faculty !== teacher_faculty ||
+            teacher.teacher_email !== teacher_email
+        ) {
             await pool.query(
                 'UPDATE teachers SET teacher_name = $1, teacher_faculty = $2, teacher_email = $3 WHERE teacher_id = $4',
                 [teacher_name, teacher_faculty, teacher_email, teacher_id]
@@ -78,6 +84,7 @@ const updateTeacher = async (req, res) => {
     }
 };
 
+// Delete Teacher
 const deleteTeacher = async (req, res) => {
     const { teacher_id } = req.body;
     try {
@@ -89,9 +96,26 @@ const deleteTeacher = async (req, res) => {
     }
 };
 
+// Search Teachers
+const searchTeachers = async (req, res) => {
+    const { query } = req.query;
+    try {
+        const searchQuery = `%${query}%`;
+        const result = await pool.query(
+            'SELECT * FROM teachers WHERE teacher_id ILIKE $1 OR teacher_name ILIKE $1',
+            [searchQuery]
+        );
+        res.json({ teachers: result.rows });
+    } catch (error) {
+        console.error('Error searching teachers:', error);
+        res.status(500).json({ error: 'Server Error' });
+    }
+};
+
 module.exports = {
     getTeachersPage,
     createTeacher,
     updateTeacher,
     deleteTeacher,
+    searchTeachers
 };
