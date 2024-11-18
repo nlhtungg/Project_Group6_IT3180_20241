@@ -3,8 +3,8 @@
 const express = require('express');
 const router = express.Router();
 const adminController = require('../controllers/adminController');
-const studentController = require('../controllers/studentController');
-const teacherController = require('../controllers/teacherController');
+const studentController = require('../controllers/admin-studentController');
+const teacherController = require('../controllers/admin-teacherController');
 
 // Admin routes
 router.get('/', adminController.getHomePage);
