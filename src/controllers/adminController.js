@@ -1,7 +1,9 @@
+const { pool } = require('../models/db')
+
 // src/controllers/adminController.js
-const getHomePage = (req, res) => {
+const getHomePage = async(req, res) => {
     // Fetch the data you need, for example:
-    const totalStudents = 100; // This should be retrieved from your database
+    const totalStudents = await pool.query(`SELECT(COUNT(student_id)) FROM Students`); // This should be retrieved from your database
     const totalClasses = 10;
     const totalTeachers = 15;
     const feesCollection = 5000;

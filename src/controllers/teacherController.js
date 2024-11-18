@@ -1,5 +1,13 @@
-const showTeacherPage = (req, res) => {
-    res.render('teacher-home-page');
+const { pool } = require('../models/db');
+
+
+const getTeacherPage = async(req, res) => {
+    const user = req.session.user;
+    const teacherName = user.teacher_name;
+    const teacherFaculty = user.teacher_faculty;
+    const classesResult = await pool.query(`SELECT * FROM Classes WHERE teacher_id = $1`, [user.teacher_id]);
+    const numberOfClasses = classesResult.rows.length;
+    res.render('teacher', { teacherName, teacherFaculty, classes: classesResult.rows, numberOfClasses });
 };
 
 // Hàm xử lý đăng xuất
@@ -14,4 +22,4 @@ const logout = (req, res) => {
     });
 };
 
-module.exports = { showTeacherPage, logout };
+module.exports = { getTeacherPage, logout };
