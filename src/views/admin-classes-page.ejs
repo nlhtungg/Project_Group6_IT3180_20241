@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Course <%= course.course_id %></title>
+    <style>
+        /* Basic styling, you can adjust as needed */
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            width: 80%;
+            margin: auto;
+            padding: 20px;
+        }
+        .course-header, .course-info {
+            margin-bottom: 20px;
+        }
+        h1, h2 {
+            color: #333;
+        }
+        p {
+            color: #555;
+        }
+    </style>
+</head>
+</body>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/admin-page.css">
+    <link rel="icon" href="/img/logo.png" type="image/x-icon">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <title>HUSTHUB</title>
+</head>
+<body>
+    <div class="header">
+        <a href="/" class="left-section">
+            <div class="logo">
+                <img src="/img/logo.png" alt="HUSTHUB Logo" />
+            </div>
+            <div class="title-container">
+                <h1 class="title">HUSTHUB</h1>
+                <h2 class="subtitle">School Management System</h2>
+            </div>
+        </a>
+        <div class="right-section">
+            <form action="/logout" method="POST">
+                <button type="submit" class = "login-btn">Log out</button>
+            </form>
+        </div>
+        
+    </div>
+    
+    <nav class="navbar">
+        <ul class="nav-list">
+            <li><a href="/admin">HOME</a></li>
+            <li><a href="/admin/teacher">TEACHER</a></li>
+            <li><a href="/admin/student">STUDENT</a></li>
+            <li><a href="/admin/courses">COURSES</a></li>
+            <li><a href="/admin/contact">CONTACT</a></li>
+        </ul>
+    </nav>
+    
+    <body>
+        <div class="container">
+            <div class="course-header">
+                <h1>Course Details</h1>
+                <h2>Course ID: <%= course.course_id %></h2>
+            </div>
+    
+            <div class="course-info">
+                <p><strong>Course Name:</strong> <%= course.course_name %></p>
+                <p><strong>Course Credit:</strong> <%= course.course_credit %></p>
+            </div>
+    
+            <a href="/admin/courses">Back to Courses</a>
+        </div>
+
+
+
+    <!-- Main Container -->
+    <div class="container">
+        <h1>Danh Sách Lớp Học</h1>
+        
+        <!-- Kiểm tra xem có lớp học nào không -->
+        <% if (classes.length > 0) { %>
+            <!-- Nhúng partials/classes-list.ejs vào đây -->
+            <%- include('partials/classes-list') %>
+        <% } else { %>
+            <p>Không có lớp học nào được tìm thấy.</p>
+        <% } %>
+    </div>
+
+    <form id="searchForm">
+        <div class="search">
+            <input type="text" id="searchText" name="searchText" placeholder="Nhập mã lớp, mã môn hoặc tên môn">
+            <button type="submit">Tìm kiếm</button>
+        </div>
+    </form>
+    
+
+   
+    
+    
+
+        
+
+
+
+        <div class="footer">
+            <h3>The system is designed and developed by GROUP 6</h3>
+            <p>Get app HUSTHUB on mobile</p>
+            <a href="#"><img src="/img/google-play.png" alt="Get it on Google Play"></a>
+            <a href="#"><img src="/img/app-store.png" alt="Download on the App Store"></a>
+        </div>
+    </div>
+    function logout() {
+        // Add your logout functionality here
+    }
+</script>
+
+
+</html>
