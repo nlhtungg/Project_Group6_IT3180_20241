@@ -1,49 +1,134 @@
-.navbar {
-    position: sticky;
-    top: 0;
-    background-color: black;
-    z-index: 1000;
-    padding: 1px;
+/* General Styles */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
 }
 
-.nav-list {
+a {
+    text-decoration: none;
+    color: #333;
+}
+a:hover {
+    color: #4CAF50; /* Change to your preferred color on hover */
+}
+/* Search Bar */
+.search-container {
     display: flex;
     justify-content: center;
-    list-style: none;
+    margin-bottom: 20px;
 }
 
-.nav-list li {
-    margin: 0 100px;
+.search-bar {
+    width: 300px;
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
 }
 
-.nav-list a {
-    text-decoration: none;
-    color: white;
-    font-size: 1.1rem;
-}
-
-.nav-list a:hover {
-    color: #009688; /* Primary color */
-
-}
-
-.cards-container {
-    display: flex;
-    gap: 20px;
-    margin-top: 20px;
-}
-
-.card {
-    background-color: #f4f4f4;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    width: 30%;
+.search-button {
+    background-color: #4CAF50; /* Green background */
+    border: none;
+    padding: 10px;
+    font-size: 18px;
     cursor: pointer;
-    text-align: center;
-    transition: transform 0.3s ease-in-out;
+    color: white;
+    border-radius: 5px;
+    margin-left: 5px;
 }
 
-.card:hover {
-    transform: scale(1.05);
+.search-button i {
+    font-size: 18px;
+}
+
+/* Table Styling */
+.classes-table {
+    width: 80%;
+    margin: 20px auto;
+    border-collapse: collapse;
+    text-align: left;
+}
+
+.classes-table th, .classes-table td {
+    padding: 12px;
+    border: 1px solid #ddd;
+}
+
+.classes-table th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+    text-align: center;
+    text-decoration: none;
+}
+
+.classes-table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.classes-table tr:hover {
+    background-color: #f1f1f1;
+}
+
+.classes-table td {
+    text-align: center;
+}
+
+/* Header Styling */
+header {
+    background-color: #333;
+    color: white;
+    padding: 20px;
+    text-align: center;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 36px;
+}
+
+/* Navbar Styling */
+.navbar {
+    background-color: #333;
+    overflow: hidden;
+}
+
+.navbar .nav-list {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.navbar .nav-list li {
+    display: inline;
+}
+
+.navbar .nav-list li a {
+    color: white;
+    padding: 14px 20px;
+    text-decoration: none;
+    text-align: center;
+    display: inline-block;
+}
+
+.navbar .nav-list li a:hover {
+    background-color: #ddd;
+    color: black;
+}
+
+/* Footer Styling */
+footer {
+    background-color: #333;
+    color: white;
+    text-align: center;
+    padding: 10px;
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+}
+
+footer p {
+    margin: 0;
 }
