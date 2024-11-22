@@ -129,6 +129,26 @@ body {
     margin: 10px;
 }
 
+.btn-modern {
+    background-color: #186A3B; /* Change to a green color */
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    transition-duration: 0.4s;
+    cursor: pointer;
+    border-radius: 12px;
+}
+
+.btn-modern:hover {
+    background-color: #131814; 
+    border: 2px solid #186A3B; 
+}
+
 .notification {
     display: flex;
     align-items: center;
