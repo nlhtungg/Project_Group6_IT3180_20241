@@ -1,46 +1,123 @@
 /* General Styles */
 body {
     font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
+    background-color: #f9f9f9;
     margin: 0;
     padding: 0;
 }
 
-a {
-    text-decoration: none;
-    color: #333;
+/* Main Container */
+.main {
+    padding: 20px;
+    max-width: 1200px;
+    margin: auto;
 }
-a:hover {
-    color: #4CAF50; /* Change to your preferred color on hover */
+
+/* Navbar */
+.navbar {
+    background-color: #333;
+    padding: 10px 0;
 }
-/* Search Bar */
-.search-container {
+
+.navbar .nav-list {
+    list-style: none;
     display: flex;
     justify-content: center;
-    margin-bottom: 20px;
+    gap: 20px;
+    padding: 0;
+    margin: 0;
 }
 
-.search-bar {
-    width: 300px;
-    padding: 10px;
-    font-size: 16px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-}
-
-.search-button {
-    background-color: #4CAF50; /* Green background */
-    border: none;
-    padding: 10px;
-    font-size: 18px;
-    cursor: pointer;
+.navbar .nav-list li a {
     color: white;
-    border-radius: 5px;
-    margin-left: 5px;
+    font-size: 18px;
+    text-decoration: none;
+    padding: 8px 12px;
 }
 
-.search-button i {
+.navbar .nav-list li a:hover {
+    background-color: #555;
+    border-radius: 4px;
+}
+
+/* Welcome Message */
+.welcome-container h1 {
+    text-align: center;
+    color: #333;
+}
+
+.welcome-container p {
+    text-align: center;
+    color: #666;
+}
+
+/* Cards Section */
+.cards-container {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 20px;
+    gap: 20px;
+}
+
+.card {
+    background-color: #4CAF50;
+    color: white;
+    width: 30%;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    transition: transform 0.2s;
+}
+
+.card h2 {
+    margin: 0 0 10px;
+    font-size: 24px;
+}
+
+.card p {
     font-size: 18px;
+}
+
+.card:hover {
+    transform: scale(1.05);
+}
+
+/* Quick Links */
+.quick-links {
+    margin-top: 30px;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.quick-links h2 {
+    color: #333;
+    font-size: 22px;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+.quick-links ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    text-align: center;
+}
+
+.quick-links ul li {
+    margin-bottom: 10px;
+}
+
+.quick-links ul li a {
+    color: #4CAF50;
+    font-size: 18px;
+    text-decoration: none;
+}
+
+.quick-links ul li a:hover {
+    color: #2e7d32;
 }
 
 /* Table Styling */
@@ -54,13 +131,12 @@ a:hover {
 .classes-table th, .classes-table td {
     padding: 12px;
     border: 1px solid #ddd;
+    text-align: center;
 }
 
 .classes-table th {
     background-color: #f2f2f2;
     font-weight: bold;
-    text-align: center;
-    text-decoration: none;
 }
 
 .classes-table tr:nth-child(even) {
@@ -71,64 +147,37 @@ a:hover {
     background-color: #f1f1f1;
 }
 
-.classes-table td {
-    text-align: center;
+/* Search Bar */
+.search-container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
 }
 
-/* Header Styling */
-header {
-    background-color: #333;
-    color: white;
-    padding: 20px;
-    text-align: center;
-}
-
-header h1 {
-    margin: 0;
-    font-size: 36px;
-}
-
-/* Navbar Styling */
-.navbar {
-    background-color: #333;
-    overflow: hidden;
-}
-
-.navbar .nav-list {
-    list-style-type: none;
-    padding: 0;
-    margin: 0;
-}
-
-.navbar .nav-list li {
-    display: inline;
-}
-
-.navbar .nav-list li a {
-    color: white;
-    padding: 14px 20px;
-    text-decoration: none;
-    text-align: center;
-    display: inline-block;
-}
-
-.navbar .nav-list li a:hover {
-    background-color: #ddd;
-    color: black;
-}
-
-/* Footer Styling */
-footer {
-    background-color: #333;
-    color: white;
-    text-align: center;
+.search-bar {
+    width: 250px;
     padding: 10px;
-    position: fixed;
-    left: 0;
-    bottom: 0;
-    width: 100%;
+    font-size: 16px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    margin-right: 10px;
 }
 
-footer p {
-    margin: 0;
+.search-button {
+    background-color: #4CAF50;
+    border: none;
+    padding: 10px;
+    font-size: 18px;
+    cursor: pointer;
+    color: white;
+    border-radius: 5px;
+}
+
+.search-button i {
+    font-size: 18px;
+}
+
+a {
+    text-decoration: none;
+    color: black;
 }

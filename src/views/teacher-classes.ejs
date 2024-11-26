@@ -53,12 +53,13 @@
                     <th><a href="/teacher/classes?search=<%= search %>&sort_by=course_name&order=<%= sort_by === 'course_name' && order === 'ASC' ? 'DESC' : 'ASC' %>">Course Name</a></th>
                     <th><a href="/teacher/classes?search=<%= search %>&sort_by=class_time_day&order=<%= sort_by === 'class_time_day' && order === 'ASC' ? 'DESC' : 'ASC' %>">Time</a></th>
                     <th>Room</th>
+                    <th>Action</th>
                 </tr>
             </thead>
             <tbody>
                 <% classes.forEach(classItem => { %>
                     <tr>
-                        <td><%= classItem.class_id %></td>
+                        <td><%= classItem.class_id %></a></td>
                         <td><%= classItem.course_id %></td>
                         <td><%= classItem.course_name %></td>
                         <td>
@@ -68,6 +69,7 @@
                             <%= classItem.class_time_end %>
                         </td>
                         <td><%= classItem.room_id %></td>
+                        <td><a href="/teacher/classes/<%= classItem.class_id %>">Detail</a></td>
                     </tr>
                 <% }) %>
             </tbody>
