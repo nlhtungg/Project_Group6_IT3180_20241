@@ -10,7 +10,8 @@ node_modules/
 # System files
 .DS_Store
 
+# Exclude the db.js file
+src/models/db.js
+
 # Optional: OS-specific files (Windows, Mac)
 Thumbs.db
-
-ds.js
