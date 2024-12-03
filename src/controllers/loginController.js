@@ -25,6 +25,8 @@ const login = async (req, res) => {
         }
 
         const user = result.rows[0];
+        console.log(user);
+        req.session.user = user;
         const accessToken = jwt.sign({ username: user.username, role: role }, accessTokenSecret, { expiresIn: '1h' });
         res.cookie('accessToken', accessToken, { httpOnly: true });
         if (role === 'student') {
