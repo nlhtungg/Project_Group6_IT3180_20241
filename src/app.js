@@ -49,8 +49,8 @@ app.use('/login', loginRouter);
 const adminRouter = require('./routes/adminRoutes')
 app.use('/admin', authenticateToken, authorizeRole('admin'), adminRouter);
 
-const studentRouter = require('./routes/studentRoutes');
-app.use('/student', authenticateToken, authorizeRole('student'), studentRouter);
+//const studentRouter = require('./routes/studentRoutes');
+//app.use('/student', authenticateToken, authorizeRole('student'), studentRouter);
 
 const teacherRouter = require('./routes/teacherRoutes');
 app.use('/teacher', authenticateToken, authorizeRole('teacher'), teacherRouter);
