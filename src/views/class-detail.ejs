@@ -28,9 +28,8 @@
             <p><strong>Class ID:</strong> <%= classDetails.class_id %></p>
             <p><strong>Course Name:</strong> <%= classDetails.course_name %></p>
             <p><strong>Teacher:</strong> <%= classDetails.teacher_name %></p>
-            <p><strong>Schedule:</strong> <%= classDetails.class_time_start %> - <%= classDetails.class_time_end %> on <%= classDetails.class_days %></p>
-            <p><strong>Room:</strong> <%= classDetails.class_room %></p>
-            <p><strong>Description:</strong> <%= classDetails.class_description %></p>
+            <p><strong>Schedule:</strong> <%= classDetails.class_time_day %>, <%= classDetails.class_time_start %> - <%= classDetails.class_time_end %></p>
+            <p><strong>Room:</strong> <%= classDetails.room_id %></p>
         </div>
 
         <h2>Enrolled Students</h2>

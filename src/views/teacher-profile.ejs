@@ -30,22 +30,7 @@
             <p><strong>Name:</strong> <%= teacher.teacher_name %></p>
             <p><strong>Email:</strong> <%= teacher.teacher_email %></p>
             <p><strong>Faculty:</strong> <%= teacher.teacher_faculty %></p>
-            <button onclick="toggleEditForm()" class="edit-btn">Change Information</button>
         </div>
-
-        <!-- Editable Information Form, Hidden Initially -->
-        <form action="/teacher/profile/update" method="POST" id="edit-form" class="profile-form" style="display: none;">
-            <h2>Edit Personal Information</h2>
-            
-            <label for="name">Name:</label>
-            <input type="text" id="name" name="name" value="<%= teacher.teacher_name %>" required>
-
-            <label for="email">Email:</label>
-            <input type="email" id="email" name="email" value="<%= teacher.teacher_email %>" required>
-            
-            <button type="submit" class="save-btn">Save Changes</button>
-            <button type="button" onclick="toggleEditForm()" class="cancel-btn">Cancel</button>
-        </form>
 
         <!-- Button to Reveal Password Form -->
         <button onclick="togglePasswordForm()" class="edit-btn">Change Password</button>
