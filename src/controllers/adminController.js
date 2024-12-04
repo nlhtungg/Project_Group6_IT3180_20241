@@ -165,8 +165,6 @@ const getClassesPage = async (req, res) => {
     }
 };
 
-
-
 // Route
 module.exports = { getHomePage, logout, searchCourses, getCouresPage, createCourse, updateCourse, deleteCourse,getClassesPage };
 
