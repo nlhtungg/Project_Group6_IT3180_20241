@@ -30,14 +30,14 @@ const getTeachersPage = async (req, res) => {
 const createTeacher = async (req, res) => {
     const { teacher_id, teacher_name, teacher_faculty, teacher_email } = req.body;
     try {
-        // Check if a teacher with the same fields already exists
+        // Check if a teacher with the same ID or email already exists
         const existingTeacher = await pool.query(
-            'SELECT * FROM teachers WHERE teacher_id = $1 AND teacher_name = $2 AND teacher_faculty = $3 AND teacher_email = $4',
-            [teacher_id, teacher_name, teacher_faculty, teacher_email]
+            'SELECT * FROM teachers WHERE teacher_id = $1 OR teacher_email = $2',
+            [teacher_id, teacher_email]
         );
 
         if (existingTeacher.rows.length > 0) {
-            return res.status(400).send('Teacher with the same details already exists.');
+            return res.status(400).json({ error: 'Teacher with the same ID or email already exists.' });
         }
 
         // Insert the new teacher
@@ -45,10 +45,10 @@ const createTeacher = async (req, res) => {
             'INSERT INTO teachers (teacher_id, teacher_name, teacher_faculty, teacher_email) VALUES ($1, $2, $3, $4)',
             [teacher_id, teacher_name, teacher_faculty, teacher_email]
         );
-        res.redirect('/admin/teacher');
+        res.status(200).json({ message: 'Teacher added successfully.' });
     } catch (error) {
         console.error('Error creating teacher:', error);
-        res.status(500).send('Server Error');
+        res.status(500).json({ error: 'Server Error' });
     }
 };
 
@@ -60,27 +60,19 @@ const updateTeacher = async (req, res) => {
         const currentTeacher = await pool.query('SELECT * FROM teachers WHERE teacher_id = $1', [teacher_id]);
 
         if (currentTeacher.rows.length === 0) {
-            return res.status(404).send('Teacher not found.');
+            return res.status(404).json({ error: 'Teacher not found.' });
         }
 
-        const teacher = currentTeacher.rows[0];
+        // Update the teacher data
+        await pool.query(
+            'UPDATE teachers SET teacher_name = $1, teacher_faculty = $2, teacher_email = $3 WHERE teacher_id = $4',
+            [teacher_name, teacher_faculty, teacher_email, teacher_id]
+        );
 
-        // Update only if there are changes
-        if (
-            teacher.teacher_name !== teacher_name ||
-            teacher.teacher_faculty !== teacher_faculty ||
-            teacher.teacher_email !== teacher_email
-        ) {
-            await pool.query(
-                'UPDATE teachers SET teacher_name = $1, teacher_faculty = $2, teacher_email = $3 WHERE teacher_id = $4',
-                [teacher_name, teacher_faculty, teacher_email, teacher_id]
-            );
-        }
-
-        res.redirect('/admin/teacher');
+        res.status(200).json({ message: 'Teacher updated successfully.' });
     } catch (error) {
         console.error('Error updating teacher:', error);
-        res.status(500).send('Server Error');
+        res.status(500).json({ error: 'Server Error' });
     }
 };
 

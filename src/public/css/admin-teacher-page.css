@@ -2,7 +2,9 @@
 
 /* Import common search bar styles */
 @import url('search-bar.css');
-
+body {
+    font-family: 'Roboto', sans-serif;
+}
 /* Main Container */
 .teacher-container {
     padding: 20px;
@@ -139,20 +141,32 @@
     user-select: none;
 }
 
-/* Action Buttons */
+/* Edit Button */
 .edit-btn {
-    background-color: #ffc107;
-    color: #212529;
+    background-color: #17a2b8; /* Blue color */
+    color: white;
     border: none;
-    padding: 5px 10px;
-    border-radius: 4px;
+    padding: 10px 20px;
+    border-radius: 5px;
     cursor: pointer;
+    transition: background-color 0.3s, box-shadow 0.3s;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    width: 120px; /* Fixed width */
+}
+
+.edit-btn i {
     margin-right: 5px;
-    transition: background-color 0.3s;
+    width: 16px; /* Fixed width for icon */
+    text-align: center;
 }
 
 .edit-btn:hover {
-    background-color: #e0a800;
+    background-color: #138496; /* Darker blue on hover */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
 }
 
 .teacher-delete-form {
@@ -161,16 +175,29 @@
 
 .teacher-delete-form button {
     background-color: #dc3545;
-    color: #fff;
+    color: white;
     border: none;
-    padding: 5px 10px;
-    border-radius: 4px;
+    padding: 10px 20px;
+    border-radius: 5px;
     cursor: pointer;
-    transition: background-color 0.3s;
+    transition: background-color 0.3s, box-shadow 0.3s;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    width: 120px; /* Fixed width */
+}
+
+.teacher-delete-form button i {
+    margin-right: 5px;
+    width: 16px; /* Fixed width for icon */
+    text-align: center;
 }
 
 .teacher-delete-form button:hover {
-    background-color: #c82333;
+    background-color: #c82333; /* Darker red on hover */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
 }
 
 /* Pagination Styles */
@@ -197,4 +224,43 @@
 .pagination a:hover {
     background-color: #0056b3;
     color: #fff;
+}
+
+
+/* Spinner Styles */
+.spinner-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(255, 255, 255, 0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    display: none; /* Hidden by default */
+}
+
+.spinner {
+    border: 8px solid #f3f3f3;
+    border-top: 8px solid #17a2b8; /* Blue color */
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* Fade-in Animation */
+.fade-in {
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
 }
