@@ -52,7 +52,6 @@ const createTeacher = async (req, res) => {
     }
 };
 
-// Update Existing Teacher
 const updateTeacher = async (req, res) => {
     const { teacher_id, teacher_name, teacher_faculty, teacher_email } = req.body;
     try {
@@ -63,10 +62,16 @@ const updateTeacher = async (req, res) => {
             return res.status(404).json({ error: 'Teacher not found.' });
         }
 
-        // Update the teacher data
+        const currentData = currentTeacher.rows[0];
+
+        // Only update fields that have changed
+        const updatedName = teacher_name !== currentData.teacher_name ? teacher_name : currentData.teacher_name;
+        const updatedFaculty = teacher_faculty !== currentData.teacher_faculty ? teacher_faculty : currentData.teacher_faculty;
+        const updatedEmail = teacher_email !== currentData.teacher_email ? teacher_email : currentData.teacher_email;
+
         await pool.query(
             'UPDATE teachers SET teacher_name = $1, teacher_faculty = $2, teacher_email = $3 WHERE teacher_id = $4',
-            [teacher_name, teacher_faculty, teacher_email, teacher_id]
+            [updatedName, updatedFaculty, updatedEmail, teacher_id]
         );
 
         res.status(200).json({ message: 'Teacher updated successfully.' });

@@ -287,7 +287,19 @@
                         alert(data.error);
                     } else {
                         alert(data.message);
-                        location.reload();
+                        // Update the table row directly
+                        const row = document.querySelector(`button[data-id="${formData.teacher_id}"]`).closest('tr');
+                        row.querySelector('td:nth-child(2)').textContent = formData.teacher_name;
+                        row.querySelector('td:nth-child(3)').textContent = formData.teacher_faculty;
+                        row.querySelector('td:nth-child(4)').textContent = formData.teacher_email;
+
+                        // Update the data attributes of the edit button
+                        const editButton = row.querySelector('.edit-btn');
+                        editButton.setAttribute('data-name', formData.teacher_name);
+                        editButton.setAttribute('data-faculty', formData.teacher_faculty);
+                        editButton.setAttribute('data-email', formData.teacher_email);
+
+                        editTeacherForm.closest('.modal').style.display = 'none';
                     }
                 })
                 .catch(error => {
@@ -321,17 +333,13 @@
 
                         data.teachers.forEach(teacher => {
                             const tr = document.createElement('tr');
-
                             tr.innerHTML = `
                                 <td>${teacher.teacher_id}</td>
                                 <td>${teacher.teacher_name}</td>
                                 <td>${teacher.teacher_faculty}</td>
                                 <td>${teacher.teacher_email}</td>
                                 <td>
-                                    <button class="edit-btn" data-id="${teacher.teacher_id}" 
-                                        data-name="${teacher.teacher_name}" 
-                                        data-faculty="${teacher.teacher_faculty}" 
-                                        data-email="${teacher.teacher_email}">
+                                    <button class="edit-btn" data-id="${teacher.teacher_id}" data-name="${teacher.teacher_name}" data-faculty="${teacher.teacher_faculty}" data-email="${teacher.teacher_email}">
                                         <i class="fas fa-pencil-alt"></i> Edit
                                     </button>
                                     <form action="/admin/teacher/delete" method="POST" class="teacher-delete-form">

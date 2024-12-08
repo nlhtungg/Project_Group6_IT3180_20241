@@ -237,41 +237,41 @@
 
             // Add Student Form Submission
             const addStudentForm = document.getElementById('addStudentForm');
-    addStudentForm.addEventListener('submit', function(e) {
-        e.preventDefault();
-        showSpinner();
+            addStudentForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                showSpinner();
 
-        const formData = {
-            student_id: addStudentForm.elements['student_id'].value,
-            student_name: addStudentForm.elements['student_name'].value,
-            student_dob: addStudentForm.elements['student_dob'].value,
-            student_email: addStudentForm.elements['student_email'].value,
-            student_major: addStudentForm.elements['student_major'].value
-        };
+                const formData = {
+                    student_id: addStudentForm.elements['student_id'].value,
+                    student_name: addStudentForm.elements['student_name'].value,
+                    student_dob: addStudentForm.elements['student_dob'].value,
+                    student_email: addStudentForm.elements['student_email'].value,
+                    student_major: addStudentForm.elements['student_major'].value
+                };
 
-        fetch('/admin/student/create', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(formData)
-        })
-        .then(response => response.json())
-        .then(data => {
-            hideSpinner();
-            if (data.error) {
-                alert(data.error);
-            } else {
-                alert(data.message);
-                location.reload();
-            }
-        })
-        .catch(error => {
-            hideSpinner();
-            console.error('Error creating student:', error);
-            alert('An error occurred while creating the student.');
-        });
-    });
+                fetch('/admin/student/create', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(formData)
+                })
+                .then(response => response.json())
+                .then(data => {
+                    hideSpinner();
+                    if (data.error) {
+                        alert(data.error);
+                    } else {
+                        alert(data.message);
+                        location.reload();
+                    }
+                })
+                .catch(error => {
+                    hideSpinner();
+                    console.error('Error creating student:', error);
+                    alert('An error occurred while creating the student.');
+                });
+            });
 
             // Edit Student Form Submission
             const editStudentForm = document.getElementById('editStudentForm');
@@ -301,7 +301,21 @@
                         alert(data.error);
                     } else {
                         alert(data.message);
-                        location.reload();
+                        // Update the table row directly
+                        const row = document.querySelector(`button[data-id="${formData.student_id}"]`).closest('tr');
+                        row.querySelector('td:nth-child(2)').textContent = formData.student_name;
+                        row.querySelector('td:nth-child(3)').textContent = formData.student_dob;
+                        row.querySelector('td:nth-child(4)').textContent = formData.student_email;
+                        row.querySelector('td:nth-child(5)').textContent = formData.student_major;
+
+                        // Update the data attributes of the edit button
+                        const editButton = row.querySelector('.edit-btn');
+                        editButton.setAttribute('data-name', formData.student_name);
+                        editButton.setAttribute('data-dob', formData.student_dob);
+                        editButton.setAttribute('data-email', formData.student_email);
+                        editButton.setAttribute('data-major', formData.student_major);
+
+                        editStudentForm.closest('.modal').style.display = 'none';
                     }
                 })
                 .catch(error => {
@@ -335,7 +349,6 @@
 
                         data.students.forEach(student => {
                             const tr = document.createElement('tr');
-
                             tr.innerHTML = `
                                 <td>${student.student_id}</td>
                                 <td>${student.student_name}</td>
