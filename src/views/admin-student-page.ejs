@@ -125,6 +125,7 @@
                         <td><%= student.student_email %></td>
                         <td><%= student.student_major %></td>
                         <td>
+                            <div class="button-container">
                             <button class="edit-btn" data-id="<%= student.student_id %>" 
                                 data-name="<%= student.student_name %>" 
                                 data-dob="<%= student.student_dob.toISOString().slice(0,10) %>" 
@@ -138,6 +139,7 @@
                                     <i class="fas fa-trash-alt"></i> Delete
                                 </button>
                             </form>
+                        </div>
                         </td>
                     </tr>
                     <% }); %>

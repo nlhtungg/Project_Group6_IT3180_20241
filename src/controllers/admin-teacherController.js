@@ -28,7 +28,7 @@ const getTeachersPage = async (req, res) => {
 
 // Create New Teacher
 const createTeacher = async (req, res) => {
-    const { teacher_id, teacher_name, teacher_faculty, teacher_email } = req.body;
+    const { teacher_id, teacher_name, teacher_faculty, teacher_email, password } = req.body;
     try {
         // Check if a teacher with the same ID or email already exists
         const existingTeacher = await pool.query(
@@ -42,8 +42,8 @@ const createTeacher = async (req, res) => {
 
         // Insert the new teacher
         await pool.query(
-            'INSERT INTO teachers (teacher_id, teacher_name, teacher_faculty, teacher_email) VALUES ($1, $2, $3, $4)',
-            [teacher_id, teacher_name, teacher_faculty, teacher_email]
+            'INSERT INTO teachers (teacher_id, teacher_name, teacher_faculty, teacher_email, password) VALUES ($1, $2, $3, $4, $5)',
+            [teacher_id, teacher_name, teacher_faculty, teacher_email, teacher_id]
         );
         res.status(200).json({ message: 'Teacher added successfully.' });
     } catch (error) {
