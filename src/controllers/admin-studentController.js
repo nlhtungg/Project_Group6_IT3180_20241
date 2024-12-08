@@ -30,58 +30,62 @@ const getStudentsPage = async (req, res) => {
 const createStudent = async (req, res) => {
     const { student_id, student_name, student_dob, student_email, student_major } = req.body;
     try {
-        // Check if a student with the same fields already exists
+        // Check for duplicate ID or email
         const existingStudent = await pool.query(
-            'SELECT * FROM students WHERE student_id = $1 AND student_name = $2 AND student_dob = $3 AND student_email = $4 AND student_major = $5',
-            [student_id, student_name, student_dob, student_email, student_major]
+            'SELECT * FROM students WHERE student_id = $1 OR student_email = $2',
+            [student_id, student_email]
         );
 
         if (existingStudent.rows.length > 0) {
-            return res.status(400).send('Student with the same details already exists.');
+            return res.status(400).json({ error: 'Student with the same ID or email already exists.' });
         }
 
-        // Insert the new student
+        
         await pool.query(
             'INSERT INTO students (student_id, student_name, student_dob, student_email, student_major) VALUES ($1, $2, $3, $4, $5)',
             [student_id, student_name, student_dob, student_email, student_major]
         );
-        res.redirect('/admin/student');
+        res.status(200).json({ message: 'Student added successfully.' });
     } catch (error) {
         console.error('Error creating student:', error);
-        res.status(500).send('Server Error');
+        res.status(500).json({ error: 'Server Error' });
     }
 };
 
-// Update Existing Student
 const updateStudent = async (req, res) => {
     const { student_id, student_name, student_dob, student_email, student_major } = req.body;
+
     try {
+        // Parse the date and add one day to compensate for timezone issues
+        const parsedDob = student_dob ? new Date(Date.parse(student_dob + 'T00:00:00Z')) : null;
+        if (parsedDob) {
+            parsedDob.setUTCDate(parsedDob.getUTCDate() + 1);
+        }
+
         // Fetch the current student data
         const currentStudent = await pool.query('SELECT * FROM students WHERE student_id = $1', [student_id]);
 
         if (currentStudent.rows.length === 0) {
-            return res.status(404).send('Student not found.');
+            return res.status(404).json({ error: 'Student not found.' });
         }
 
-        const student = currentStudent.rows[0];
+        const currentData = currentStudent.rows[0];
 
-        // Update only if there are changes
-        if (
-            student.student_name !== student_name ||
-            student.student_dob.toISOString().slice(0, 10) !== student_dob ||
-            student.student_email !== student_email ||
-            student.student_major !== student_major
-        ) {
-            await pool.query(
-                'UPDATE students SET student_name = $1, student_dob = $2, student_email = $3, student_major = $4 WHERE student_id = $5',
-                [student_name, student_dob, student_email, student_major, student_id]
-            );
-        }
+        // Only update fields that have changed
+        const updatedName = student_name !== currentData.student_name ? student_name : currentData.student_name;
+        const updatedDob = parsedDob && parsedDob.toISOString().slice(0, 10) !== currentData.student_dob.toISOString().slice(0, 10) ? parsedDob.toISOString().slice(0, 10) : currentData.student_dob.toISOString().slice(0, 10);
+        const updatedEmail = student_email !== currentData.student_email ? student_email : currentData.student_email;
+        const updatedMajor = student_major !== currentData.student_major ? student_major : currentData.student_major;
 
-        res.redirect('/admin/student');
+        await pool.query(
+            'UPDATE students SET student_name = $1, student_dob = $2, student_email = $3, student_major = $4 WHERE student_id = $5',
+            [updatedName, updatedDob, updatedEmail, updatedMajor, student_id]
+        );
+
+        res.status(200).json({ message: 'Student updated successfully.' });
     } catch (error) {
         console.error('Error updating student:', error);
-        res.status(500).send('Server Error');
+        res.status(500).json({ error: 'Server Error' });
     }
 };
 
