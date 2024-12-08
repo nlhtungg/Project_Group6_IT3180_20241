@@ -61,8 +61,6 @@ app.post('/logout', (req, res) => {
     res.redirect('/login');
   });
 
-
-
 // Server
 app.listen(PORT, () => {
     console.log(`Server running on port localhost:${PORT}`);

@@ -1,6 +1,5 @@
 const { pool } = require('../models/db');
 
-
 const getTeacherPage = async(req, res) => {
     const user = req.session.user;
     const teacherName = user.teacher_name;
@@ -93,31 +92,39 @@ const updateTeacherProfile = async (req, res) => {
 const updateTeacherPassword = async (req, res) => {
     const { currentPassword, newPassword, confirmPassword } = req.body;
     const user = req.session.user;
+    const teacher = req.session.user;
 
     try {
         // Get the current password from the database
-        const result = await pool.query('SELECT teacher_password FROM Teachers WHERE teacher_id = $1', [user.teacher_id]);
-        const teacher = result.rows[0];
+        const result = await pool.query('SELECT password FROM Teachers WHERE teacher_id = $1', [user.teacher_id]);
+        const oldPassword = result.rows[0];
+        console.log('Old Password: ' + oldPassword.password);
+        console.log('Current Password: ' + currentPassword);
+        console.log('New Password: ' + newPassword);
 
         // Check if the current password matches
-        const match = await bcrypt.compare(currentPassword, teacher.teacher_password);
+        const match = (currentPassword == oldPassword.password);
         if (!match) {
-            return res.status(400).send("Incorrect current password.");
+            const error = 'Incorrect current password.';
+            console.log(error);
+            return res.render('teacher-profile', { user, teacher, error });
         }
 
         // Check if new passwords match
         if (newPassword !== confirmPassword) {
-            return res.status(400).send("New passwords do not match.");
+            const error = 'New passwords do not match.';
+            console.log(error);
+            return res.render('teacher-profile', { user, teacher, error });
         }
 
-        // Hash new password and update
-        const hashedPassword = await bcrypt.hash(newPassword, 10);
-        await pool.query('UPDATE Teachers SET teacher_password = $1 WHERE teacher_id = $2', [hashedPassword, user.teacher_id]);
-        
-        res.redirect('/teacher/profile');
+        // Update the password
+        await pool.query('UPDATE Teachers SET password = $1 WHERE teacher_id = $2', [newPassword, user.teacher_id]);
+        const error = 'Password updated successfully.';
+        console.log(error);
+        return res.render('teacher-profile', { user, teacher, error });
     } catch (error) {
         console.error("Error updating password:", error);
-        res.sendStatus(500);
+        res.redirect('/teacher/profile');
     }
 };
 
@@ -147,6 +154,7 @@ const getClassDetails = async (req, res) => {
             FROM Enrollments
             JOIN Students ON Enrollments.student_id = Students.student_id
             WHERE Enrollments.class_id = $1
+            ORDER BY SPLIT_PART(student_name, ' ', array_length(string_to_array(student_name, ' '), 1));
         `;
         const studentsResult = await pool.query(studentsQuery, [class_id]);
         const studentsList = studentsResult.rows;
@@ -156,6 +164,52 @@ const getClassDetails = async (req, res) => {
     } catch (error) {
         console.error('Error fetching class details:', error);
         res.sendStatus(500); // Internal Server Error
+    }
+};
+
+const getInputGradesPage = async (req, res) => {
+    try {
+        const { classId } = req.params;
+
+        // Query to get students in the class
+        const studentsQuery = `
+            SELECT Students.student_id, Students.student_name, Grades.midterm_score, Grades.final_score
+            FROM Enrollments
+            JOIN Students ON Enrollments.student_id = Students.student_id
+            LEFT JOIN Grades ON Enrollments.enrollment_id = Grades.enrollment_id
+            WHERE Enrollments.class_id = $1
+        `;
+        const studentsResult = await pool.query(studentsQuery, [classId]);
+
+        res.render('input-grades', { students: studentsResult.rows, classId });
+    } catch (error) {
+        console.error('Error fetching students for grade input:', error);
+        res.sendStatus(500);
+    }
+};
+
+const submitGrades = async (req, res) => {
+    try {
+        const { classId, grades } = req.body;
+
+        for (const grade of grades) {
+            const { student_id, midterm_score, final_score } = grade;
+            await pool.query(
+                `UPDATE Grades 
+                 SET midterm_score = $1, final_score = $2 
+                 WHERE enrollment_id = (
+                     SELECT enrollment_id 
+                     FROM Enrollments 
+                     WHERE student_id = $3 AND class_id = $4
+                 )`,
+                [midterm_score, final_score, student_id, classId]
+            );
+        }
+
+        res.redirect(`/teacher/classes/${classId}`);
+    } catch (error) {
+        console.error('Error submitting grades:', error);
+        res.sendStatus(500);
     }
 };
 
@@ -172,4 +226,4 @@ const logout = (req, res) => {
     });
 };
 
-module.exports = { getTeacherPage, getTeacherClasses, getTeacherProfile, updateTeacherProfile, updateTeacherPassword, getClassDetails ,logout };
+module.exports = { getTeacherPage, getTeacherClasses, getTeacherProfile, updateTeacherProfile, updateTeacherPassword, getClassDetails, getInputGradesPage, submitGrades ,logout };

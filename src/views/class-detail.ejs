@@ -16,36 +16,37 @@
         <ul class="nav-list">
             <li><a href="/teacher" class="nav-link">Home</a></li>
             <li><a href="/teacher/classes" class="nav-link">Classes</a></li>
-            <li><a href="/teacher/schedule" class="nav-link">Schedule</a></li>
             <li><a href="/teacher/profile" class="nav-link">Profile</a></li>
         </ul>
     </nav>
 
     <div class="main">
-        <h1>Class Details for <%= classDetails.course_name %></h1>
+        <h1>Class Details</h1>
 
         <div class="class-info">
             <p><strong>Class ID:</strong> <%= classDetails.class_id %></p>
             <p><strong>Course Name:</strong> <%= classDetails.course_name %></p>
             <p><strong>Teacher:</strong> <%= classDetails.teacher_name %></p>
-            <p><strong>Schedule:</strong> <%= classDetails.class_time_day %>, <%= classDetails.class_time_start %> - <%= classDetails.class_time_end %></p>
+            <p><strong>Time:</strong> <%= classDetails.class_time_day %>, <%= classDetails.class_time_start %> - <%= classDetails.class_time_end %></p>
             <p><strong>Room:</strong> <%= classDetails.room_id %></p>
         </div>
-
-        <h2>Enrolled Students</h2>
+        <a href="/teacher/classes/<%= classDetails.class_id %>/grades" class="btn">Input Grades</a>
+        <h2>Students</h2>
         <table>
             <thead>
                 <tr>
-                    <th>Student ID</th>
+                    <th>Index</th>
                     <th>Name</th>
+                    <th>Student ID</th>
                     <th>Email</th>
                 </tr>
             </thead>
             <tbody>
                 <% studentsList.forEach(student => { %>
                     <tr>
-                        <td><%= student.student_id %></td>
+                        <td><%= studentsList.indexOf(student) + 1 %></td>
                         <td><%= student.student_name %></td>
+                        <td><%= student.student_id %></td>
                         <td><%= student.student_email %></td>
                     </tr>
                 <% }) %>
