@@ -28,7 +28,7 @@ const getStudentsPage = async (req, res) => {
 
 // Create New Student
 const createStudent = async (req, res) => {
-    const { student_id, student_name, student_dob, student_email, student_major } = req.body;
+    const { student_id, student_name, student_dob, student_email, student_major, password } = req.body;
     try {
         // Check for duplicate ID or email
         const existingStudent = await pool.query(
@@ -42,8 +42,8 @@ const createStudent = async (req, res) => {
 
         
         await pool.query(
-            'INSERT INTO students (student_id, student_name, student_dob, student_email, student_major) VALUES ($1, $2, $3, $4, $5)',
-            [student_id, student_name, student_dob, student_email, student_major]
+            'INSERT INTO students (student_id, student_name, student_dob, student_email, student_major, password) VALUES ($1, $2, $3, $4, $5, $6)',
+            [student_id, student_name, student_dob, student_email, student_major, student_id]
         );
         res.status(200).json({ message: 'Student added successfully.' });
     } catch (error) {
