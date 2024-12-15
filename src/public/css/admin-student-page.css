@@ -141,6 +141,13 @@ body {
     animation: none;
 }
 
+/* Button Container */
+.button-container {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Space between buttons */
+}
+
 /* Edit Button */
 .edit-btn {
     background-color: #17a2b8; /* Blue color */
@@ -151,11 +158,11 @@ body {
     cursor: pointer;
     transition: background-color 0.3s, box-shadow 0.3s;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-    display: flex;
+    display: inline-flex;
     align-items: center;
     justify-content: center;
     gap: 5px;
-    width: 120px; /* Fixed width */
+    width: auto; /* Adjust width */
 }
 
 .edit-btn i {
@@ -179,11 +186,11 @@ body {
     cursor: pointer;
     transition: background-color 0.3s, box-shadow 0.3s;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-    display: flex;
+    display: inline-flex;
     align-items: center;
     justify-content: center;
     gap: 5px;
-    width: 120px; /* Fixed width */
+    width: auto; /* Adjust width */
 }
 
 .student-delete-form button i {

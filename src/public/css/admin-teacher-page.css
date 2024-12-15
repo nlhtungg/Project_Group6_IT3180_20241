@@ -140,6 +140,12 @@ body {
     -webkit-user-select: none;
     user-select: none;
 }
+/* Button Container */
+.button-container {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Space between buttons */
+}
 
 /* Edit Button */
 .edit-btn {
@@ -151,11 +157,11 @@ body {
     cursor: pointer;
     transition: background-color 0.3s, box-shadow 0.3s;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-    display: flex;
+    display: inline-flex;
     align-items: center;
     justify-content: center;
     gap: 5px;
-    width: 120px; /* Fixed width */
+    width: auto; /* Adjust width */
 }
 
 .edit-btn i {
@@ -169,12 +175,9 @@ body {
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
 }
 
-.teacher-delete-form {
-    display: inline;
-}
-
+/* Delete Button */
 .teacher-delete-form button {
-    background-color: #dc3545;
+    background-color: #dc3545; /* Red color */
     color: white;
     border: none;
     padding: 10px 20px;
@@ -182,22 +185,17 @@ body {
     cursor: pointer;
     transition: background-color 0.3s, box-shadow 0.3s;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-    display: flex;
+    display: inline-flex;
     align-items: center;
     justify-content: center;
     gap: 5px;
-    width: 120px; /* Fixed width */
+    width: auto; /* Adjust width */
 }
 
 .teacher-delete-form button i {
     margin-right: 5px;
     width: 16px; /* Fixed width for icon */
     text-align: center;
-}
-
-.teacher-delete-form button:hover {
-    background-color: #c82333; /* Darker red on hover */
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
 }
 
 /* Pagination Styles */
