@@ -1673,3 +1673,14 @@ INSERT INTO Classes (class_id, course_id, teacher_id, room_id, semester, class_t
 VALUES (160084, 'IT3940', '11589', 'B1-302', '20241', '12:30', '15:00', 'Thứ 5');
 INSERT INTO Classes (class_id, course_id, teacher_id, room_id, semester, class_time_start, class_time_end, class_time_day) 
 VALUES (160085, 'IT3940', '23594', 'D9-408', '20241', '15:05', '17:30', 'Thứ 6');
+
+INSERT INTO Enrollments (student_id, class_id, enrollment_date) VALUES ('20233893', 160001, '2024-01-15');
+INSERT INTO Enrollments (student_id, class_id, enrollment_date) VALUES ('20204086', 160001, '2024-01-15');
+INSERT INTO Enrollments (student_id, class_id, enrollment_date) VALUES ('20219348', 160001, '2024-01-15');
+INSERT INTO Enrollments (student_id, class_id, enrollment_date) VALUES ('20214761', 160001, '2024-01-15');
+INSERT INTO Enrollments (student_id, class_id, enrollment_date) VALUES ('20236083', 160001, '2024-01-15');
+INSERT INTO Enrollments (student_id, class_id, enrollment_date) VALUES ('20215326', 160001, '2024-01-15');
+INSERT INTO Enrollments (student_id, class_id, enrollment_date) VALUES ('20248721', 160001, '2024-01-15');
+INSERT INTO Enrollments (student_id, class_id, enrollment_date) VALUES ('20227723', 160001, '2024-01-15');
+INSERT INTO Enrollments (student_id, class_id, enrollment_date) VALUES ('20244914', 160001, '2024-01-15');
+INSERT INTO Enrollments (student_id, class_id, enrollment_date) VALUES ('20243335', 160001, '2024-01-15');

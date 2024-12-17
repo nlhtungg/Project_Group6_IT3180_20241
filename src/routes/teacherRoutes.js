@@ -9,5 +9,9 @@ router.get('/profile', teacherController.getTeacherProfile);
 router.post('/profile/update', teacherController.updateTeacherProfile);
 router.post('/profile/update-password', teacherController.updateTeacherPassword);
 router.get('/classes/:class_id', teacherController.getClassDetails);
+router.post('/update-scores', teacherController.updateStudentScores);
+
+
+
 
 module.exports = router;

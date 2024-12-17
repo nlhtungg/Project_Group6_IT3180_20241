@@ -16,7 +16,6 @@
         <ul class="nav-list">
             <li><a href="/teacher" class="nav-link">Home</a></li>
             <li><a href="/teacher/classes" class="nav-link">Classes</a></li>
-            <li><a href="/teacher/schedule" class="nav-link">Schedule</a></li>
             <li><a href="/teacher/profile" class="nav-link">Profile</a></li>
         </ul>
     </nav>
@@ -54,15 +53,6 @@
     </div>
 
     <script>
-        function toggleEditForm() {
-            const profileInfo = document.getElementById('profile-info');
-            const editForm = document.getElementById('edit-form');
-            
-            // Toggle visibility of edit form and profile info
-            editForm.style.display = editForm.style.display === 'none' ? 'block' : 'none';
-            profileInfo.style.display = profileInfo.style.display === 'none' ? 'block' : 'none';
-        }
-
         function togglePasswordForm() {
             const passwordForm = document.getElementById('password-form');
             // Toggle visibility of password form
