@@ -4,7 +4,7 @@ const getTeacherPage = async(req, res) => {
     const user = req.session.user;
     const teacherName = user.teacher_name;
     const teacherFaculty = user.teacher_faculty;
-    const classesResult = await pool.query(`SELECT COUNT(DISTINCT(class_id)) FROM Classes WHERE teacher_id = $1`, [user.teacher_id]);
+    const classesResult = await pool.query(`SELECT DISTINCT(class_id) FROM Classes WHERE teacher_id = $1`, [user.teacher_id]);
     const numberOfClasses = classesResult.rows.length;
     res.render('teacher', { teacherName, teacherFaculty, classes: classesResult.rows, numberOfClasses });
 };
@@ -150,9 +150,10 @@ const getClassDetails = async (req, res) => {
 
         // Query to fetch students enrolled in the class
         const studentsQuery = `
-            SELECT Students.student_id, Students.student_name, Students.student_email
+            SELECT Students.student_id, Students.student_name, Students.student_email, Enrollments.enrollment_id, Grades.midterm_score, Grades.final_score
             FROM Enrollments
             JOIN Students ON Enrollments.student_id = Students.student_id
+            LEFT JOIN Grades ON Enrollments.enrollment_id = Grades.enrollment_id
             WHERE Enrollments.class_id = $1
             ORDER BY SPLIT_PART(student_name, ' ', array_length(string_to_array(student_name, ' '), 1));
         `;
@@ -167,52 +168,28 @@ const getClassDetails = async (req, res) => {
     }
 };
 
-const getInputGradesPage = async (req, res) => {
+const updateStudentScores = async (req, res) => {
+    const { enrollment_id, midterm_score, final_score } = req.body;
+
     try {
-        const { classId } = req.params;
-
-        // Query to get students in the class
-        const studentsQuery = `
-            SELECT Students.student_id, Students.student_name, Grades.midterm_score, Grades.final_score
-            FROM Enrollments
-            JOIN Students ON Enrollments.student_id = Students.student_id
-            LEFT JOIN Grades ON Enrollments.enrollment_id = Grades.enrollment_id
-            WHERE Enrollments.class_id = $1
-        `;
-        const studentsResult = await pool.query(studentsQuery, [classId]);
-
-        res.render('input-grades', { students: studentsResult.rows, classId });
-    } catch (error) {
-        console.error('Error fetching students for grade input:', error);
-        res.sendStatus(500);
-    }
-};
-
-const submitGrades = async (req, res) => {
-    try {
-        const { classId, grades } = req.body;
-
-        for (const grade of grades) {
-            const { student_id, midterm_score, final_score } = grade;
-            await pool.query(
-                `UPDATE Grades 
-                 SET midterm_score = $1, final_score = $2 
-                 WHERE enrollment_id = (
-                     SELECT enrollment_id 
-                     FROM Enrollments 
-                     WHERE student_id = $3 AND class_id = $4
-                 )`,
-                [midterm_score, final_score, student_id, classId]
-            );
+        const checkEnrollmentId = await pool.query('SELECT * FROM Grades WHERE enrollment_id = $1', [enrollment_id]);
+        console.log(checkEnrollmentId.rows.length);
+        var query = ``;
+        if(checkEnrollmentId.rows.length === 0) {
+            query = `INSERT INTO Grades (enrollment_id, midterm_score, final_score) VALUES ($3, $1, $2)`;
+            console.log(`INSERT INTO Grades (enrollment_id, midterm_score, final_score) VALUES (${midterm_score}, ${final_score}, ${enrollment_id})`);
+        } else {
+            query = ` UPDATE Grades SET midterm_score = $1, final_score = $2 WHERE enrollment_id = $3`;
+            console.log(`UPDATE Grades SET midterm_score = ${midterm_score}, final_score = ${final_score} WHERE enrollment_id = ${enrollment_id}`);
         }
-
-        res.redirect(`/teacher/classes/${classId}`);
+        console.log(midterm_score, final_score, enrollment_id);
+        await pool.query(query, [midterm_score, final_score, enrollment_id]);
+        res.status(200).send('Grades updated successfully');
     } catch (error) {
-        console.error('Error submitting grades:', error);
-        res.sendStatus(500);
+        console.error('Error updating grades:', error);
+        res.status(500).send('Internal Server Error');
     }
 };
-
 
 // Hàm xử lý đăng xuất
 const logout = (req, res) => {
@@ -226,4 +203,4 @@ const logout = (req, res) => {
     });
 };
 
-module.exports = { getTeacherPage, getTeacherClasses, getTeacherProfile, updateTeacherProfile, updateTeacherPassword, getClassDetails, getInputGradesPage, submitGrades ,logout };
+module.exports = { getTeacherPage, getTeacherClasses, getTeacherProfile, updateTeacherProfile, updateTeacherPassword, getClassDetails, updateStudentScores ,logout };
