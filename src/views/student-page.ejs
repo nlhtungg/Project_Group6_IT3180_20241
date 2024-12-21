@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="/css/student-page.css" />
+  <link rel="icon" href="/img/logo.png" type="image/x-icon" />
+  <script src="/js/student-page.js" defer></script>
+  <script src="https://cdn.payos.vn/payos-checkout/v1/stable/payos-initialize.js"></script>
+  <title>HUSTHUB</title>
+</head>
+
+<body>
+  <div class="header">
+    <a href="#student-info" class="left-section">
+      <div class="logo">
+        <img src="/img/logo.png" alt="HUSTHUB Logo" />
+      </div>
+      <div class="title-container">
+        <h1 class="title">HUSTHUB</h1>
+        <h2 class="subtitle">School Management System</h2>
+      </div>
+    </a>
+    <div class="right-section">
+      <form action="/logout" method="POST">
+        <button type="submit" class="login-btn">Log out</button>
+      </form>
+    </div>
+  </div>
+
+  <div class="main-content">
+    <nav class="navbar">
+      <ul class="nav-list">
+        <li class="nav-item active" data-tab="student-info">
+          <i class="fas fa-user"></i>
+          <a href="#info">Student Information</a>
+        </li>
+        <li class="nav-item" data-tab="tuition">
+          <i class="fas fa-money-bill"></i>
+          <a href="#tuition">Tuition Fee</a>
+        </li>
+        <li class="nav-item" data-tab="timetable">
+          <i class="fas fa-calendar"></i>
+          <a href="#timetable">Timetable</a>
+        </li>
+        <li class="nav-item" data-tab="grades">
+          <i class="fas fa-graduation-cap"></i>
+          <a href="#grades">Grade</a>
+        </li>
+        <li class="nav-item" data-tab="courses">
+          <a href="#courses">Courses</a>
+        </li>
+      </ul>
+    </nav>
+
+    <div class="content-wrapper">
+      <section id="student-info" class="tab-content active">
+        <h2>Student Information</h2>
+        <div class="student-container">
+          <div class="profile-section">
+            <div class="profile-image">
+              <img src="<%= typeof student !== 'undefined' && student.avatar ? 
+                                `data:image/jpeg;base64,${student.avatar.toString('base64')}` : 
+                                '/img/avatar-default.png' %>" alt="Student Photo" id="avatar-preview" />
+              <form id="avatar-form">
+                <input type="file" id="avatar-input" name="avatar" accept="image/*" />
+                <button type="button" id="upload-btn">Change Avatar</button>
+              </form>
+              <div class="student-id">
+                <label>Student ID:</label>
+                <span>
+                  <%= student.student_id %>
+                </span>
+              </div>
+            </div>
+
+            <div class="info-grid">
+              <div class="info-item">
+                <label>Full Name:</label>
+                <span>
+                  <%= student.student_name %>
+                </span>
+              </div>
+              <div class="info-item">
+                <label>Date of Birth:</label>
+                <span>
+                  <% const dob=new Date(student.student_dob); const day=dob.getDate().toString().padStart(2, '0' );
+                    const month=(dob.getMonth() + 1).toString().padStart(2, '0' ); const year=dob.getFullYear(); %>
+                    <%= `${day}/${month}/${year}` %>
+                </span>
+              </div>
+              <div class="info-item">
+                <label>Academic Year:</label>
+                <span>
+                  <%= student.student_id.toString().substring(0, 4) %>
+                </span>
+              </div>
+              <div class="info-item">
+                <label>Email:</label>
+                <span>
+                  <%= student.student_email %>
+                </span>
+              </div>
+              <div class="info-item">
+                <label>Major:</label>
+                <span>
+                  <%= student.student_major %>
+                </span>
+              </div>
+              <div class="info-item">
+                <label>University:</label>
+                <span>Hanoi University of Science and Technology</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="tuition" class="tab-content">
+        <h2>Tuition Fee</h2>
+        <table class="tuition-table">
+          <thead>
+            <tr>
+              <th>Course ID</th>
+              <th>Course Name</th>
+              <th>Credits</th>
+              <th>Fee (VND)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% let totalFee=0; %>
+              <% enrollments.forEach(e=> { %> <% const courseFee=e.course_credit * 500000; %>
+                  <% totalFee +=courseFee; %>
+                    <tr>
+                      <td>
+                        <%= e.course_id %>
+                      </td>
+                      <td>
+                        <%= e.course_name %>
+                      </td>
+                      <td>
+                        <%= e.course_credit %>
+                      </td>
+                      <td>
+                        <%= courseFee.toLocaleString('vi-VN') %>
+                      </td>
+                    </tr>
+                    <% }); %>
+                      <tr class="total-row">
+                        <td colspan="3">Total</td>
+                        <td>
+                          <%= totalFee.toLocaleString('vi-VN') %>
+                        </td>
+                      </tr>
+          </tbody>
+        </table>
+
+        <div style="padding-top: 10px; display: flex; flex-direction: column">
+          <div style="
+                border: 2px solid blue;
+                border-radius: 10px;
+                overflow: hidden;
+              ">
+            <div id="content-container" style="padding: 10px">
+              <p><strong>Thanh toán học phí</strong></p>
+              <p><strong>Giá tiền:</strong>
+                <%= totalFee.toLocaleString('vi-VN') %> VNĐ
+              </p>
+            </div>
+            <div id="button-container">
+              <button type="submit" id="create-payment-link-btn" style="
+                    width: 100%;
+                    background-color: rgb(131, 217, 142);
+                    color: white;
+                    border: none;
+                    padding: 10px;
+                    font-size: 15px;
+                  ">
+                Tạo Link thanh toán
+              </button>
+            </div>
+          </div>
+          <div id="embeded-payment-container" style="height: 350px"></div>
+        </div>
+      </section>
+
+      <section id="timetable" class="tab-content">
+        <h2>Timetable</h2>
+        <!-- Thêm nội dung về thời khóa biểu -->
+      </section>
+
+      <section id="grades" class="tab-content">
+        <h2>Grades</h2>
+        <!-- Thêm nội dung về điểm số -->
+      </section>
+
+      <section id="courses" class="tab-content">
+        <h2>Danh sách sản phẩm</h2>
+        <div class="courses-list">
+          <% courses.forEach(course=> { %>
+            <div class="courses-item">
+
+              <h3>
+                <%= course.course_name %>
+              </h3>
+              <p>Giá: $<%= course.course_credit %>
+              </p>
+              <p>
+                <%= course.course_id %>
+              </p>
+            </div>
+            <% }) %>
+        </div>
+
+      </section>
+    </div>
+  </div>
+</body>
+
+</html>
