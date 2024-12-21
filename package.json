@@ -12,6 +12,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@payos/node": "^1.0.10",
     "cookie-parser": "^1.4.7",
     "dotenv": "^16.4.5",
     "ejs": "^3.1.10",
@@ -19,7 +20,9 @@
     "livereload": "^0.9.3",
     "msnodesqlv8": "^4.2.1",
     "mssql": "^11.0.1",
-    "path": "^0.12.7"
+    "multer": "^1.4.5-lts.1",
+    "path": "^0.12.7",
+    "pg": "^8.13.1"
   },
   "devDependencies": {
     "connect-livereload": "^0.6.1",
