@@ -1,23 +1,21 @@
-const sql = require('mssql/msnodesqlv8');
-require('dotenv').config();
+const { Pool } = require('pg');
 
-const config = {
-    server: 'DESKTOP-256OKAM\\SQLEXPRESS',
-    database: 'HUSTHUB',
-    user: 'TUNGSQLUsername',
-    password: '892678',
-    options: {
-        trustedConnection: true
-    }
-};
+const pool = new Pool({
+  user: "postgres",
+  host: "localhost",
+  database: "HUSTHUB",
+  password: "892678",
+  port: "5433"
+});
 
-async function connectDB() {
+const connectDB = async () => {
     try {
-        await sql.connect(config);
-        console.log('Connected to database');
+      await pool.connect();
+      console.log('Connected to the PostgreSQL database successfully');
     } catch (err) {
-        console.log(err);
+      console.error('Database connection error:', err.stack);
+      process.exit(1);
     }
-}
+  };
 
-module.exports = { sql, connectDB };
+module.exports = {pool, connectDB};
