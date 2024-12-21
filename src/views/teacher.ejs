@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/header.css">
+    <link rel="stylesheet" href="/css/teacher.css">
+    <link rel="stylesheet" href="/css/footer.css">
+    <link rel="icon" href="/img/logo.png" type="image/x-icon">
+    <title>Teacher Dashboard</title>
+</head>
+
+<body>
+    <%- include('in-app-header') %>
+
+    <!-- Navbar -->
+    <nav class="navbar">
+        <ul class="nav-list">
+            <li><a href="/teacher" class="nav-link">Home</a></li>
+            <li><a href="/teacher/classes" class="nav-link">Classes</a></li>
+            <li><a href="/teacher/profile" class="nav-link">Profile</a></li>
+        </ul>
+    </nav>
+
+    <div class="main">
+        <div class="welcome-container">
+            <!-- Personalized Greeting -->
+            <h1>Welcome, <span id="teacher-name"><%= teacherName %></span></h1>
+            <p><%= teacherFaculty %></p>
+            
+            <div class="cards-container">
+                <!-- Number of Classes Card -->
+                <div class="card" onclick="window.location.href='/teacher/classes'">
+                    <h2>Classes</h2>
+                    <p><%= numberOfClasses %> Classes</p>
+                </div>
+
+                <!-- Profile Card -->
+                <div class="card" onclick="window.location.href='/teacher/profile'">
+                    <h2>My Profile</h2>
+                    <p>View and update your profile</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <%- include('footer') %>
+</body>
+</html>
