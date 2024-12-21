@@ -15,6 +15,10 @@ router.post('/search-courses', adminController.searchCourses);
 router.post('/courses/create', adminController.createCourse);
 router.post('/courses/update', adminController.updateCourse);
 router.post('/courses/delete', adminController.deleteCourse);
+router.post('/search-classes', adminController.searchClasses);
+router.post('/courses/:course_id/create', adminController.createClass);
+router.post('/courses/:course_id/update', adminController.updateClass);
+router.post('/courses/:course_id/delete', adminController.deleteClass);
 
 // Teacher routes
 router.get('/teacher', teacherController.getTeachersPage);

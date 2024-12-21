@@ -21,14 +21,28 @@
     </nav>
 
     <div class = "main-course-content fade-in">
-    <div class="h1">COURSES</div>
+    <div class="h1">MANAGE COURSES</div>
 
-    <form id="searchForm">
+    <!-- <form id="searchForm">
         <div class="search">
-            <input type="text" id="searchText" name="searchText" placeholder="Nhập mã lớp, mã môn hoặc tên môn">
-            <button type="submit">Tìm kiếm</button>
+            <input type="text" id="searchText" name="searchText" placeholder="Search by Courses ID...">
+            <button type="submit">Search</button>
         </div>
-    </form>
+    </form> -->
+    
+
+    <div class="search-container">
+        <form id="searchForm" class="search-form">
+            <div class="textbox">
+                <div class="textbox-box">
+                    <div class="textbox-field">
+                        <input type="text" id="searchText"  placeholder="Search by Courses ID..." class="textbox-text" />
+                    </div>
+                    <button type="submit" class="search-button"></button>
+                </div>
+            </div>
+        </form>
+    </div>
     
     <!-- Div để hiển thị kết quả khóa học -->
     <div id="coursesResult"></div>
@@ -81,8 +95,7 @@
         });
     </script>
     
-    
-    <h2>Manage Courses</h2>
+
 
     <div class="CRUDCourses">
         <!-- 3 Hộp (CREATE, UPDATE, DELETE) -->
@@ -182,7 +195,9 @@
                     event.preventDefault();
                     $.post('/admin/courses/create', $(this).serialize(), function(response) {
                         $('#createMessage').text('Khóa học đã được tạo').css('display', 'block');
-                        location.reload();
+                        setTimeout(function() {
+                            location.reload(); // Reload trang sau 3 giây
+                        }, 3000);
                         $('#createCourseForm')[0].reset();
                     }).fail(function() {
                         $('#createMessage').text('Có lỗi xảy ra khi tạo khóa học').css({
@@ -197,7 +212,9 @@
                     event.preventDefault();
                     $.post('/admin/courses/update', $(this).serialize(), function(response) {
                         $('#updateMessage').text('Khóa học đã được cập nhật').css('display', 'block');
-                        location.reload();
+                        setTimeout(function() {
+                            location.reload(); // Reload trang sau 3 giây
+                        }, 3000);
                         $('#updateCourseForm')[0].reset();
                     }).fail(function() {
                         $('#updateMessage').text('Có lỗi xảy ra khi cập nhật khóa học').css({
@@ -212,7 +229,9 @@
                     event.preventDefault();
                     $.post('/admin/courses/delete', $(this).serialize(), function(response) {
                         $('#deleteMessage').text('Khóa học đã được xóa').css('display', 'block');
-                        location.reload();
+                        setTimeout(function() {
+                            location.reload(); // Reload trang sau 3 giây
+                        }, 3000);
                         $('#deleteCourseForm')[0].reset();
                     }).fail(function() {
                         $('#deleteMessage').text('Có lỗi xảy ra khi xóa khóa học').css({
@@ -225,7 +244,17 @@
         </script>
     </div>
     
+
+
     
+    
+    <div id="crudModal" class="modal" style="display: none;">
+    <div class="modal-content">
+        <p id="modalMessage"></p>
+        <button id="closeModal">Close</button>
+    </div>
+</div>
+
 
         
 

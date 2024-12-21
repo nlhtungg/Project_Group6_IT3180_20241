@@ -51,6 +51,28 @@ const searchCourses = async (req, res) => {
 };
 
 
+const searchClasses = async (req, res) => {
+    const { searchText1 } = req.body;
+
+    try {
+        // Nếu searchText là rỗng, trả về tất cả lớp học
+        const query = searchText1
+            ? `SELECT * FROM Classes WHERE class_id LIKE $1`
+            : `SELECT * FROM Classes`;
+        const params = searchText1 ? [`%${searchText1}%`] : [];
+
+        const result = await pool.query(query, params);
+        const classes = result.rows;
+
+        // Trả về HTML chứa danh sách lớp học từ partial view
+        res.render('partials/classes-list', { classes: classes });
+    } catch (err) {
+        console.error('Lỗi khi truy vấn cơ sở dữ liệu:', err);
+        res.status(500).send('Có lỗi xảy ra');
+    }
+};
+
+
 
 const createCourse = async (req, res) => {
     const { course_id, course_name, course_credit } = req.body;
@@ -107,6 +129,7 @@ const deleteCourse = async (req, res) => {
 
 
 
+
 const getCoursesPage = async (req, res) => {
     // Pass the data to the EJS template
     const result = await pool.query('SELECT * FROM Courses');
@@ -157,15 +180,87 @@ const getClassesPage = async (req, res) => {
 
         // Render view `admin-classes-page` với danh sách các lớp học và thông tin khóa học
      res.render('admin-classes-page', { classes, course });
-        //res.render('partials/classes-list', { classes, course });
+     //   res.render('partials/classes-list', { classes, course });
     } catch (error) {
         console.error('Error fetching classes or course:', error);
         res.status(500).send('Server Error');
     }
 };
 
+const createClass = async (req, res) => {
+    const { class_id,course_id, teacher_id, room_id, class_time_start, class_time_end,class_time_day } = req.body;
+    console.log('Request body:', req.body);
+
+
+    // Chỉ định giá trị semester tự động là 20241
+    const semester = '20241';
+
+    try {
+        // Kiểm tra xem mã lớp học đã tồn tại chưa
+        const classes = await pool.query('SELECT * FROM Classes WHERE class_id = $1', [class_id]);
+        if (classes.rows.length > 0) {
+            return res.status(400).send('Mã lớp học đã tồn tại');
+        }
+
+        // Thêm lớp học vào cơ sở dữ liệu
+        await pool.query(
+            'INSERT INTO Classes (class_id, course_id, teacher_id, room_id, semester, class_time_start, class_time_end, class_time_day) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)',
+            [class_id, course_id, teacher_id, room_id, semester, class_time_start, class_time_end, class_time_day]
+        );
+
+        res.status(201).send('Lớp học đã được tạo');
+        console.log('Lớp học đã được tạo');
+    } catch (err) {
+        console.error('Lỗi khi tạo lớp học:', err);
+        res.status(500).send('Có lỗi xảy ra');
+    }
+};
+
+
+const updateClass = async (req, res) => {
+    
+    const { class_id, teacher_id, room_id, class_time_start, class_time_end, class_time_day, course_id2 } = req.body;
+    console.log('Request body:', req.body);
+
+    try {
+        const classExists = await pool.query('SELECT * FROM Classes WHERE class_id = $1', [class_id]);
+        if (classExists.rows.length === 0) {
+            return res.status(404).send('Không tìm thấy mã lớp học');
+        }
+
+        await pool.query(
+            'UPDATE Classes SET teacher_id = $2, room_id = $3, class_time_start = $4, class_time_end = $5, class_time_day = $6 WHERE class_id = $1',
+            [class_id, teacher_id, room_id, class_time_start, class_time_end, class_time_day]
+        );
+        res.status(200).send('Lớp học đã được cập nhật');
+    } catch (err) {
+        console.error('Lỗi khi cập nhật lớp học:', err);
+        res.status(500).send('Có lỗi xảy ra');
+    }
+};
+
+
+const deleteClass = async (req, res) => {
+    const { class_id, course_id1 } = req.body;
+    console.log('Request body:', req.body);
+
+
+    try {
+        const classExists = await pool.query('SELECT * FROM Classes WHERE class_id = $1', [class_id]);
+        if (classExists.rows.length === 0) {
+            return res.status(404).send('Không tìm thấy mã lớp học');
+        }
+
+        await pool.query('DELETE FROM Classes WHERE class_id = $1', [class_id]);
+        res.status(200).send('Khóa học đã được xóa');
+    } catch (err) {
+        console.error('Lỗi khi xóa khóa học:', err);
+        res.status(500).send('Có lỗi xảy ra');
+    }
+};
+
 
 
 // Route
-module.exports = { getHomePage, logout, searchCourses, getCoursesPage, createCourse, updateCourse, deleteCourse,getClassesPage };
+module.exports = { deleteClass,updateClass,createClass, searchClasses, getHomePage, logout, searchCourses, getCoursesPage, createCourse, updateCourse, deleteCourse,getClassesPage };
 

@@ -1,4 +1,13 @@
 <!DOCTYPE html>
+<head>
+    <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/admin-page.css">
+    <link rel="icon" href="/img/logo.png" type="image/x-icon">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <title>HUSTHUB</title>
+</head>
 <html lang="en">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -65,7 +74,7 @@
     <body>
         <div class="container">
             <div class="course-header">
-                <h1>Course Details</h1>
+                <h1>THÔNG TIN MÔN HỌC</h1>
                 <h2>Course ID: <%= course.course_id %></h2>
             </div>
     
@@ -81,8 +90,11 @@
 
     <!-- Main Container -->
     <div class="container">
-        <h1>Danh Sách Lớp Học</h1>
+        <div class="course-header">
+            <h1>DANH SÁCH LỚP HỌC</h1>
+        </div>
         
+
         <!-- Kiểm tra xem có lớp học nào không -->
         <% if (classes.length > 0) { %>
             <!-- Nhúng partials/classes-list.ejs vào đây -->
@@ -92,12 +104,208 @@
         <% } %>
     </div>
 
-    <form id="searchForm">
-        <div class="search">
-            <input type="text" id="searchText" name="searchText" placeholder="Nhập mã lớp, mã môn hoặc tên môn">
-            <button type="submit">Tìm kiếm</button>
+    <div class="CRUDCourses">
+        <!-- 3 Hộp (CREATE, UPDATE, DELETE) -->
+        <div class="container">
+            <div class="box" id="createBox">CREATE</div>
+            <div class="box" id="updateBox">UPDATE</div>
+            <div class="box" id="deleteBox">DELETE</div>
         </div>
-    </form>
+        
+        <!-- Form CREATE -->
+        <div id="createForm" class="form-container" style="display: none;">
+            <h3>Create Class</h3>
+            <form id="createClassForm">
+                <div class="input-field">
+                    <label for="class_id">Class ID:</label>
+                    <input type="text" id="class_id" name="class_id" required>
+                </div>
+                <div class="input-field">
+                    <label for="course_id">Course ID:</label>
+                    <input type="text" id="course_id" name="course_id" required>
+                </div>
+                <div class="input-field">
+                    <label for="teacher_id">Teacher ID:</label>
+                    <input type="text" id="teacher_id" name="teacher_id" required>
+                </div>
+                <div class="input-field">
+                    <label for="room_id">Room ID:</label>
+                    <input type="text" id="room_id" name="room_id" required>
+                </div>
+                <div class="input-field">
+                    <label for="class_time_start">Time start:</label>
+                    <input type="text" id="class_time_start" name="class_time_start" required>
+                </div>
+                <div class="input-field">
+                    <label for="class_time_end">Time end:</label>
+                    <input type="text" id="class_time_end" name="class_time_end" required>
+                </div>
+                <div class="input-field">
+                    <label for="class_time_day">Day:</label>
+                    <input type="text" id="class_time_day" name="class_time_day" required>
+                </div>
+                <button type="submit">Create</button>
+            </form>
+            <div id="createMessage" class="message-box"></div>
+        </div>
+        
+        <!-- Form UPDATE -->
+        <div id="updateForm" class="form-container" style="display: none;">
+            <h3>Update Class</h3>
+            <form id="updateClassForm">
+                <div class="input-field">
+                    <label for="class_id">Class ID:</label>
+                    <input type="text" id="class_id" name="class_id" required>
+                </div>
+                <div class="input-field">
+                    <label for="teacher_id">Teacher ID:</label>
+                    <input type="text" id="teacher_id" name="teacher_id" required>
+                </div>
+                <div class="input-field">
+                    <label for="room_id">Room ID:</label>
+                    <input type="text" id="room_id" name="room_id" required>
+                </div>
+                <div class="input-field">
+                    <label for="class_time_start">Time start:</label>
+                    <input type="text" id="class_time_start" name="class_time_start" required>
+                </div>
+                <div class="input-field">
+                    <label for="class_time_end">Time end:</label>
+                    <input type="text" id="class_time_end" name="class_time_end" required>
+                </div>
+                <div class="input-field">
+                    <label for="class_time_day">Day:</label>
+                    <input type="text" id="class_time_day" name="class_time_day" required>
+                </div>
+                <div class="input-field">
+                    <label for="course_id2">Course ID:</label>
+                    <input type="text" id="course_id2" name="course_id2" required>
+                </div>
+                <button type="submit">Update</button>
+            </form>
+            <div id="updateMessage" class="message-box"></div>
+        </div>           
+         
+        
+        <!-- Form DELETE -->
+        <div id="deleteForm" class="form-container" style="display: none;">
+            <h3>Delete Class</h3>
+            <form id="deleteClassForm">
+                <div class="input-field">
+                    <label for="class_id">Class ID:</label>
+                    <input type="text" id="class_id" name="class_id" required>
+                </div>
+                <div class="input-field">
+                    <label for="course_id1">Course ID:</label>
+                    <input type="text" id="course_id1" name="course_id1" required>
+                </div>
+                <button type="submit">Delete</button>
+            </form>
+            <div id="deleteMessage" class="message-box"></div>
+        </div>
+        
+        <!-- CSS for message box -->
+        <style>
+            .message-box {
+                display: none;
+                margin-top: 10px;
+                padding: 10px;
+                color: #fff;
+                background-color: #28a745;
+                border-radius: 4px;
+            }
+        </style>
+        
+       <!-- JavaScript/jQuery -->
+       <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+       <script>
+           $(document).ready(function() {
+               // Hiển thị form CREATE khi nhấn vào nút
+               $('#createBox').click(function() {
+                   $('.form-container').hide();
+                   $('#createForm').show();
+               });
+       
+               // Hiển thị form UPDATE khi nhấn vào nút
+               $('#updateBox').click(function() {
+                   $('.form-container').hide();
+                   $('#updateForm').show();
+               });
+       
+               // Hiển thị form DELETE khi nhấn vào nút
+               $('#deleteBox').click(function() {
+                   $('.form-container').hide();
+                   $('#deleteForm').show();
+               });
+           });
+       
+           // AJAX xử lý CREATE
+           $(document).on('submit', '#createClassForm', function(event) {
+               event.preventDefault();
+               var courseId = $('#course_id').val();
+               console.log('Course ID:', courseId);
+       
+               // Gửi yêu cầu POST đến server
+               $.post(`/admin/courses/${courseId}/create`, $(this).serialize(), function(response) {
+                   $('#createMessage').text('Lớp học đã được tạo thành công!').css('display', 'block');
+                   setTimeout(function() {
+                       location.reload(); // Reload trang sau 3 giây
+                   }, 3000);
+                   $('#createClassForm')[0].reset();
+               }).fail(function() {
+                   $('#createMessage').text('Có lỗi xảy ra khi tạo lớp học.').css({
+                       display: 'block',
+                       backgroundColor: 'red'
+                   });
+               });
+           });
+       
+           // AJAX xử lý UPDATE
+           $(document).on('submit', '#updateClassForm', function(event) {
+               event.preventDefault();
+               var courseId = $('#course_id2').val();
+               console.log('Course ID:', courseId);
+       
+               // Gửi yêu cầu POST đến server
+               $.post(`/admin/courses/${courseId}/update`, $(this).serialize(), function(response) {
+                   $('#updateMessage').text('Khóa học đã được cập nhật').css('display', 'block');
+                   setTimeout(function() {
+                       location.reload(); // Reload trang sau 3 giây
+                   }, 3000);
+                   $('#updateClassForm')[0].reset();
+               }).fail(function() {
+                   $('#updateMessage').text('Có lỗi xảy ra khi cập nhật khóa học').css({
+                       display: 'block',
+                       backgroundColor: 'red'
+                   });
+               });
+           });
+       
+           // AJAX xử lý DELETE
+           $(document).on('submit', '#deleteClassForm', function(event) {
+               event.preventDefault();
+               var courseId = $('#course_id1').val();
+               console.log('Course ID:', courseId);
+       
+               // Gửi yêu cầu POST đến server
+               $.post(`/admin/courses/${courseId}/delete`, $(this).serialize(), function(response) {
+                   $('#deleteMessage').text('Khóa học đã được xóa').css('display', 'block');
+                   setTimeout(function() {
+                       location.reload(); // Reload trang sau 3 giây
+                   }, 3000);
+                   $('#deleteClassForm')[0].reset();
+               }).fail(function() {
+                   $('#deleteMessage').text('Có lỗi xảy ra khi xóa khóa học').css({
+                       display: 'block',
+                       backgroundColor: 'red'
+                   });
+               });
+           });
+       </script>
+    </div>
+    
+    
+
     
 
    
