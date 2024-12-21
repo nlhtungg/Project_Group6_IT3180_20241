@@ -1,5 +1,6 @@
 const express = require("express");
-const { connectDB } = require("./models/db");
+const session = require('express-session');
+const {connectDB} = require("./models/db");
 const path = require("path");
 const cookieParser = require("cookie-parser");
 const livereload = require("livereload");
@@ -17,6 +18,12 @@ connectDB();
 app.use(express.static(path.join(__dirname, "public")));
 app.set("view engine", "ejs");
 app.use(cookieParser());
+app.use(session({
+    secret: 'yourSecretKey', // Secret key to sign the session ID cookie
+    resave: false,           // Don't save session if it was not modified
+    saveUninitialized: true, // Save uninitialized sessions
+    cookie: { secure: false } // Set to `true` if you're using https
+}));
 
 // Middleware to authenticate token
 const { authenticateToken } = require("./middlewares/authenticateToken");

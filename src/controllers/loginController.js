@@ -17,7 +17,7 @@ const login = async (req, res) => {
                 return res.render('login-page', { error: 'Sai tài khoản hoặc mật khẩu'})
             }
         } else{
-        const result = await pool.query(`SELECT * FROM ${role}s WHERE ${role}_email = $1 AND ${role}_id = $2`, [username, password]);
+        const result = await pool.query(`SELECT * FROM ${role}s WHERE ${role}_email = $1 AND password = $2`, [username, password]);
 
         if (result.rows.length === 0) {
             return res.render('login-page', { error: 'Sai tài khoản hoặc mật khẩu'})
