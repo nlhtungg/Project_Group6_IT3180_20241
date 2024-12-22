@@ -18,27 +18,22 @@
         <ul class="nav-list">
             <li><a href="/teacher" class="nav-link">Home</a></li>
             <li><a href="/teacher/classes" class="nav-link">Classes</a></li>
-            <li><a href="/teacher/profile" class="nav-link">Profile</a></li>
         </ul>
     </nav>
 
     <div class="main">
         <div class="welcome-container">
             <!-- Personalized Greeting -->
-            <h1>Welcome, <span id="teacher-name"><%= teacherName %></span></h1>
-            <p><%= teacherFaculty %></p>
+            <h1>Welcome, <span id="teacher-name"><%= user.teacher_name %></span></h1>
+            <p><%= user.teacher_faculty %></p>
+            <p>ID: <%= user.teacher_id %> | Email: <%= user.teacher_email %></p>
             
             <div class="cards-container">
                 <!-- Number of Classes Card -->
                 <div class="card" onclick="window.location.href='/teacher/classes'">
                     <h2>Classes</h2>
-                    <p><%= numberOfClasses %> Classes</p>
-                </div>
-
-                <!-- Profile Card -->
-                <div class="card" onclick="window.location.href='/teacher/profile'">
-                    <h2>My Profile</h2>
-                    <p>View and update your profile</p>
+                    <h3 class="numberOfClasses"><%= numberOfClasses %></h3>
+                    <p>View and manage your classes</p>
                 </div>
             </div>
         </div>

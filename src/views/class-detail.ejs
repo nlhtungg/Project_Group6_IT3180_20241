@@ -16,7 +16,6 @@
         <ul class="nav-list">
             <li><a href="/teacher" class="nav-link">Home</a></li>
             <li><a href="/teacher/classes" class="nav-link">Classes</a></li>
-            <li><a href="/teacher/profile" class="nav-link">Profile</a></li>
         </ul>
     </nav>
 
@@ -54,8 +53,8 @@
                     <td><%= student.student_id %></td>
                     <td><%= student.student_name %></td>
                     <td><%= student.student_email %></td>
-                    <td><%= student.midterm_score || 'N/A' %></td>
-                    <td><%= student.final_score || 'N/A' %></td>
+                    <td><%= student.midterm_score || '' %></td>
+                    <td><%= student.final_score || '' %></td>
                     <td>
                         <button class="edit-btn" 
                         data-enrollment-id="<%= student.enrollment_id %>" 
@@ -92,7 +91,7 @@
                 </div>
                 <div class="modal-buttons">
                     <button type="submit" class="submit-btn">Submit</button>
-                    <button type="button" class="cancel-btn">Cancel</button>
+                    <button type="button" class="cancel-btn" style="display: none;"></button>
                 </div>
             </form>
         </div>

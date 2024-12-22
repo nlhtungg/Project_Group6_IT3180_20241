@@ -5,6 +5,9 @@ body {
 }
 
 .footer {
+    left: 0;
+    bottom: 0;
+    width: 100%;
     background-color: #cfe2cf;
     padding: 10px;
     text-align: center;

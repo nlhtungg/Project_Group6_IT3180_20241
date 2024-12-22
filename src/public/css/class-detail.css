@@ -10,29 +10,32 @@ h1, h2 {
 }
 
 .navbar {
-    background-color: #333;
-    padding: 10px 0;
+    position: sticky;
+    top: 0;
+    background-color: #186A3B;
+    z-index: 1000;
+    padding: 1px;
 }
 
-.navbar .nav-list {
-    list-style: none;
+.nav-list {
     display: flex;
     justify-content: center;
-    gap: 20px;
-    padding: 0;
-    margin: 0;
+    list-style: none;
 }
 
-.navbar .nav-list li a {
-    color: white;
-    font-size: 18px;
+.nav-list li {
+    margin: 0 100px;
+}
+
+.nav-list a {
     text-decoration: none;
-    padding: 8px 12px;
+    color: white;
+    font-size: 1.1rem;
 }
 
-.navbar .nav-list li a:hover {
-    background-color: #555;
-    border-radius: 4px;
+.nav-list a:hover {
+    color: #009688; /* Primary color */
+
 }
 
 .class-info {
@@ -56,7 +59,15 @@ table {
 }
 
 table, th, td {
-    border: 1px solid #ccc;
+    border: 1px solid #dee2e6;
+}
+
+table th {
+    background-color: #e9ecef;
+    font-weight: bold;
+    position: sticky;
+    top: 0;
+    z-index: 1;
 }
 
 th, td {
@@ -66,6 +77,34 @@ th, td {
 
 th {
     background-color: #f4f4f4;
+}
+
+table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+table tr:nth-child(odd) {
+    background-color: #f2f2f2;
+}
+
+table tr:hover {
+    background-color: #d4edda;
+}
+
+.edit-btn {
+    display: inline-block;
+    text-decoration: none;
+    color: #fff;
+    background-color: #007bff;
+    padding: 8px 16px;
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+.edit-btn:hover {
+    background-color: #0056b3;
 }
 
 /* Modal background */
@@ -93,9 +132,28 @@ th {
 }
 
 .close-btn {
-    float: right;
-    font-size: 24px;
+    width: 20px;
+    height: 20px;
+    background-color: red;
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     cursor: pointer;
+}
+
+.close-btn:hover {
+    background-color: darkred;
+}
+
+.modal input {
+    width: 100%;
+    padding: 8px;
+    margin: 10px 0;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 5px;
 }
 
 .modal-buttons {
@@ -107,6 +165,23 @@ th {
 .modal-buttons button {
     padding: 8px 12px;
     cursor: pointer;
+}
+
+.submit-btn {
+    background-color: green;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+    text-align: center;
+    display: block;
+    margin: 0 auto;
+}
+
+.submit-btn:hover {
+    background-color: #186A3B;
 }
 
 .back-button-container {
