@@ -44,59 +44,6 @@
         </form>
     </div>
     
-    <!-- Div để hiển thị kết quả khóa học -->
-    <div id="coursesResult"></div>
-    
-    <script>
-        $(document).ready(function(){
-            // Hàm tải tất cả các khóa học khi trang được tải lần đầu
-            function loadAllCourses() {
-                $.ajax({
-                    url: '/admin/search-courses',
-                    method: 'POST',
-                    data: {
-                        searchText: '' // Không có từ khóa tìm kiếm để lấy tất cả khóa học
-                    },
-                    success: function(response){
-                        $('#coursesResult').html(response); // Hiển thị danh sách khóa học
-                    },
-                    error: function(xhr, status, error){
-                        console.error('Có lỗi xảy ra:', error);
-                    }
-                });
-            }
-    
-            // Gọi loadAllCourses khi trang tải lần đầu
-            loadAllCourses();
-    
-            // Xử lý khi người dùng nhấn nút "Tìm kiếm"
-            $('#searchForm').submit(function(event){
-                event.preventDefault(); // Ngăn chặn tải lại trang
-    
-                // Lấy dữ liệu từ form
-                const searchText = $('#searchText').val();
-    
-                // Gửi yêu cầu AJAX tìm kiếm
-                $.ajax({
-                    url: '/admin/search-courses',
-                    method: 'POST',
-                    data: {
-                        searchText: searchText
-                    },
-                    success: function(response){
-                        // Hiển thị kết quả tìm kiếm trong #coursesResult
-                        $('#coursesResult').html(response);
-                    },
-                    error: function(xhr, status, error){
-                        console.error('Có lỗi xảy ra:', error);
-                    }
-                });
-            });
-        });
-    </script>
-    
-
-
     <div class="CRUDCourses">
         <!-- 3 Hộp (CREATE, UPDATE, DELETE) -->
         <div class="container">
@@ -243,11 +190,58 @@
             });
         </script>
     </div>
-    
 
-
+    <!-- Div để hiển thị kết quả khóa học -->
+    <div id="coursesResult"></div>
     
+    <script>
+        $(document).ready(function(){
+            // Hàm tải tất cả các khóa học khi trang được tải lần đầu
+            function loadAllCourses() {
+                $.ajax({
+                    url: '/admin/search-courses',
+                    method: 'POST',
+                    data: {
+                        searchText: '' // Không có từ khóa tìm kiếm để lấy tất cả khóa học
+                    },
+                    success: function(response){
+                        $('#coursesResult').html(response); // Hiển thị danh sách khóa học
+                    },
+                    error: function(xhr, status, error){
+                        console.error('Có lỗi xảy ra:', error);
+                    }
+                });
+            }
     
+            // Gọi loadAllCourses khi trang tải lần đầu
+            loadAllCourses();
+    
+            // Xử lý khi người dùng nhấn nút "Tìm kiếm"
+            $('#searchForm').submit(function(event){
+                event.preventDefault(); // Ngăn chặn tải lại trang
+    
+                // Lấy dữ liệu từ form
+                const searchText = $('#searchText').val();
+    
+                // Gửi yêu cầu AJAX tìm kiếm
+                $.ajax({
+                    url: '/admin/search-courses',
+                    method: 'POST',
+                    data: {
+                        searchText: searchText
+                    },
+                    success: function(response){
+                        // Hiển thị kết quả tìm kiếm trong #coursesResult
+                        $('#coursesResult').html(response);
+                    },
+                    error: function(xhr, status, error){
+                        console.error('Có lỗi xảy ra:', error);
+                    }
+                });
+            });
+        });
+    </script>
+        
     <div id="crudModal" class="modal" style="display: none;">
     <div class="modal-content">
         <p id="modalMessage"></p>
