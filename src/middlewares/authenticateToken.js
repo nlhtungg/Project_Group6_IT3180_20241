@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-const accessTokenSecret = 'yourAccessTokenSecret';
+const accessTokenSecret = 'hieunguyentrung';
 
 
 const authenticateToken = (req, res, next) => {
@@ -14,7 +14,7 @@ const authenticateToken = (req, res, next) => {
       return res.sendStatus(403); // Forbidden
     }
 
-    req.user = user;
+    req.user = user; // user của req lấy ở đây nèee
     next();
   });
 };
