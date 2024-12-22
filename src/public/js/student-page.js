@@ -77,24 +77,25 @@ let config = {
   onSuccess: (event) => {
     contentContainer.innerHTML = `
         <div style="padding-top: 20px; padding-bottom:20px">
-            Thanh toan thanh cong
+            You have paid successfully
         </div>
     `;
     buttonContainer.innerHTML = `
-        <button
-            type="submit"
-            id="create-payment-link-btn"
-            style="
-            width: 100%;
-            background-color: rgb(131, 217, 142);
-            color: white;
-            border: none;
-            padding: 10px;
-            font-size: 15px;
-            "
-        >
-            Quay lại trang thanh toán
-        </button>
+      <button
+        type="submit"
+        id="create-payment-link-btn"
+        style="
+        width: 100%;
+        background-color: rgb(131, 217, 142);
+        color: white;
+        border: none;
+        padding: 10px;
+        font-size: 15px;
+        "
+        onclick="window.location.href='/student'"
+      >
+        Quay lại trang sinh viên
+      </button>
     `;
   },
 };
@@ -170,3 +171,202 @@ const changeButton = () => {
     `;
   }
 };
+
+const modal = document.getElementById("classModal");
+const closeBtn = document.getElementsByClassName("close")[0];
+
+async function viewClasses(courseId) {
+  try {
+    console.log(courseId);
+    const response = await fetch(
+      `http://localhost:3000/student/classes/${courseId}`
+    );
+    const classes = await response.json();
+
+    const courseCard = document.querySelector(`[data-course-id="${courseId}"]`);
+    const courseName = courseCard.querySelector("h3").textContent;
+
+    document.getElementById("selectedCourseName").textContent = courseName;
+
+    const classList = document.getElementById("classList");
+    classList.innerHTML = classes
+      .map(
+        (cls) => `
+      <div class="class-item">
+        <div class="class-details">
+          <p>Professor: ${cls.teacher_name}</p> 
+        
+          <p>Room: ${cls.room_id}</p> 
+        
+          <p>Class ID: ${cls.class_id}</p> 
+          <p>Semester: ${cls.semester}</p> 
+          <p>Time Start: ${cls.class_time_start}</p> 
+          <p>Time End: ${cls.class_time_end}</p> 
+          <p>Day: ${cls.class_time_day}</p> 
+        </div>
+        <button 
+          class="register-btn" 
+          onclick="registerForClass('${cls.class_id}', '${courseId}')"
+        >
+          Register
+        </button>
+      </div>
+    `
+      )
+      .join("");
+
+    modal.style.display = "block";
+  } catch (error) {
+    console.error("Error fetching classes:", error);
+  }
+}
+
+async function registerForClass(classId, courseId) {
+  try {
+    const response = await fetch("/student/register", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ classId, courseId }),
+    });
+
+    const result = await response.json();
+    console.log(result);
+
+    if (result.success) {
+      alert("Successfully registered for the class!");
+      modal.style.display = "none";
+    } else {
+      alert(result.message || "Failed to register for the class");
+    }
+  } catch (error) {
+    console.error("Error registering for class:", error);
+    alert("Failed to register for the class");
+  }
+}
+
+closeBtn.onclick = function () {
+  modal.style.display = "none";
+};
+
+window.onclick = function (event) {
+  if (event.target == modal) {
+    modal.style.display = "none";
+  }
+};
+
+document.addEventListener("DOMContentLoaded", function () {
+  const searchInput = document.getElementById("courseSearch");
+  const courseCards = document.querySelectorAll(".course-card");
+  const noResults = document.getElementById("noResults");
+  const resultsCount = document.querySelector(".results-count");
+  let debounceTimer;
+
+  console.log(courseCards);
+
+  function updateSearchResults() {
+    const searchTerm = searchInput.value.toLowerCase().trim();
+    let visibleCount = 0;
+
+    courseCards.forEach((card) => {
+      const courseId = card.dataset.courseId.toLowerCase();
+      const courseName = card.querySelector("h3").textContent.toLowerCase();
+      const isMatch =
+        courseId.includes(searchTerm) || courseName.includes(searchTerm);
+
+      card.style.display = isMatch ? "block" : "none";
+      if (isMatch) visibleCount++;
+    });
+
+    // Update results count and visibility
+    if (searchTerm === "") {
+      resultsCount.textContent = `Showing all ${courseCards.length} courses`;
+    } else {
+      resultsCount.textContent = `Found ${visibleCount} course${
+        visibleCount !== 1 ? "s" : ""
+      }`;
+    }
+
+    // Show/hide no results message
+    noResults.style.display = visibleCount === 0 ? "block" : "none";
+  }
+
+  // Add event listener with debounce
+  searchInput.addEventListener("input", function () {
+    clearTimeout(debounceTimer);
+    debounceTimer = setTimeout(updateSearchResults, 300);
+  });
+
+  // Initialize results count
+  updateSearchResults();
+});
+
+document.addEventListener("DOMContentLoaded", () => {
+  //  fetch and update grades content
+  const fetchGrades = async () => {
+    try {
+      const response = await fetch("/student/grades");
+      const data = await response.json();
+
+      const gradesContent = document.getElementById("grades-content");
+      let content = `
+        <table class="grades-table">
+          <thead>
+            <tr>
+              <th>Course ID</th>
+              <th>Course Name</th>
+              <th>Credits</th>
+              <th>Midterm Score</th>
+              <th>Final Score</th>
+            </tr>
+          </thead>
+          <tbody>
+      `;
+
+      data.grades.forEach((g) => {
+        content += `
+          <tr>
+            <td>${g.course_id}</td>
+            <td>${g.course_name}</td>
+            <td>${g.course_credit}</td>
+            <td>${g.midterm_score}</td>
+            <td>${g.final_score}</td>
+          </tr>
+        `;
+      });
+
+      content += `
+        </tbody>
+      </table>
+      `;
+
+      gradesContent.innerHTML = content;
+    } catch (error) {
+      console.error("Error fetching grades:", error);
+    }
+  };
+
+  // Check the URL hash and display the corresponding section
+  const hash = window.location.hash;
+  if (hash) {
+    const activeTab = document.querySelector(
+      `.nav-item[data-tab="${hash.substring(1)}"]`
+    );
+    if (activeTab) {
+      document
+        .querySelectorAll(".tab-content")
+        .forEach((section) => section.classList.remove("active"));
+      document
+        .querySelectorAll(".nav-item")
+        .forEach((item) => item.classList.remove("active"));
+
+      activeTab.classList.add("active");
+      document.querySelector(`#${hash.substring(1)}`).classList.add("active");
+
+      if (hash === "#grades") {
+        fetchGrades();
+      }
+    }
+  }
+});

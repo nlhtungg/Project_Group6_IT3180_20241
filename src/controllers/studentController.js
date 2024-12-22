@@ -1,4 +1,5 @@
 const { pool } = require("../models/db");
+const { v4: uuidv4 } = require("uuid");
 const PayOS = require("@payos/node");
 
 const payOS = new PayOS(
@@ -81,10 +82,10 @@ const generateQR = async (req, res) => {
   const body = {
     orderCode: Number(String(Date.now()).slice(-6)),
     amount: 10000,
-    description: "Thanh toan don hang",
+    description: "Thanh toan hoc phi",
     items: [
       {
-        name: "Mì tôm Hảo Hảo ly",
+        name: "Thanh toan hoc phi",
         quantity: 1,
         price: 2000,
       },
@@ -103,4 +104,164 @@ const generateQR = async (req, res) => {
   }
 };
 
-module.exports = { showStudentPage, uploadAvatar, generateQR };
+const viewClasses = async (req, res) => {
+  try {
+    const courseId = req.params.courseId;
+    const classQuery = `
+      SELECT class_id, course_id teacher_name, room_id, semester, class_time_start, class_time_end, class_time_day FROM public.classes cl
+      JOIN public.teachers t ON cl.teacher_id = t.teacher_id
+      WHERE cl.course_id = $1
+    `;
+    const classResult = await pool.query(classQuery, [courseId]);
+
+    res.json(classResult.rows);
+  } catch (error) {
+    console.error("Error fetching classes:", error);
+    res.status(500).send("Internal Server Error");
+  }
+};
+
+const generateRandomId = () => {
+  return Math.floor(1000 + Math.random() * 9000); // Generates a random 4-digit number
+};
+const registerForClass = async (req, res) => {
+  const student_id = req.user.user_id;
+  const class_id = req.body.classId;
+  const course_id = req.body.courseId;
+  const enrollment_id = generateRandomId();
+  const enrollment_date = new Date(); // Current date and time
+
+  console.log(class_id, student_id, course_id);
+
+  try {
+    // Check if the student is already enrolled in the course
+    const checkCourseQuery = `
+      SELECT * FROM enrollments e
+      JOIN classes cl ON e.class_id = cl.class_id
+      WHERE e.student_id = $1 AND cl.course_id = $2
+    `;
+    const checkCourseResult = await pool.query(checkCourseQuery, [
+      student_id,
+      course_id,
+    ]);
+
+    console.log(checkCourseResult.rows);
+
+    if (checkCourseResult.rows.length > 0) {
+      return res.status(400).json({
+        success: false,
+        message: "You are already registered for a class in this course.",
+      });
+    }
+
+    // Insert the new enrollment
+    const query = `
+      INSERT INTO enrollments (enrollment_id, student_id, class_id, enrollment_date)
+      VALUES ($1, $2, $3, $4)
+      RETURNING *;
+    `;
+    const values = [enrollment_id, student_id, class_id, enrollment_date];
+
+    const result = await pool.query(query, values);
+
+    if (result.rows.length > 0) {
+      res.status(200).json({
+        success: true,
+        message: "Successfully registered for the class!",
+      });
+    } else {
+      res
+        .status(400)
+        .json({ success: false, message: "Failed to register for the class." });
+    }
+  } catch (error) {
+    console.error("Error registering for class:", error);
+    res.status(500).json({ success: false, message: "Internal server error." });
+  }
+};
+
+const getGrades = async (req, res) => {
+  const student_id = req.user.user_id;
+
+  try {
+    const query = `
+      SELECT c.course_id, c.course_name, c.course_credit, g.midterm_score, g.final_score
+      FROM grades g
+      JOIN enrollments e ON g.enrollment_id = e.enrollment_id
+      JOIN classes cl ON e.class_id = cl.class_id
+      JOIN courses c ON cl.course_id = c.course_id
+      WHERE e.student_id = $1
+    `;
+    const result = await pool.query(query, [student_id]);
+
+    res.json({ grades: result.rows });
+  } catch (error) {
+    console.error("Error fetching grades:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+};
+
+const getStudentTimetable = async (req, res) => {
+  try {
+    const studentId = req.user.user_id;
+
+    // Hàm chuyển đổi tên ngày sang số trong tuần (FullCalendar yêu cầu)
+    const dayMap = {
+      "Thứ 2": 1, // Thứ Hai
+      "Thứ 3": 2, // Thứ Ba
+      "Thứ 4": 3, // Thứ Tư
+      "Thứ 5": 4, // Thứ Năm
+      "Thứ 6": 5, // Thứ Sáu
+      "Thứ 7": 6, // Thứ Bảy
+      "Chủ Nhật": 0, // Chủ Nhật
+    };
+
+    // Lấy thời khóa biểu của sinh viên
+    const timetableQuery = `
+      SELECT 
+        c.course_name,
+        cl.class_time_day,
+        cl.class_time_start,
+        cl.class_time_end,
+        r.room_name,
+        t.teacher_name
+      FROM 
+        Enrollments e
+      JOIN 
+        Classes cl ON e.class_id = cl.class_id
+      JOIN 
+        Courses c ON cl.course_id = c.course_id
+      JOIN 
+        Rooms r ON cl.room_id = r.room_id
+      JOIN 
+        Teachers t ON cl.teacher_id = t.teacher_id
+      WHERE 
+        e.student_id = $1
+    `;
+    const timetableResult = await pool.query(timetableQuery, [studentId]);
+
+    // Định dạng lại kết quả thời khóa biểu cho FullCalendar
+    const events = timetableResult.rows.map((row) => ({
+      title: row.course_name,
+      daysOfWeek: [dayMap[row.class_time_day]], // Chuyển đổi ngày sang số
+      startTime: row.class_time_start,
+      endTime: row.class_time_end,
+    }));
+
+    // Trả về kết quả dưới dạng JSON
+    res.json(events);
+  } catch (error) {
+    console.error("Error:", error);
+    res.status(500).send("Internal Server Error");
+  }
+};
+
+module.exports = {
+  showStudentPage,
+  uploadAvatar,
+  generateQR,
+  viewClasses,
+  registerForClass,
+  getGrades,
+  getStudentTimetable,
+};
