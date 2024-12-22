@@ -1,24 +1,51 @@
-// src/controllers/studentController.js
+// src/controllers/admin-studentController.js
 
 const { pool } = require('../models/db');
 
-// Get Students Page with Pagination
+// Allowed columns for sorting to prevent SQL injection
+const ALLOWED_SORT_COLUMNS = ['student_id', 'student_name', 'student_dob', 'student_email', 'student_major'];
+
+const formatDate = (date) => {
+    const d = new Date(date);
+    const year = d.getFullYear();
+    // Months are zero-based in JavaScript
+    const month = (`0${d.getMonth() + 1}`).slice(-2);
+    const day = (`0${d.getDate()}`).slice(-2);
+    return `${year}-${month}-${day}`;
+};
+
 const getStudentsPage = async (req, res) => {
     const page = parseInt(req.query.page) || 1;
     const limit = 100;
     const offset = (page - 1) * limit;
+
+    const sortBy = ALLOWED_SORT_COLUMNS.includes(req.query.sortBy) ? req.query.sortBy : 'student_id';
+    const sortOrder = req.query.sortOrder === 'desc' ? 'DESC' : 'ASC';
 
     try {
         const countResult = await pool.query('SELECT COUNT(*) FROM students');
         const totalStudents = parseInt(countResult.rows[0].count);
         const totalPages = Math.ceil(totalStudents / limit);
 
-        const result = await pool.query('SELECT * FROM students LIMIT $1 OFFSET $2', [limit, offset]);
-        const students = result.rows;
+        const query = `
+            SELECT * FROM students
+            ORDER BY ${sortBy} ${sortOrder}
+            LIMIT $1 OFFSET $2
+        `;
+        const result = await pool.query(query, [limit, offset]);
+
+        // Format student_dob as 'YYYY-MM-DD'
+        const students = result.rows.map(student => ({
+            ...student,
+            student_dob: formatDate(student.student_dob)
+        }));
+
         res.render('admin-student-page', {
             students,
             currentPage: page,
-            totalPages
+            totalPages,
+            sortBy,
+            sortOrder
         });
     } catch (error) {
         console.error('Error fetching students:', error);
@@ -26,9 +53,8 @@ const getStudentsPage = async (req, res) => {
     }
 };
 
-// Create New Student
 const createStudent = async (req, res) => {
-    const { student_id, student_name, student_dob, student_email, student_major, password } = req.body;
+    const { student_id, student_name, student_dob, student_email, student_major } = req.body;
     try {
         // Check for duplicate ID or email
         const existingStudent = await pool.query(
@@ -40,7 +66,6 @@ const createStudent = async (req, res) => {
             return res.status(400).json({ error: 'Student with the same ID or email already exists.' });
         }
 
-        
         await pool.query(
             'INSERT INTO students (student_id, student_name, student_dob, student_email, student_major, password) VALUES ($1, $2, $3, $4, $5, $6)',
             [student_id, student_name, student_dob, student_email, student_major, student_id]
@@ -56,12 +81,6 @@ const updateStudent = async (req, res) => {
     const { student_id, student_name, student_dob, student_email, student_major } = req.body;
 
     try {
-        // Parse the date and add one day to compensate for timezone issues
-        const parsedDob = student_dob ? new Date(Date.parse(student_dob + 'T00:00:00Z')) : null;
-        if (parsedDob) {
-            parsedDob.setUTCDate(parsedDob.getUTCDate() + 1);
-        }
-
         // Fetch the current student data
         const currentStudent = await pool.query('SELECT * FROM students WHERE student_id = $1', [student_id]);
 
@@ -73,7 +92,7 @@ const updateStudent = async (req, res) => {
 
         // Only update fields that have changed
         const updatedName = student_name !== currentData.student_name ? student_name : currentData.student_name;
-        const updatedDob = parsedDob && parsedDob.toISOString().slice(0, 10) !== currentData.student_dob.toISOString().slice(0, 10) ? parsedDob.toISOString().slice(0, 10) : currentData.student_dob.toISOString().slice(0, 10);
+        const updatedDob = student_dob !== formatDate(currentData.student_dob) ? student_dob : formatDate(currentData.student_dob);
         const updatedEmail = student_email !== currentData.student_email ? student_email : currentData.student_email;
         const updatedMajor = student_major !== currentData.student_major ? student_major : currentData.student_major;
 
@@ -110,7 +129,14 @@ const searchStudents = async (req, res) => {
             'SELECT * FROM students WHERE student_id ILIKE $1 OR student_name ILIKE $1',
             [searchQuery]
         );
-        res.json({ students: result.rows });
+
+        // Format student_dob as 'YYYY-MM-DD'
+        const students = result.rows.map(student => ({
+            ...student,
+            student_dob: formatDate(student.student_dob)
+        }));
+
+        res.json({ students });
     } catch (error) {
         console.error('Error searching students:', error);
         res.status(500).json({ error: 'Server Error' });
