@@ -11,6 +11,8 @@ const {
   registerForClass,
   getGrades,
   getStudentTimetable,
+  getRegisteredClasses,
+  removeRegisteredClass,
 } = require("../controllers/studentController");
 
 // Route hiển thị trang sinh viên
@@ -24,18 +26,29 @@ router.post(
   uploadAvatar
 );
 
-//Route xử lý generate qr thanh toán học phí
+// Route xử lý generate qr thanh toán học phí
 router.post("/create-embedded-payment-link", authenticateToken, generateQR);
 
 // Route xử lý lấy dữ liệu lớp học
 router.get("/classes/:courseId", authenticateToken, viewClasses);
 
-//đăng ký lớp
+// Đăng ký lớp
 router.post("/register", authenticateToken, registerForClass);
 
-//xem điểm
+// Xem điểm
 router.get("/grades", authenticateToken, getGrades);
 
+// Lấy thời khóa biểu
 router.get("/time-table", authenticateToken, getStudentTimetable);
+
+// Lấy các lớp đã đăng ký
+router.get("/registered-classes", authenticateToken, getRegisteredClasses);
+
+// Xóa lớp đã đăng ký
+router.post(
+  "/remove-registered-class",
+  authenticateToken,
+  removeRegisteredClass
+);
 
 module.exports = router;

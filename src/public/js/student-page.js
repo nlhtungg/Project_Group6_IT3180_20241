@@ -21,6 +21,9 @@ document.addEventListener("DOMContentLoaded", function () {
       selectedContent.classList.add("active");
       selectedNav.classList.add("active");
     }
+
+    // Save the active tab to localStorage
+    localStorage.setItem("activeTab", tabId);
   }
 
   // Thêm event listeners cho các nav items
@@ -29,8 +32,23 @@ document.addEventListener("DOMContentLoaded", function () {
       e.preventDefault();
       const tabId = this.getAttribute("data-tab");
       switchTab(tabId);
+      if (tabId == "tuition") {
+        window.location.reload();
+      } else if (tabId == "grades") {
+        fetchGrades();
+      } else if (tabId == "timetable") {
+        fetchTimeTable();
+      } else if (tabId === "courses") {
+        fetchRegisteredClasses();
+      } else if (tabId === "registered-classes") {
+        fetchRegisteredClasses();
+      }
     });
   });
+
+  // Restore the last active tab from localStorage
+  const activeTab = localStorage.getItem("activeTab") || "student-info";
+  switchTab(activeTab);
 
   document
     .getElementById("upload-btn")
@@ -63,6 +81,135 @@ document.addEventListener("DOMContentLoaded", function () {
         alert("Upload failed");
       }
     });
+
+  //  fetch and update grades content
+  const fetchGrades = async () => {
+    try {
+      const response = await fetch("/student/grades");
+      const data = await response.json();
+
+      console.log("grades");
+
+      const gradesContent = document.getElementById("grades-content");
+      let content = `
+        <table class="grades-table">
+          <thead>
+            <tr>
+              <th>Course ID</th>
+              <th>Course Name</th>
+              <th>Credits</th>
+              <th>Midterm Score</th>
+              <th>Final Score</th>
+            </tr>
+          </thead>
+          <tbody>
+      `;
+
+      data.grades.forEach((g) => {
+        content += `
+          <tr>
+            <td>${g.course_id}</td>
+            <td>${g.course_name}</td>
+            <td>${g.course_credit}</td>
+            <td>${g.midterm_score}</td>
+            <td>${g.final_score}</td>
+          </tr>
+        `;
+      });
+
+      content += `
+        </tbody>
+      </table>
+      `;
+
+      gradesContent.innerHTML = content;
+    } catch (error) {
+      console.error("Error fetching grades:", error);
+    }
+  };
+
+  const calendarEl = document.getElementById("calendar");
+
+  const fetchTimeTable = async () => {
+    console.log("timetable");
+    const calendar = new FullCalendar.Calendar(calendarEl, {
+      initialView: "timeGridWeek", // Hiển thị dạng tuần
+      headerToolbar: {
+        left: "prev,next today",
+        center: "title",
+        right: "timeGridWeek",
+      },
+      events: function (info, successCallback, failureCallback) {
+        fetch("student/time-table") // Gọi API lấy thời khóa biểu
+          .then((response) => response.json())
+          .then((data) => successCallback(data))
+          .catch((error) => failureCallback(error));
+      },
+    });
+    calendar.render();
+  };
+
+  async function fetchRegisteredClasses() {
+    try {
+      const response = await fetch("/student/registered-classes");
+      const classes = await response.json();
+      console.log("register");
+
+      const registeredClassesContainer = document.getElementById(
+        "registered-classes-content"
+      );
+      registeredClassesContainer.innerHTML = classes
+        .map(
+          (cls) => `
+        <div class="class-item">
+          <div class="class-details">
+            <p>Course: ${cls.course_name}</p>
+            <p>Class ID: ${cls.class_id}</p>
+            <p>Professor: ${cls.teacher_name}</p>
+            <p>Room: ${cls.room_id}</p>
+            <p>Time: ${cls.class_time_start} - ${cls.class_time_end}</p>
+            <p>Day: ${cls.class_time_day}</p>
+          </div>
+          <button 
+            class="remove-btn" 
+            onclick="removeRegisteredClass('${cls.class_id}')"
+          >
+            Remove
+          </button>
+        </div>
+      `
+        )
+        .join("");
+    } catch (error) {
+      console.error("Error fetching registered classes:", error);
+    }
+  }
+
+  async function removeRegisteredClass(classId) {
+    try {
+      const response = await fetch("/student/remove-registered-class", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ classId }),
+      });
+
+      const result = await response.json();
+      if (result.success) {
+        alert("Successfully removed the class!");
+        fetchRegisteredClasses();
+      } else {
+        alert(result.message || "Failed to remove the class");
+      }
+    } catch (error) {
+      console.error("Error removing registered class:", error);
+      alert("Failed to remove the class");
+    }
+  }
+
+  document.querySelector(`[data-tab="${activeTab}"]`).classList.add("active");
+  document.getElementById(activeTab).classList.add("active");
 });
 
 /* eslint-disable no-undef */
@@ -300,73 +447,4 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Initialize results count
   updateSearchResults();
-});
-
-document.addEventListener("DOMContentLoaded", () => {
-  //  fetch and update grades content
-  const fetchGrades = async () => {
-    try {
-      const response = await fetch("/student/grades");
-      const data = await response.json();
-
-      const gradesContent = document.getElementById("grades-content");
-      let content = `
-        <table class="grades-table">
-          <thead>
-            <tr>
-              <th>Course ID</th>
-              <th>Course Name</th>
-              <th>Credits</th>
-              <th>Midterm Score</th>
-              <th>Final Score</th>
-            </tr>
-          </thead>
-          <tbody>
-      `;
-
-      data.grades.forEach((g) => {
-        content += `
-          <tr>
-            <td>${g.course_id}</td>
-            <td>${g.course_name}</td>
-            <td>${g.course_credit}</td>
-            <td>${g.midterm_score}</td>
-            <td>${g.final_score}</td>
-          </tr>
-        `;
-      });
-
-      content += `
-        </tbody>
-      </table>
-      `;
-
-      gradesContent.innerHTML = content;
-    } catch (error) {
-      console.error("Error fetching grades:", error);
-    }
-  };
-
-  // Check the URL hash and display the corresponding section
-  const hash = window.location.hash;
-  if (hash) {
-    const activeTab = document.querySelector(
-      `.nav-item[data-tab="${hash.substring(1)}"]`
-    );
-    if (activeTab) {
-      document
-        .querySelectorAll(".tab-content")
-        .forEach((section) => section.classList.remove("active"));
-      document
-        .querySelectorAll(".nav-item")
-        .forEach((item) => item.classList.remove("active"));
-
-      activeTab.classList.add("active");
-      document.querySelector(`#${hash.substring(1)}`).classList.add("active");
-
-      if (hash === "#grades") {
-        fetchGrades();
-      }
-    }
-  }
 });
