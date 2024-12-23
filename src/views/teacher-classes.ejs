@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/css/header.css">
-    <link rel="stylesheet" href="/css/teacher.css">
+    <link rel="stylesheet" href="/css/teacher-classes.css">
     <link rel="stylesheet" href="/css/footer.css">
     <link rel="icon" href="/img/logo.png" type="image/x-icon">
     <!-- Font Awesome CDN for search icon -->
@@ -18,9 +18,8 @@
 
     <nav class="navbar">
         <ul class="nav-list">
-            <li><a href="/teacher" class="nav-link">Home</a></li>
-            <li><a href="/teacher/classes" class="nav-link">Classes</a></li>
-            <li><a href="/teacher/profile" class="nav-link">Profile</a></li>
+            <li><a href="/teacher" class="nav-link">HOME</a></li>
+            <li><a href="/teacher/classes" class="nav-link">CLASSES</a></li>
         </ul>
     </nav>
 
@@ -68,7 +67,7 @@
                             <%= classItem.class_time_end %>
                         </td>
                         <td><%= classItem.room_id %></td>
-                        <td><a href="/teacher/classes/<%= classItem.class_id %>">Detail</a></td>
+                        <td><a href="/teacher/classes/<%= classItem.class_id %>" class="detail-btn">Detail</a></td>
                     </tr>
                 <% }) %>
             </tbody>

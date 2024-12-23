@@ -1,34 +1,47 @@
-// src/controllers/teacherController.js
+// src/controllers/admin-teacherController.js
 
 const { pool } = require('../models/db');
 
-// Get Teachers Page with Pagination
+// Allowed columns for sorting to prevent SQL injection
+const ALLOWED_SORT_COLUMNS = ['teacher_id', 'teacher_name', 'teacher_faculty', 'teacher_email'];
+
 const getTeachersPage = async (req, res) => {
     const page = parseInt(req.query.page) || 1;
     const limit = 100;
     const offset = (page - 1) * limit;
+
+    // Get sort parameters from query, default to teacher_id
+    const sortBy = ALLOWED_SORT_COLUMNS.includes(req.query.sortBy) ? req.query.sortBy : 'teacher_id';
+    const sortOrder = req.query.sortOrder === 'desc' ? 'DESC' : 'ASC';
 
     try {
         const countResult = await pool.query('SELECT COUNT(*) FROM teachers');
         const totalTeachers = parseInt(countResult.rows[0].count);
         const totalPages = Math.ceil(totalTeachers / limit);
 
-        const result = await pool.query('SELECT * FROM teachers LIMIT $1 OFFSET $2', [limit, offset]);
+        const query = `
+            SELECT * FROM teachers
+            ORDER BY ${sortBy} ${sortOrder}
+            LIMIT $1 OFFSET $2
+        `;
+        const result = await pool.query(query, [limit, offset]);
         const teachers = result.rows;
+
         res.render('admin-teacher-page', {
             teachers,
             currentPage: page,
-            totalPages
+            totalPages,
+            sortBy,
+            sortOrder
         });
     } catch (error) {
         console.error('Error fetching teachers:', error);
         res.status(500).send('Server Error');
     }
 };
-
 // Create New Teacher
 const createTeacher = async (req, res) => {
-    const { teacher_id, teacher_name, teacher_faculty, teacher_email, password } = req.body;
+    const { teacher_id, teacher_name, teacher_faculty, teacher_email } = req.body;
     try {
         // Check if a teacher with the same ID or email already exists
         const existingTeacher = await pool.query(
