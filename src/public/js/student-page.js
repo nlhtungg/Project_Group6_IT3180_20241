@@ -346,27 +346,5 @@ document.addEventListener("DOMContentLoaded", () => {
       console.error("Error fetching grades:", error);
     }
   };
-
-  // Check the URL hash and display the corresponding section
-  const hash = window.location.hash;
-  if (hash) {
-    const activeTab = document.querySelector(
-      `.nav-item[data-tab="${hash.substring(1)}"]`
-    );
-    if (activeTab) {
-      document
-        .querySelectorAll(".tab-content")
-        .forEach((section) => section.classList.remove("active"));
-      document
-        .querySelectorAll(".nav-item")
-        .forEach((item) => item.classList.remove("active"));
-
-      activeTab.classList.add("active");
-      document.querySelector(`#${hash.substring(1)}`).classList.add("active");
-
-      if (hash === "#grades") {
-        fetchGrades();
-      }
-    }
-  }
+   fetchGrades();
 });

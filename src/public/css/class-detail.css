@@ -98,6 +98,7 @@ table tr:hover {
     background-color: #007bff;
     padding: 8px 16px;
     border-radius: 5px;
+    border: none;
     font-size: 16px;
     font-weight: bold;
     transition: background-color 0.3s ease;
@@ -105,6 +106,7 @@ table tr:hover {
 
 .edit-btn:hover {
     background-color: #0056b3;
+    cursor: pointer;
 }
 
 /* Modal background */
