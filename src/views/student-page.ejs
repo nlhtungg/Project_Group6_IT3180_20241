@@ -5,10 +5,39 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="/css/student-page.css" />
-  <link rel="icon" href="/img/logo.png" type="image/x-icon" />
   <script src="/js/student-page.js" defer></script>
+  <!-- FullCalendar CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.7/main.min.css" rel="stylesheet" />
+  <!-- FullCalendar JS -->
+  <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js'></script>
   <script src="https://cdn.payos.vn/payos-checkout/v1/stable/payos-initialize.js"></script>
-  <title>HUSTHUB</title>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const calendarEl = document.getElementById('calendar');
+
+      const calendar = new FullCalendar.Calendar(calendarEl, {
+        initialView: 'timeGridWeek', // Hiển thị dạng tuần
+        headerToolbar: {
+          left: 'prev,next today',
+          center: 'title',
+          right: 'timeGridWeek',
+        },
+        events: function (info, successCallback, failureCallback) {
+          fetch('student/time-table')  // Gọi API lấy thời khóa biểu
+            .then(response => response.json())
+            .then(data => successCallback(data))
+            .catch(error => failureCallback(error));
+        }
+      });
+
+      calendar.render();
+
+
+    });
+  </script>
+
+  <title>Student Page</title>
 </head>
 
 <body>
@@ -32,7 +61,7 @@
   <div class="main-content">
     <nav class="navbar">
       <ul class="nav-list">
-        <li class="nav-item active" data-tab="student-info">
+        <li href="#info" class="nav-item active" data-tab="student-info">
           <i class="fas fa-user"></i>
           <a href="#info">Student Information</a>
         </li>
@@ -49,7 +78,7 @@
           <a href="#grades">Grade</a>
         </li>
         <li class="nav-item" data-tab="courses">
-          <a href="#courses">Courses</a>
+          <a href="#courses">Register Course</a>
         </li>
       </ul>
     </nav>
@@ -123,7 +152,7 @@
           <thead>
             <tr>
               <th>Course ID</th>
-              <th>Course Name</th>
+              <th>Course Name</th< /th>
               <th>Credits</th>
               <th>Fee (VND)</th>
             </tr>
@@ -158,7 +187,7 @@
 
         <div style="padding-top: 10px; display: flex; flex-direction: column">
           <div style="
-                border: 2px solid blue;
+                border: 2px solid rgb(0, 0, 0);
                 border-radius: 10px;
                 overflow: hidden;
               ">
@@ -187,35 +216,73 @@
 
       <section id="timetable" class="tab-content">
         <h2>Timetable</h2>
-        <!-- Thêm nội dung về thời khóa biểu -->
+        <div id="calendar"></div>
       </section>
 
       <section id="grades" class="tab-content">
         <h2>Grades</h2>
-        <!-- Thêm nội dung về điểm số -->
+        <div id="grades-content">
+          <div id="calendar"></div>
+          <!-- Grades content will be dynamically inserted here -->
+        </div>
       </section>
 
       <section id="courses" class="tab-content">
-        <h2>Danh sách sản phẩm</h2>
+        <h2>Course Catalog</h2>
+
+        <!-- Search Bar -->
+        <div class="search-container">
+          <div class="search-wrapper">
+            <input type="text" id="courseSearch" placeholder="Search by course name or ID..." class="search-input">
+            <div class="search-icon">
+              <i class="fas fa-search"></i>
+            </div>
+          </div>
+          <div id="searchResults" class="search-results">
+            <span class="results-count"></span>
+          </div>
+          <div id="noResults" style="display: none;">No courses found</div>
+        </div>
+
+        <!-- Course List -->
         <div class="courses-list">
           <% courses.forEach(course=> { %>
-            <div class="courses-item">
-
-              <h3>
-                <%= course.course_name %>
-              </h3>
-              <p>Giá: $<%= course.course_credit %>
-              </p>
-              <p>
-                <%= course.course_id %>
-              </p>
+            <div class="course-card" data-course-id="<%= course.course_id %>">
+              <div class="course-header">
+                <h3>
+                  <%= course.course_name %>
+                </h3>
+                <span class="credit-badge">
+                  <%= course.course_credit %> Credits
+                </span>
+              </div>
+              <div class="course-info">
+                <p class="course-id">Course ID: <%= course.course_id %>
+                </p>
+                <button class="view-classes-btn" onclick="viewClasses('<%= course.course_id %>')">
+                  View Classes
+                </button>
+              </div>
             </div>
             <% }) %>
         </div>
 
+        <!-- Class List Modal -->
+        <div id="classModal" class="modal">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h3 id="selectedCourseName"></h3>
+              <span class="close">&times;</span>
+            </div>
+            <div id="classList" class="class-list">
+              <!-- Classes will be populated here dynamically -->
+            </div>
+          </div>
+        </div>
       </section>
     </div>
   </div>
+
 </body>
 
 </html>

@@ -124,7 +124,7 @@ body {
 
 .content-wrapper {
     margin-left: 250px; /* Tạo khoảng trống bằng với width của navbar */
-    padding: 20px;
+    padding: 5px;
     width: calc(100% - 250px);
     min-height: calc(100vh - 200px); /* Đảm bảo có đủ chiều cao cho nội dung */
 }
@@ -180,7 +180,7 @@ body {
 }
 
 .profile-image img {
-    width: 250px;
+    width: 204px;
     height: 250px;
     border-radius: 50%;
     object-fit: cover;
@@ -343,3 +343,290 @@ h2 {
     border-top: 2px solid #009688;
 }
 
+/* Đăng ký lớp */
+
+.courses-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+    padding: 20px;
+  }
+  
+  .course-card {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+    overflow: hidden;
+  }
+  
+  .course-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+  
+  .course-header {
+    background: #f8f9fa;
+    padding: 15px;
+    border-bottom: 1px solid #e9ecef;
+  }
+  
+  .course-header h3 {
+    margin: 0;
+    color: #2c3e50;
+    font-size: 1.2rem;
+  }
+  
+  .credit-badge {
+    display: inline-block;
+    background: #4CAF50;
+    color: white;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    margin-top: 8px;
+  }
+  
+  .course-info {
+    padding: 15px;
+  }
+  
+  .course-id {
+    color: #6c757d;
+    margin: 0 0 10px 0;
+  }
+  
+  .view-classes-btn {
+    background: #007bff;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    width: 100%;
+    transition: background 0.2s ease;
+  }
+  
+  .view-classes-btn:hover {
+    background: #0056b3;
+  }
+  
+/* Class List Modal */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    overflow-y: auto; /* Allow scrolling */
+}
+
+.modal-content {
+    background: white;
+    margin: 5% auto;
+    padding: 20px;
+    width: 90%;
+    max-width: 800px;
+    border-radius: 8px;
+    position: relative;
+    max-height: 80vh;
+    overflow-y: auto;
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.close {
+    color: #aaa;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close:hover {
+    color: #555;
+}
+
+.class-list {
+    display: grid;
+    gap: 15px;
+}
+
+.class-item {
+    display: flex;
+    flex-direction: column; /* Stack items vertically */
+    justify-content: space-between;
+    align-items: flex-start; /* Align items to the start */
+    padding: 15px;
+    background: #f8f9fa;
+    border-radius: 4px;
+    border: 1px solid #e9ecef;
+}
+
+.class-details {
+    flex: 1;
+    width: 100%; /* Ensure it takes full width */
+}
+
+.class-details h4 {
+    margin: 0 0 8px 0;
+    color: #2c3e50;
+}
+
+.class-details p {
+    margin: 4px 0;
+    color: #6c757d;
+}
+
+.register-btn {
+    background: #28a745;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.2s ease;
+    width: 100%; /* Full width button */
+    margin-top: 10px; /* Space between details and button */
+}
+
+.register-btn:hover {
+    background: #218838;
+}
+
+.register-btn:disabled {
+    background: #6c757d;
+    cursor: not-allowed;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .courses-list {
+        grid-template-columns: 1fr;
+    }
+
+    .class-item {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .register-btn {
+        margin-top: 10px;
+        width: 100%;
+    }
+
+    .modal-content {
+        margin: 10% auto;
+        width: 95%;
+    }
+
+    .search-container {
+        padding: 0 15px;
+    }
+
+    .search-input {
+        font-size: 14px;
+        padding: 10px 35px 10px 12px;
+    }
+}
+
+  /* Search Bar Styles */
+.search-container {
+    margin: 20px auto;
+    max-width: 600px;
+    padding: 0 20px;
+  }
+  
+  .search-wrapper {
+    position: relative;
+    margin-bottom: 10px;
+  }
+  
+  .search-input {
+    width: 100%;
+    padding: 12px 40px 12px 16px;
+    font-size: 16px;
+    border: 2px solid #e9ecef;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    background: white;
+  }
+  
+  .search-input:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+  }
+  
+  .search-icon {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #6c757d;
+  }
+  
+  .search-results {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .results-count {
+    color: #6c757d;
+    font-size: 0.9rem;
+  }
+  
+  .no-results {
+    text-align: center;
+    padding: 40px;
+    color: #6c757d;
+    background: #f8f9fa;
+    border-radius: 8px;
+    margin: 20px auto;
+    max-width: 600px;
+  }
+
+  /* Grades Table */
+.grades-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.grades-table th, 
+.grades-table td {
+    padding: 12px;
+    text-align: left;
+    border: 1px solid #ddd;
+}
+
+.grades-table th {
+    background-color: #009688;
+    color: white;
+}
+
+.grades-table tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+.grades-table .total-row {
+    font-weight: bold;
+    background-color: #e0e0e0;
+}
+
+.grades-table .total-row td {
+    border-top: 2px solid #009688;
+}
+
+#calendar {
+    max-width: 900px;
+    margin: 0 auto;
+  }
+  

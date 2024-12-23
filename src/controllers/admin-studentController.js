@@ -1,6 +1,6 @@
 // src/controllers/admin-studentController.js
 
-const { pool } = require('../models/db');
+const { pool } = require("../models/db");
 
 // Allowed columns for sorting to prevent SQL injection
 const ALLOWED_SORT_COLUMNS = ['student_id', 'student_name', 'student_dob', 'student_email', 'student_major'];
@@ -75,6 +75,16 @@ const createStudent = async (req, res) => {
         console.error('Error creating student:', error);
         res.status(500).json({ error: 'Server Error' });
     }
+
+    await pool.query(
+      "INSERT INTO students (student_id, student_name, student_dob, student_email, student_major) VALUES ($1, $2, $3, $4, $5)",
+      [student_id, student_name, student_dob, student_email, student_major]
+    );
+    res.status(200).json({ message: "Student added successfully." });
+  } catch (error) {
+    console.error("Error creating student:", error);
+    res.status(500).json({ error: "Server Error" });
+  }
 };
 
 const updateStudent = async (req, res) => {
@@ -106,18 +116,53 @@ const updateStudent = async (req, res) => {
         console.error('Error updating student:', error);
         res.status(500).json({ error: 'Server Error' });
     }
+
+    const currentData = currentStudent.rows[0];
+
+    // Only update fields that have changed
+    const updatedName =
+      student_name !== currentData.student_name
+        ? student_name
+        : currentData.student_name;
+    const updatedDob =
+      parsedDob &&
+      parsedDob.toISOString().slice(0, 10) !==
+        currentData.student_dob.toISOString().slice(0, 10)
+        ? parsedDob.toISOString().slice(0, 10)
+        : currentData.student_dob.toISOString().slice(0, 10);
+    const updatedEmail =
+      student_email !== currentData.student_email
+        ? student_email
+        : currentData.student_email;
+    const updatedMajor =
+      student_major !== currentData.student_major
+        ? student_major
+        : currentData.student_major;
+
+    await pool.query(
+      "UPDATE students SET student_name = $1, student_dob = $2, student_email = $3, student_major = $4 WHERE student_id = $5",
+      [updatedName, updatedDob, updatedEmail, updatedMajor, student_id]
+    );
+
+    res.status(200).json({ message: "Student updated successfully." });
+  } catch (error) {
+    console.error("Error updating student:", error);
+    res.status(500).json({ error: "Server Error" });
+  }
 };
 
 // Delete Student
 const deleteStudent = async (req, res) => {
-    const { student_id } = req.body;
-    try {
-        await pool.query('DELETE FROM students WHERE student_id = $1', [student_id]);
-        res.redirect('/admin/student');
-    } catch (error) {
-        console.error('Error deleting student:', error);
-        res.status(500).send('Server Error');
-    }
+  const { student_id } = req.body;
+  try {
+    await pool.query("DELETE FROM students WHERE student_id = $1", [
+      student_id,
+    ]);
+    res.redirect("/admin/student");
+  } catch (error) {
+    console.error("Error deleting student:", error);
+    res.status(500).send("Server Error");
+  }
 };
 
 // Search Students
@@ -144,9 +189,9 @@ const searchStudents = async (req, res) => {
 };
 
 module.exports = {
-    getStudentsPage,
-    createStudent,
-    updateStudent,
-    deleteStudent,
-    searchStudents
+  getStudentsPage,
+  createStudent,
+  updateStudent,
+  deleteStudent,
+  searchStudents,
 };
