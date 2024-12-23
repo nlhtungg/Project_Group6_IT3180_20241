@@ -15,29 +15,32 @@ body {
 
 /* Navbar */
 .navbar {
-    background-color: #333;
-    padding: 10px 0;
+    position: sticky;
+    top: 0;
+    background-color: #186A3B;
+    z-index: 1000;
+    padding: 1px;
 }
 
-.navbar .nav-list {
-    list-style: none;
+.nav-list {
     display: flex;
     justify-content: center;
-    gap: 20px;
-    padding: 0;
-    margin: 0;
+    list-style: none;
 }
 
-.navbar .nav-list li a {
-    color: white;
-    font-size: 18px;
+.nav-list li {
+    margin: 0 100px;
+}
+
+.nav-list a {
     text-decoration: none;
-    padding: 8px 12px;
+    color: white;
+    font-size: 1.1rem;
 }
 
-.navbar .nav-list li a:hover {
-    background-color: #555;
-    border-radius: 4px;
+.nav-list a:hover {
+    color: #009688; /* Primary color */
+
 }
 
 /* Welcome Message */
@@ -67,6 +70,9 @@ body {
     border-radius: 8px;
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
     text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
     transition: transform 0.2s;
 }
 
@@ -75,106 +81,14 @@ body {
     font-size: 24px;
 }
 
-.card p {
-    font-size: 18px;
+.numberOfClasses {
+    color: white;
+    font-size: 30px;
+    font-weight: bold;
 }
 
 .card:hover {
     transform: scale(1.05);
-}
-
-/* Quick Links */
-.quick-links {
-    margin-top: 30px;
-    padding: 20px;
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-.quick-links h2 {
-    color: #333;
-    font-size: 22px;
-    margin-bottom: 15px;
-    text-align: center;
-}
-
-.quick-links ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    text-align: center;
-}
-
-.quick-links ul li {
-    margin-bottom: 10px;
-}
-
-.quick-links ul li a {
-    color: #4CAF50;
-    font-size: 18px;
-    text-decoration: none;
-}
-
-.quick-links ul li a:hover {
-    color: #2e7d32;
-}
-
-/* Table Styling */
-.classes-table {
-    width: 80%;
-    margin: 20px auto;
-    border-collapse: collapse;
-    text-align: left;
-}
-
-.classes-table th, .classes-table td {
-    padding: 12px;
-    border: 1px solid #ddd;
-    text-align: center;
-}
-
-.classes-table th {
-    background-color: #f2f2f2;
-    font-weight: bold;
-}
-
-.classes-table tr:nth-child(even) {
-    background-color: #f9f9f9;
-}
-
-.classes-table tr:hover {
-    background-color: #f1f1f1;
-}
-
-/* Search Bar */
-.search-container {
-    display: flex;
-    justify-content: center;
-    margin-bottom: 20px;
-}
-
-.search-bar {
-    width: 250px;
-    padding: 10px;
-    font-size: 16px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-    margin-right: 10px;
-}
-
-.search-button {
-    background-color: #4CAF50;
-    border: none;
-    padding: 10px;
-    font-size: 18px;
-    cursor: pointer;
-    color: white;
-    border-radius: 5px;
-}
-
-.search-button i {
-    font-size: 18px;
 }
 
 a {

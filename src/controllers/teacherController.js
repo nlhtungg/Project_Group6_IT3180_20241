@@ -2,11 +2,9 @@ const { pool } = require('../models/db');
 
 const getTeacherPage = async(req, res) => {
     const user = req.session.user;
-    const teacherName = user.teacher_name;
-    const teacherFaculty = user.teacher_faculty;
     const classesResult = await pool.query(`SELECT DISTINCT(class_id) FROM Classes WHERE teacher_id = $1`, [user.teacher_id]);
     const numberOfClasses = classesResult.rows.length;
-    res.render('teacher', { teacherName, teacherFaculty, classes: classesResult.rows, numberOfClasses });
+    res.render('teacher', { user, classes: classesResult.rows, numberOfClasses });
 };
 
 // New function to render the /teacher/classes page
@@ -66,65 +64,6 @@ const getTeacherProfile = async (req, res) => {
     } catch (error) {
         console.error("Error fetching teacher profile:", error);
         res.sendStatus(500);
-    }
-};
-
-// Update Profile Information
-const updateTeacherProfile = async (req, res) => {
-    const { name, email } = req.body;
-    const user = req.session.user;
-    
-    try {
-        await pool.query(
-            'UPDATE Teachers SET teacher_name = $1, teacher_email = $2 WHERE teacher_id = $3',
-            [name, email, user.teacher_id]
-        );
-        req.session.user.teacher_name = name;
-        req.session.user.teacher_email = email;
-        res.redirect('/teacher/profile');
-    } catch (error) {
-        console.error("Error updating teacher profile:", error);
-        res.sendStatus(500);
-    }
-};
-
-// Update Password
-const updateTeacherPassword = async (req, res) => {
-    const { currentPassword, newPassword, confirmPassword } = req.body;
-    const user = req.session.user;
-    const teacher = req.session.user;
-
-    try {
-        // Get the current password from the database
-        const result = await pool.query('SELECT password FROM Teachers WHERE teacher_id = $1', [user.teacher_id]);
-        const oldPassword = result.rows[0];
-        console.log('Old Password: ' + oldPassword.password);
-        console.log('Current Password: ' + currentPassword);
-        console.log('New Password: ' + newPassword);
-
-        // Check if the current password matches
-        const match = (currentPassword == oldPassword.password);
-        if (!match) {
-            const error = 'Incorrect current password.';
-            console.log(error);
-            return res.render('teacher-profile', { user, teacher, error });
-        }
-
-        // Check if new passwords match
-        if (newPassword !== confirmPassword) {
-            const error = 'New passwords do not match.';
-            console.log(error);
-            return res.render('teacher-profile', { user, teacher, error });
-        }
-
-        // Update the password
-        await pool.query('UPDATE Teachers SET password = $1 WHERE teacher_id = $2', [newPassword, user.teacher_id]);
-        const error = 'Password updated successfully.';
-        console.log(error);
-        return res.render('teacher-profile', { user, teacher, error });
-    } catch (error) {
-        console.error("Error updating password:", error);
-        res.redirect('/teacher/profile');
     }
 };
 
@@ -203,4 +142,4 @@ const logout = (req, res) => {
     });
 };
 
-module.exports = { getTeacherPage, getTeacherClasses, getTeacherProfile, updateTeacherProfile, updateTeacherPassword, getClassDetails, updateStudentScores ,logout };
+module.exports = { getTeacherPage, getTeacherClasses, getTeacherProfile, getClassDetails, updateStudentScores , logout };

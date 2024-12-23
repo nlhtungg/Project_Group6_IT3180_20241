@@ -4,8 +4,8 @@ const pool = new Pool({
     user: "postgres",
     host: "localhost",
     database: "HUSTHUB",
-    password: "hieunt04lm",
-    port: "5432"
+    password: "892678",
+    port: "5433"
 });
 
 const connectDB = async () => {
