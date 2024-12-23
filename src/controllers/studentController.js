@@ -108,7 +108,7 @@ const viewClasses = async (req, res) => {
   try {
     const courseId = req.params.courseId;
     const classQuery = `
-      SELECT class_id, course_id teacher_name, room_id, semester, class_time_start, class_time_end, class_time_day FROM public.classes cl
+      SELECT class_id, course_id, teacher_name, room_id, semester, class_time_start, class_time_end, class_time_day FROM public.classes cl
       JOIN public.teachers t ON cl.teacher_id = t.teacher_id
       WHERE cl.course_id = $1
     `;
