@@ -270,19 +270,39 @@ h2 {
 
 .contact-container {
     display: flex;
-    justify-content:space-around;
-    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    width: 80%;
+    margin: 0 auto;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: #333 0 2px 5px;
+}
+
+.contact-location {
+    flex: 1;
+    border-radius: 8px 0px 0px 8px;
 }
 
 .contact-location iframe {
     width: 100%;
-    height: 300px;
+    height: 280px;
     border: none;
     object-fit: cover;
 }
 
 .contact-info {
-    color: white;
+    text-align: center;
+    flex: 0.3;
+    color: black;
+    background-color: #cfe2cf;
+    padding: 65px 20px;
+    border-radius: 0px 8px 8px 0px;
+}
+
+.contact-info a {
+    text-decoration: none;
+    color: #186A3B; /* Primary color */
 }
 
 .footer {
