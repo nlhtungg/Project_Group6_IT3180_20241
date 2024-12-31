@@ -91,7 +91,7 @@ const generateQR = async (req, res) => {
         price: 2000,
       },
     ],
-    returnUrl: `${YOUR_DOMAIN}/student/update-payment-status`,
+    returnUrl: `${YOUR_DOMAIN}/student/update-payment-status`, //thanhcong
     cancelUrl: `${YOUR_DOMAIN}/student/update-payment-status`,
   };
 
