@@ -81,6 +81,12 @@ body {
     font-size: 24px;
 }
 
+.card-image {
+    width: 100px;
+    height: 100px;
+    margin: 0 auto 20px;
+}
+
 .numberOfClasses {
     color: white;
     font-size: 30px;
@@ -89,9 +95,19 @@ body {
 
 .card:hover {
     transform: scale(1.05);
+    cursor: pointer;
 }
 
 a {
     text-decoration: none;
     color: black;
+}
+
+.footer {
+    bottom: 0;
+    width: 100%;
+    background-color: #186A3B;
+    color: white;
+    text-align: center;
+    padding: 10px 0;
 }

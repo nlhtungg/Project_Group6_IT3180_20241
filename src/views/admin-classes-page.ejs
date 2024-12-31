@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <head>
     <meta charset="UTF-8">
     <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
@@ -9,31 +10,39 @@
     <title>HUSTHUB</title>
 </head>
 <html lang="en">
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin - Course <%= course.course_id %></title>
-    <style>
-        /* Basic styling, you can adjust as needed */
-        body {
-            font-family: Arial, sans-serif;
-        }
-        .container {
-            width: 80%;
-            margin: auto;
-            padding: 20px;
-        }
-        .course-header, .course-info {
-            margin-bottom: 20px;
-        }
-        h1, h2 {
-            color: #333;
-        }
-        p {
-            color: #555;
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin - Course <%= course.course_id %>
+</title>
+<style>
+    /* Basic styling, you can adjust as needed */
+    body {
+        font-family: Arial, sans-serif;
+    }
+
+    .container {
+        width: 80%;
+        margin: auto;
+        padding: 20px;
+    }
+
+    .course-header,
+    .course-info {
+        margin-bottom: 20px;
+    }
+
+    h1,
+    h2 {
+        color: #333;
+    }
+
+    p {
+        color: #555;
+    }
+</style>
 </head>
 </body>
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -42,6 +51,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <title>HUSTHUB</title>
 </head>
+
 <body>
     <div class="header">
         <a href="/" class="left-section">
@@ -55,26 +65,25 @@
         </a>
         <div class="right-section">
             <form action="/logout" method="POST">
-                <button type="submit" class = "login-btn">Log out</button>
+                <button type="submit" class="login-btn">Log out</button>
             </form>
         </div>
-        
+
     </div>
-    
+
     <nav class="navbar">
         <ul class="nav-list">
             <li><a href="/admin">HOME</a></li>
             <li><a href="/admin/teacher">TEACHER</a></li>
             <li><a href="/admin/student">STUDENT</a></li>
             <li><a href="/admin/courses">COURSES</a></li>
-            <li><a href="/admin/contact">CONTACT</a></li>
+
         </ul>
     </nav>
-    
+
     <body>
         <div class="container">
-            <a href="/admin/courses" 
-                style="background-color: #007bff;
+            <a href="/admin/courses" style="background-color: #007bff;
                 color: white;
                 padding: 8px 10px;
                 border: none;
@@ -83,12 +92,17 @@
                 text-decoration: none;">Back to Courses</a>
             <div class="course-header" style="text-align: center;">
                 <h1>THÔNG TIN MÔN HỌC</h1>
-                <h2>Course ID: <%= course.course_id %></h2>
+                <h2>Course ID: <%= course.course_id %>
+                </h2>
             </div>
-    
+
             <div class="course-info" style="text-align: center;">
-                <p><strong>Course Name:</strong> <%= course.course_name %></p>
-                <p><strong>Course Credit:</strong> <%= course.course_credit %></p>
+                <p><strong>Course Name:</strong>
+                    <%= course.course_name %>
+                </p>
+                <p><strong>Course Credit:</strong>
+                    <%= course.course_credit %>
+                </p>
             </div>
         </div>
 
@@ -99,7 +113,7 @@
                 <div class="box" id="updateBox">UPDATE</div>
                 <div class="box" id="deleteBox">DELETE</div>
             </div>
-            
+
             <!-- Form CREATE -->
             <div id="createForm" class="form-container" style="display: none;">
                 <h3>Create Class</h3>
@@ -136,7 +150,7 @@
                 </form>
                 <div id="createMessage" class="message-box"></div>
             </div>
-            
+
             <!-- Form UPDATE -->
             <div id="updateForm" class="form-container" style="display: none;">
                 <h3>Update Class</h3>
@@ -172,9 +186,9 @@
                     <button type="submit">Update</button>
                 </form>
                 <div id="updateMessage" class="message-box"></div>
-            </div>           
-             
-            
+            </div>
+
+
             <!-- Form DELETE -->
             <div id="deleteForm" class="form-container" style="display: none;">
                 <h3>Delete Class</h3>
@@ -191,7 +205,7 @@
                 </form>
                 <div id="deleteMessage" class="message-box"></div>
             </div>
-            
+
             <!-- CSS for message box -->
             <style>
                 .message-box {
@@ -203,121 +217,121 @@
                     border-radius: 4px;
                 }
             </style>
-            
-           <!-- JavaScript/jQuery -->
-           <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-           <script>
-               $(document).ready(function() {
-                   // Hiển thị form CREATE khi nhấn vào nút
-                   $('#createBox').click(function() {
-                       $('.form-container').hide();
-                       $('#createForm').show();
-                   });
-           
-                   // Hiển thị form UPDATE khi nhấn vào nút
-                   $('#updateBox').click(function() {
-                       $('.form-container').hide();
-                       $('#updateForm').show();
-                   });
-           
-                   // Hiển thị form DELETE khi nhấn vào nút
-                   $('#deleteBox').click(function() {
-                       $('.form-container').hide();
-                       $('#deleteForm').show();
-                   });
-               });
-           
-               // AJAX xử lý CREATE
-               $(document).on('submit', '#createClassForm', function(event) {
-                   event.preventDefault();
-                   var courseId = $('#course_id').val();
-                   console.log('Course ID:', courseId);
-           
-                   // Gửi yêu cầu POST đến server
-                   $.post(`/admin/courses/${courseId}/create`, $(this).serialize(), function(response) {
-                       $('#createMessage').text('Lớp học đã được tạo thành công!').css('display', 'block');
-                       setTimeout(function() {
-                           location.reload(); // Reload trang sau 3 giây
-                       }, 3000);
-                       $('#createClassForm')[0].reset();
-                   }).fail(function() {
-                       $('#createMessage').text('Có lỗi xảy ra khi tạo lớp học.').css({
-                           display: 'block',
-                           backgroundColor: 'red'
-                       });
-                   });
-               });
-           
-               // AJAX xử lý UPDATE
-               $(document).on('submit', '#updateClassForm', function(event) {
-                   event.preventDefault();
-                   var courseId = $('#course_id2').val();
-                   console.log('Course ID:', courseId);
-           
-                   // Gửi yêu cầu POST đến server
-                   $.post(`/admin/courses/${courseId}/update`, $(this).serialize(), function(response) {
-                       $('#updateMessage').text('Khóa học đã được cập nhật').css('display', 'block');
-                       setTimeout(function() {
-                           location.reload(); // Reload trang sau 3 giây
-                       }, 3000);
-                       $('#updateClassForm')[0].reset();
-                   }).fail(function() {
-                       $('#updateMessage').text('Có lỗi xảy ra khi cập nhật khóa học').css({
-                           display: 'block',
-                           backgroundColor: 'red'
-                       });
-                   });
-               });
-           
-               // AJAX xử lý DELETE
-               $(document).on('submit', '#deleteClassForm', function(event) {
-                   event.preventDefault();
-                   var courseId = $('#course_id1').val();
-                   console.log('Course ID:', courseId);
-           
-                   // Gửi yêu cầu POST đến server
-                   $.post(`/admin/courses/${courseId}/delete`, $(this).serialize(), function(response) {
-                       $('#deleteMessage').text('Khóa học đã được xóa').css('display', 'block');
-                       setTimeout(function() {
-                           location.reload(); // Reload trang sau 3 giây
-                       }, 3000);
-                       $('#deleteClassForm')[0].reset();
-                   }).fail(function() {
-                       $('#deleteMessage').text('Có lỗi xảy ra khi xóa khóa học').css({
-                           display: 'block',
-                           backgroundColor: 'red'
-                       });
-                   });
-               });
-           </script>
+
+            <!-- JavaScript/jQuery -->
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+            <script>
+                $(document).ready(function () {
+                    // Hiển thị form CREATE khi nhấn vào nút
+                    $('#createBox').click(function () {
+                        $('.form-container').hide();
+                        $('#createForm').show();
+                    });
+
+                    // Hiển thị form UPDATE khi nhấn vào nút
+                    $('#updateBox').click(function () {
+                        $('.form-container').hide();
+                        $('#updateForm').show();
+                    });
+
+                    // Hiển thị form DELETE khi nhấn vào nút
+                    $('#deleteBox').click(function () {
+                        $('.form-container').hide();
+                        $('#deleteForm').show();
+                    });
+                });
+
+                // AJAX xử lý CREATE
+                $(document).on('submit', '#createClassForm', function (event) {
+                    event.preventDefault();
+                    var courseId = $('#course_id').val();
+                    console.log('Course ID:', courseId);
+
+                    // Gửi yêu cầu POST đến server
+                    $.post(`/admin/courses/${courseId}/create`, $(this).serialize(), function (response) {
+                        $('#createMessage').text('Lớp học đã được tạo thành công!').css('display', 'block');
+                        setTimeout(function () {
+                            location.reload(); // Reload trang sau 3 giây
+                        }, 3000);
+                        $('#createClassForm')[0].reset();
+                    }).fail(function () {
+                        $('#createMessage').text('Có lỗi xảy ra khi tạo lớp học.').css({
+                            display: 'block',
+                            backgroundColor: 'red'
+                        });
+                    });
+                });
+
+                // AJAX xử lý UPDATE
+                $(document).on('submit', '#updateClassForm', function (event) {
+                    event.preventDefault();
+                    var courseId = $('#course_id2').val();
+                    console.log('Course ID:', courseId);
+
+                    // Gửi yêu cầu POST đến server
+                    $.post(`/admin/courses/${courseId}/update`, $(this).serialize(), function (response) {
+                        $('#updateMessage').text('Khóa học đã được cập nhật').css('display', 'block');
+                        setTimeout(function () {
+                            location.reload(); // Reload trang sau 3 giây
+                        }, 3000);
+                        $('#updateClassForm')[0].reset();
+                    }).fail(function () {
+                        $('#updateMessage').text('Có lỗi xảy ra khi cập nhật khóa học').css({
+                            display: 'block',
+                            backgroundColor: 'red'
+                        });
+                    });
+                });
+
+                // AJAX xử lý DELETE
+                $(document).on('submit', '#deleteClassForm', function (event) {
+                    event.preventDefault();
+                    var courseId = $('#course_id1').val();
+                    console.log('Course ID:', courseId);
+
+                    // Gửi yêu cầu POST đến server
+                    $.post(`/admin/courses/${courseId}/delete`, $(this).serialize(), function (response) {
+                        $('#deleteMessage').text('Khóa học đã được xóa').css('display', 'block');
+                        setTimeout(function () {
+                            location.reload(); // Reload trang sau 3 giây
+                        }, 3000);
+                        $('#deleteClassForm')[0].reset();
+                    }).fail(function () {
+                        $('#deleteMessage').text('Có lỗi xảy ra khi xóa khóa học').css({
+                            display: 'block',
+                            backgroundColor: 'red'
+                        });
+                    });
+                });
+            </script>
         </div>
 
-    <!-- Main Container -->
-    <div class="container">
-        <div class="course-header">
-            <h1>DANH SÁCH LỚP HỌC</h1>
+        <!-- Main Container -->
+        <div class="container">
+            <div class="course-header">
+                <h1>DANH SÁCH LỚP HỌC</h1>
+            </div>
+
+
+            <!-- Kiểm tra xem có lớp học nào không -->
+            <% if (classes.length> 0) { %>
+                <!-- Nhúng partials/classes-list.ejs vào đây -->
+                <%- include('partials/classes-list') %>
+                    <% } else { %>
+                        <p>Không có lớp học nào được tìm thấy.</p>
+                        <% } %>
         </div>
-        
 
-        <!-- Kiểm tra xem có lớp học nào không -->
-        <% if (classes.length > 0) { %>
-            <!-- Nhúng partials/classes-list.ejs vào đây -->
-            <%- include('partials/classes-list') %>
-        <% } else { %>
-            <p>Không có lớp học nào được tìm thấy.</p>
-        <% } %>
-    </div>
 
-    
-    
 
-    
 
-   
-    
-    
 
-        
+
+
+
+
+
+
 
 
 
@@ -327,5 +341,6 @@
             <a href="#"><img src="/img/google-play.png" alt="Get it on Google Play"></a>
             <a href="#"><img src="/img/app-store.png" alt="Download on the App Store"></a>
         </div>
-    </div>
+        </div>
+
 </html>

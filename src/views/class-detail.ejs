@@ -1,106 +1,131 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/css/class-detail.css">
     <link rel="stylesheet" href="/css/header.css">
     <link rel="stylesheet" href="/css/footer.css">
-    <title>Class Details - <%= classDetails.course_name %></title>
+    <title>Class Details - <%= classDetails.course_name %>
+    </title>
 </head>
+
 <body>
     <%- include('in-app-header') %>
 
-    <!-- Navbar -->
-    <nav class="navbar">
-        <ul class="nav-list">
-            <li><a href="/teacher" class="nav-link">HOME</a></li>
-            <li><a href="/teacher/classes" class="nav-link">CLASSES</a></li>
-        </ul>
-    </nav>
+        <!-- Navbar -->
+        <nav class="navbar">
+            <ul class="nav-list">
+                <li><a href="/teacher" class="nav-link">HOME</a></li>
+                <li><a href="/teacher/classes" class="nav-link">CLASSES</a></li>
+                <li><a href="/teacher/schedule" class="nav-link">SCHEDULE</a></li>
+            </ul>
+        </nav>
 
-    <div class="main">
-        <div class="back-button-container">
-            <a href="/teacher/classes" class="back-button">← Back to All Classes</a>
+        <div class="main">
+            <div class="back-button-container">
+                <a href="/teacher/classes" class="back-button">← Back to All Classes</a>
+            </div>
+
+            <h1>Class Details</h1>
+
+            <div class="class-info">
+                <p><strong>Class ID:</strong>
+                    <%= classDetails.class_id %>
+                </p>
+                <p><strong>Course Name:</strong>
+                    <%= classDetails.course_name %>
+                </p>
+                <p><strong>Teacher:</strong>
+                    <%= classDetails.teacher_name %>
+                </p>
+                <p><strong>Time:</strong>
+                    <%= classDetails.class_time_day %>, <%= classDetails.class_time_start %> - <%=
+                                classDetails.class_time_end %>
+                </p>
+                <p><strong>Room:</strong>
+                    <%= classDetails.room_id %>
+                </p>
+            </div>
+            <h2>Students</h2>
+
+            <!-- Student Table -->
+            <table class="student-table">
+                <thead>
+                    <tr>
+                        <th>Student ID</th>
+                        <th>Student Name</th>
+                        <th>Email</th>
+                        <th>Midterm Score</th>
+                        <th>Final Score</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% studentsList.forEach(student=> { %>
+                        <tr>
+                            <td>
+                                <%= student.student_id %>
+                            </td>
+                            <td>
+                                <%= student.student_name %>
+                            </td>
+                            <td>
+                                <%= student.student_email %>
+                            </td>
+                            <td>
+                                <%= student.midterm_score || '' %>
+                            </td>
+                            <td>
+                                <%= student.final_score || '' %>
+                            </td>
+                            <td>
+                                <button class="edit-btn" data-enrollment-id="<%= student.enrollment_id %>"
+                                    data-student-name="<%= student.student_name %>"
+                                    data-midterm-score="<%= student.midterm_score %>"
+                                    data-final-score="<%= student.final_score %>">
+                                    Edit
+                                </button>
+                            </td>
+                        </tr>
+                        <% }); %>
+                </tbody>
+            </table>
+
+            <!-- Pop-up Modal -->
+            <div id="edit-modal" class="modal">
+                <div class="modal-content">
+                    <span class="close-btn">&times;</span>
+                    <h2>Edit Grades</h2>
+                    <form id="update-grade-form">
+                        <input type="hidden" id="student-id">
+                        <input type="hidden" id="enrollment-id">
+                        <div>
+                            <label for="student-name">Student Name:</label>
+                            <input type="text" id="student-name" disabled>
+                        </div>
+                        <div>
+                            <label for="midterm-score">Midterm Score:</label>
+                            <input type="number" id="midterm-score" min="0" max="10" required>
+                        </div>
+                        <div>
+                            <label for="final-score">Final Score:</label>
+                            <input type="number" id="final-score" min="0" max="10" required>
+                        </div>
+                        <div class="modal-buttons">
+                            <button type="submit" class="submit-btn">Submit</button>
+                            <button type="button" class="cancel-btn" style="display: none;"></button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
         </div>
-        
-        <h1>Class Details</h1>
 
-        <div class="class-info">
-            <p><strong>Class ID:</strong> <%= classDetails.class_id %></p>
-            <p><strong>Course Name:</strong> <%= classDetails.course_name %></p>
-            <p><strong>Teacher:</strong> <%= classDetails.teacher_name %></p>
-            <p><strong>Time:</strong> <%= classDetails.class_time_day %>, <%= classDetails.class_time_start %> - <%= classDetails.class_time_end %></p>
-            <p><strong>Room:</strong> <%= classDetails.room_id %></p>
-        </div>
-        <h2>Students</h2>
-        
-        <!-- Student Table -->
-        <table class="student-table">
-        <thead>
-            <tr>
-                <th>Student ID</th>
-                <th>Student Name</th>
-                <th>Email</th>
-                <th>Midterm Score</th>
-                <th>Final Score</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            <% studentsList.forEach(student => { %>
-                <tr>
-                    <td><%= student.student_id %></td>
-                    <td><%= student.student_name %></td>
-                    <td><%= student.student_email %></td>
-                    <td><%= student.midterm_score || '' %></td>
-                    <td><%= student.final_score || '' %></td>
-                    <td>
-                        <button class="edit-btn" 
-                        data-enrollment-id="<%= student.enrollment_id %>" 
-                        data-student-name="<%= student.student_name %>" 
-                        data-midterm-score="<%= student.midterm_score %>"
-                        data-final-score="<%= student.final_score %>">
-                        Edit
-                    </button>
-                    </td>
-                </tr>
-            <% }); %>
-        </tbody>
-    </table>
-
-    <!-- Pop-up Modal -->
-    <div id="edit-modal" class="modal">
-        <div class="modal-content">
-            <span class="close-btn">&times;</span>
-            <h2>Edit Grades</h2>
-            <form id="update-grade-form">
-                <input type="hidden" id="student-id">
-                <input type="hidden" id="enrollment-id">
-                <div>
-                    <label for="student-name">Student Name:</label>
-                    <input type="text" id="student-name" disabled>
-                </div>
-                <div>
-                    <label for="midterm-score">Midterm Score:</label>
-                    <input type="number" id="midterm-score" min="0" max="10" required>
-                </div>
-                <div>
-                    <label for="final-score">Final Score:</label>
-                    <input type="number" id="final-score" min="0" max="10" required>
-                </div>
-                <div class="modal-buttons">
-                    <button type="submit" class="submit-btn">Submit</button>
-                    <button type="button" class="cancel-btn" style="display: none;"></button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    </div>
-
-    <%- include('footer') %>
+        <%- include('footer') %>
 </body>
+
 </html>
 
 <script>

@@ -185,105 +185,81 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
-  async function removeRegisteredClass(classId) {
-    try {
-      const response = await fetch("/student/remove-registered-class", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ classId }),
-      });
-
-      const result = await response.json();
-      if (result.success) {
-        alert("Successfully removed the class!");
-        fetchRegisteredClasses();
-      } else {
-        alert(result.message || "Failed to remove the class");
-      }
-    } catch (error) {
-      console.error("Error removing registered class:", error);
-      alert("Failed to remove the class");
-    }
-  }
-
   document.querySelector(`[data-tab="${activeTab}"]`).classList.add("active");
   document.getElementById(activeTab).classList.add("active");
-});
 
-/* eslint-disable no-undef */
-const buttonContainer = document.getElementById("button-container");
-const contentContainer = document.getElementById("content-container");
-let isOpen = false;
-let config = {
-  RETURN_URL: window.location.origin,
-  ELEMENT_ID: "embeded-payment-container",
-  CHECKOUT_URL: "",
-  embedded: true,
-  onSuccess: (event) => {
-    contentContainer.innerHTML = `
+  /* eslint-disable no-undef */
+  const buttonContainer = document.getElementById("button-container");
+  const contentContainer = document.getElementById("content-container");
+  let isOpen = false;
+  let config = {
+    RETURN_URL: "http://localhost:3000/student/update-payment-status",
+    ELEMENT_ID: "embeded-payment-container",
+    CHECKOUT_URL: "",
+    embedded: true,
+    onSuccess: (event) => {
+      contentContainer.innerHTML = `
         <div style="padding-top: 20px; padding-bottom:20px">
             You have paid successfully
         </div>
-    `;
-    buttonContainer.innerHTML = `
-      <button
-        type="submit"
-        id="create-payment-link-btn"
-        style="
-        width: 100%;
-        background-color: rgb(131, 217, 142);
-        color: white;
-        border: none;
-        padding: 10px;
-        font-size: 15px;
-        "
-        onclick="window.location.href='/student'"
-      >
-        Quay lại trang sinh viên
-      </button>
-    `;
-  },
-};
-buttonContainer.addEventListener("click", async (event) => {
-  if (isOpen) {
-    const { exit } = PayOSCheckout.usePayOS(config);
-    exit();
-  } else {
-    const checkoutUrl = await getPaymentLink();
-    config = {
-      ...config,
-      CHECKOUT_URL: checkoutUrl,
-    };
-    console.log(checkoutUrl);
-    const { open } = PayOSCheckout.usePayOS(config);
-    open();
-  }
-  isOpen = !isOpen;
-  changeButton();
-});
-
-const getPaymentLink = async () => {
-  const response = await fetch(
-    "http://localhost:3000/student/create-embedded-payment-link",
-    {
-      method: "POST",
+      `;
+      buttonContainer.innerHTML = `
+        <button
+          type="submit"
+          id="create-payment-link-btn"
+          style="
+          width: 100%;
+          background-color: rgb(131, 217, 142);
+          color: white;
+          border: none;
+          padding: 10px;
+          font-size: 15px;
+          "
+          onclick="fetchAndSwitchToStudentTab('http://localhost:3000/student/update-payment-status')"
+        >
+          Quay lại trang sinh viên
+        </button>
+      `;
+    },
+  };
+  buttonContainer.addEventListener("click", async (event) => {
+    if (isOpen) {
+      const { exit } = PayOSCheckout.usePayOS(config);
+      exit();
+    } else {
+      const checkoutUrl = await getPaymentLink();
+      config = {
+        ...config,
+        CHECKOUT_URL: checkoutUrl,
+      };
+      console.log(checkoutUrl);
+      const { open } = PayOSCheckout.usePayOS(config);
+      open();
     }
-  );
-  if (!response.ok) {
-    console.log("server doesn't response!");
-  }
-  const result = await response.json();
+    isOpen = !isOpen;
+    changeButton();
+  });
 
-  console.log(result);
-  console.log(response);
-  return result.checkoutUrl;
-};
+  const getPaymentLink = async () => {
+    const response = await fetch(
+      "http://localhost:3000/student/create-embedded-payment-link",
+      {
+        method: "POST",
+      }
+    );
+    if (!response.ok) {
+      console.log("server doesn't response!");
+    }
+    const result = await response.json();
 
-const changeButton = () => {
-  if (isOpen) {
-    buttonContainer.innerHTML = `
+    console.log(result);
+    console.log(response);
+    return result.checkoutUrl;
+  };
+
+  const changeButton = () => {
+    if (isOpen) {
+      buttonContainer.innerHTML = `
         <button
             type="submit"
             id="create-payment-link-btn"
@@ -299,8 +275,8 @@ const changeButton = () => {
             Đóng link thanh toán
         </button>
       `;
-  } else {
-    buttonContainer.innerHTML = `
+    } else {
+      buttonContainer.innerHTML = `
         <button
             type="submit"
             id="create-payment-link-btn"
@@ -316,8 +292,9 @@ const changeButton = () => {
             Tạo Link thanh toán
         </button> 
     `;
-  }
-};
+    }
+  };
+});
 
 const modal = document.getElementById("classModal");
 const closeBtn = document.getElementsByClassName("close")[0];
@@ -339,26 +316,26 @@ async function viewClasses(courseId) {
     classList.innerHTML = classes
       .map(
         (cls) => `
-      <div class="class-item">
-        <div class="class-details">
-          <p>Professor: ${cls.teacher_name}</p> 
-        
-          <p>Room: ${cls.room_id}</p> 
-        
-          <p>Class ID: ${cls.class_id}</p> 
-          <p>Semester: ${cls.semester}</p> 
-          <p>Time Start: ${cls.class_time_start}</p> 
-          <p>Time End: ${cls.class_time_end}</p> 
-          <p>Day: ${cls.class_time_day}</p> 
+        <div class="class-item">
+          <div class="class-details">
+            <p>Professor: ${cls.teacher_name}</p> 
+          
+            <p>Room: ${cls.room_id}</p> 
+          
+            <p>Class ID: ${cls.class_id}</p> 
+            <p>Semester: ${cls.semester}</p> 
+            <p>Time Start: ${cls.class_time_start}</p> 
+            <p>Time End: ${cls.class_time_end}</p> 
+            <p>Day: ${cls.class_time_day}</p> 
+          </div>
+          <button 
+            class="register-btn" 
+            onclick="registerForClass('${cls.class_id}', '${courseId}')"
+          >
+            Register
+          </button>
         </div>
-        <button 
-          class="register-btn" 
-          onclick="registerForClass('${cls.class_id}', '${courseId}')"
-        >
-          Register
-        </button>
-      </div>
-    `
+      `
       )
       .join("");
 

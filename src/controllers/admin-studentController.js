@@ -1,6 +1,6 @@
 // src/controllers/admin-studentController.js
 
-const { pool } = require("../models/db");
+const { pool } = require("../config/db");
 
 // Allowed columns for sorting to prevent SQL injection
 const ALLOWED_SORT_COLUMNS = [
@@ -83,15 +83,8 @@ const createStudent = async (req, res) => {
     }
 
     await pool.query(
-      "INSERT INTO students (student_id, student_name, student_dob, student_email, student_major, password) VALUES ($1, $2, $3, $4, $5, $6)",
-      [
-        student_id,
-        student_name,
-        student_dob,
-        student_email,
-        student_major,
-        student_id,
-      ]
+      "INSERT INTO students (student_id, student_name, student_dob, student_email, student_major) VALUES ($1, $2, $3, $4, $5)",
+      [student_id, student_name, student_dob, student_email, student_major]
     );
     res.status(200).json({ message: "Student added successfully." });
   } catch (error) {

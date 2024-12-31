@@ -1,6 +1,6 @@
 const jwt = require("jsonwebtoken");
 const accessTokenSecret = "hieunguyentrung";
-const { pool } = require("../models/db");
+const { pool } = require("../config/db");
 
 const login = async (req, res) => {
   const { username, password, role } = req.body;

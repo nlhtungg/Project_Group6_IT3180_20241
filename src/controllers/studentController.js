@@ -1,4 +1,4 @@
-const { pool } = require("../models/db");
+const { pool } = require("../config/db");
 const { v4: uuidv4 } = require("uuid");
 const PayOS = require("@payos/node");
 
@@ -50,6 +50,7 @@ const showStudentPage = async (req, res) => {
       student: studentResult.rows[0],
       courses: coursesResult.rows,
       enrollments: enrollmentResult.rows,
+      checkPayment: studentResult.rows[0].check_payment, // Add this line
     });
   } catch (error) {
     console.error("Error:", error);
@@ -81,17 +82,17 @@ const generateQR = async (req, res) => {
   const YOUR_DOMAIN = `http://localhost:3000`;
   const body = {
     orderCode: Number(String(Date.now()).slice(-6)),
-    amount: 10000,
+    amount: 20000,
     description: "Thanh toan hoc phi",
     items: [
       {
         name: "Thanh toan hoc phi",
-        quantity: 1,
+        quantity: 10,
         price: 2000,
       },
     ],
-    returnUrl: `${YOUR_DOMAIN}`,
-    cancelUrl: `${YOUR_DOMAIN}`,
+    returnUrl: `${YOUR_DOMAIN}/student/update-payment-status`,
+    cancelUrl: `${YOUR_DOMAIN}/student/update-payment-status`,
   };
 
   try {
@@ -101,6 +102,25 @@ const generateQR = async (req, res) => {
   } catch (error) {
     console.error(error);
     res.send("Something went error");
+  }
+};
+
+const updatePaymentStatus = async (req, res) => {
+  const studentId = req.user.user_id;
+
+  console.log("paid");
+
+  try {
+    await pool.query(
+      "UPDATE students SET check_payment = true WHERE student_id = $1",
+      [studentId]
+    );
+    res
+      .status(200)
+      .json({ success: true, message: "Payment status updated successfully" });
+  } catch (error) {
+    console.error("Error updating payment status:", error);
+    res.status(500).json({ success: false, message: "Internal server error" });
   }
 };
 
@@ -338,4 +358,5 @@ module.exports = {
   getStudentTimetable,
   getRegisteredClasses,
   removeRegisteredClass,
+  updatePaymentStatus, // Add this line
 };

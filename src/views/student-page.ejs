@@ -134,7 +134,16 @@
         console.error("Error removing registered class:", error);
         alert("Failed to remove the class");
       }
-    }</script>
+    }
+    async function fetchAndSwitchToStudentTab(url) {
+      localStorage.setItem("activeTab", "student-info");
+      window.location.reload();
+      const response = fetch(url);
+    }
+
+
+
+  </script>
 
   <title>Student Page</title>
 </head>
@@ -251,70 +260,65 @@
 
       <section id="tuition" class="tab-content">
         <h2>Tuition Fee</h2>
-        <table class="tuition-table">
-          <thead>
-            <tr>
-              <th>Course ID</th>
-              <th>Course Name</th< /th>
-              <th>Credits</th>
-              <th>Fee (VND)</th>
-            </tr>
-          </thead>
-          <tbody>
-            <% let totalFee=0; %>
-              <% enrollments.forEach(e=> { %> <% const courseFee=e.course_credit * 500000; %>
-                  <% totalFee +=courseFee; %>
-                    <tr>
-                      <td>
-                        <%= e.course_id %>
-                      </td>
-                      <td>
-                        <%= e.course_name %>
-                      </td>
-                      <td>
-                        <%= e.course_credit %>
-                      </td>
-                      <td>
-                        <%= courseFee.toLocaleString('vi-VN') %>
-                      </td>
-                    </tr>
-                    <% }); %>
-                      <tr class="total-row">
-                        <td colspan="3">Total</td>
-                        <td>
-                          <%= totalFee.toLocaleString('vi-VN') %>
-                        </td>
-                      </tr>
-          </tbody>
-        </table>
+        <% if (checkPayment) { %>
+          <p>You have already paid the tuition fee.</p>
+          <% } else { %>
+            <table class="tuition-table">
+              <thead>
+                <tr>
+                  <th>Course ID</th>
+                  <th>Course Name</th>
+                  <th>Credits</th>
+                  <th>Fee (VND)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% let totalFee=0; %>
+                  <% enrollments.forEach(e=> { %>
+                    <% const courseFee=e.course_credit * 500000; %>
+                      <% totalFee +=courseFee; %>
+                        <tr>
+                          <td>
+                            <%= e.course_id %>
+                          </td>
+                          <td>
+                            <%= e.course_name %>
+                          </td>
+                          <td>
+                            <%= e.course_credit %>
+                          </td>
+                          <td>
+                            <%= courseFee.toLocaleString('vi-VN') %>
+                          </td>
+                        </tr>
+                        <% }); %>
+                          <tr class="total-row">
+                            <td colspan="3">Total</td>
+                            <td>
+                              <%= totalFee.toLocaleString('vi-VN') %>
+                            </td>
+                          </tr>
+              </tbody>
+            </table>
 
-        <div style="padding-top: 10px; display: flex; flex-direction: column">
-          <div style="
-                border: 2px solid rgb(0, 0, 0);
-                border-radius: 10px;
-                overflow: hidden;
-              ">
-            <div id="content-container" style="padding: 10px">
-              <p><strong>Thanh toán học phí</strong></p>
-              <p><strong>Giá tiền:</strong>
-                <%= totalFee.toLocaleString('vi-VN') %> VNĐ
-              </p>
+            <div style="padding-top: 10px; display: flex; flex-direction: column">
+              <div style="border: 2px solid rgb(0, 0, 0); border-radius: 10px; overflow: hidden;">
+                <div id="content-container" style="padding: 10px">
+                  <p><strong>Thanh toán học phí</strong></p>
+                  <p><strong>Giá tiền:</strong>
+                    <%= totalFee.toLocaleString('vi-VN') %> VNĐ
+                  </p>
+                </div>
+                <div id="button-container">
+                  <button type="submit" id="create-payment-link-btn"
+                    style="width: 100%; background-color: rgb(131, 217, 142); color: white; border: none; padding: 10px; font-size: 15px;">
+                    Tạo Link thanh toán
+                  </button>
+                </div>
+              </div>
+              <div id="embeded-payment-container" style="height: 350px"></div>
             </div>
-            <div id="button-container">
-              <button type="submit" id="create-payment-link-btn" style="
-                    width: 100%;
-                    background-color: rgb(131, 217, 142);
-                    color: white;
-                    border: none;
-                    padding: 10px;
-                    font-size: 15px;
-                  ">
-                Tạo Link thanh toán
-              </button>
-            </div>
-          </div>
-          <div id="embeded-payment-container" style="height: 350px"></div>
-        </div>
+            <% } %>
       </section>
 
       <section id="timetable" class="tab-content">

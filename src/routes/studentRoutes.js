@@ -13,6 +13,7 @@ const {
   getStudentTimetable,
   getRegisteredClasses,
   removeRegisteredClass,
+  updatePaymentStatus,
 } = require("../controllers/studentController");
 
 // Route hiển thị trang sinh viên
@@ -50,5 +51,8 @@ router.post(
   authenticateToken,
   removeRegisteredClass
 );
+
+// Route to update payment status
+router.get("/update-payment-status", authenticateToken, updatePaymentStatus);
 
 module.exports = router;
